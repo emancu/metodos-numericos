@@ -177,6 +177,6 @@ double position_with_friction(double h, double v, double time, double alpha) {
 
 double speed_with_friction(double v, double time, double alpha) {
   double e = pow(M_E, - alpha * time);
-  return -GRAVITY/alpha -( v + GRAVITY/alpha) * e;
+  return -GRAVITY/alpha + ( v + GRAVITY/alpha) * e;
 }
 
