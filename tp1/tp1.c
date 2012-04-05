@@ -44,7 +44,7 @@ int main(int argc, char* argv[]){
   int method;
   params p;
   int c;
-  while(c = getopt(argc, argv, optString) != -1){
+  while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
       case 'M':
         method = atoi(optarg);
@@ -121,102 +121,74 @@ int main(int argc, char* argv[]){
  * Methods
  */
 
-
 void bisection(params p) {
   double m;
-
-  //double h  = atof(argv[2]);
-  //double vi = atof(argv[3]);
-  //double a  = atof(argv[4]);
-  //double b  = atof(argv[5]);
-  //double tolerance  = atof(argv[6]);
+  double a = p.a;
+  double b = p.b;
   int iteracion = p.max_iterations;
 
-  if (position(p.h, p.v, p.a)*position(p.h, p.v, p.b) > 0){
+  if (position(p.h, p.v, a)*position(p.h, p.v, b) > 0){
     printf("Los bordes del intervalo no cumplen las condiciones.\n");
     // assert(true);
   }
 
 
-  while( --iteracion > 0 && !stopping_criteria(p.a,p.b, p.tolerance)) {
-    m = (p.b+p.a)/2;
+  while( --iteracion > 0 && !stopping_criteria(a,b, p.tolerance)) {
+    m = (b+a)/2;
 
-    if( position(p.h,p.v,p.a) * position(p.h,p.v,m) > 0 )
+    if( position(p.h,p.v,a) * position(p.h,p.v,m) > 0 )
       a = m;
     else
       b = m;
   }
 
-  printf("El valor encontrado es %lf en la position %lf a velocidad %lf \n", m, position(h,vi,m), speed(vi,m));
+  printf("El valor encontrado es %lf en la position %lf a velocidad %lf \n", m, position(p.h,p.v,m), speed(p.v,m));
 }
 
-
 void newton(params p){
-  double h, v, previous, current, tolerance;
-  int max_iterations, i;
-  h = atof(argv[2]);
-  v = atof(argv[3]);
-  current = atof(argv[4]);
-  max_iterations = atoi(argv[5]);
-  tolerance = atof(argv[6]);
-
-  previous = 0.0;
-  for(i = 0; i < max_iterations && !stopping_criteria(previous, current, tolerance); i++){
+  int i;
+  double current = p.x;
+  double previous = 0.0;
+  for(i = 0; i < p.max_iterations && !stopping_criteria(previous, current, p.tolerance); i++){
     previous = current;
-    current = previous - (position(h, v, previous)/speed(v, previous));
+    current = previous - (position(p.h, p.v, previous)/speed(p.v, previous));
   }
 
   double m = current;
-  printf("El valor encontrado es %lf en la position %lf a velocidad %lf \n", m, position(h,v,m), speed(v,m));
+  printf("El valor encontrado es %lf en la position %lf a velocidad %lf \n", m, position(p.h,p.v,m), speed(p.v,m));
 }
 
 void newton_with_friction(params p){
-  double h, v, previous, current, tolerance, mass, cr;
-  int max_iterations, i;
-  h = atof(argv[2]);
-  v = atof(argv[3]);
-  current = atof(argv[4]);
-  max_iterations = atoi(argv[5]);
-  tolerance = atof(argv[6]);
-  mass = atof(argv[7]);
-  cr = atof(argv[8]);
-
-  double alpha = cr/mass;
-
-  previous = 0.0;
-  for(i = 0; i < max_iterations && !stopping_criteria(previous, current, tolerance); i++){
+  int i;
+  double alpha    = p.cr/p.mass;
+  double current  = p.x;
+  double previous = 0.0;
+  for(i = 0; i < p.max_iterations && !stopping_criteria(previous, current, p.tolerance); i++){
     previous = current;
-    current = previous - (position_with_friction(h, v, previous, alpha)/speed_with_friction(v, previous, alpha));
+    current = previous - (position_with_friction(p.h, p.v, previous, alpha)/speed_with_friction(p.v, previous, alpha));
   }
 
   double m = current;
-  printf("El valor encontrado es %lf en la position %lf a velocidad %lf \n", m, position_with_friction(h,v,m, alpha), speed_with_friction(v,m, alpha));
+  printf("El valor encontrado es %lf en la position %lf a velocidad %lf \n", m, position_with_friction(p.h,p.v,m, alpha), speed_with_friction(p.v,m, alpha));
 }
 
 void bisection_with_friction(params p) {
   double m;
+  double alpha = p.cr/p.mass;
+  double a = p.a;
+  double b = p.b;
+  int i = p.max_iterations;
 
-  double h  = atof(argv[2]);
-  double vi = atof(argv[3]);
-  double a  = atof(argv[4]);
-  double b  = atof(argv[5]);
-  double tolerance  = atof(argv[6]);
-  int iteracion = atoi(argv[7]);
-
-  double mass = atof(argv[8]);
-  double cr = atof(argv[9]);
-  double alpha = cr/mass;
-
-  while( --iteracion > 0 && !stopping_criteria(a,b, tolerance)) {
+  while( --i > 0 && !stopping_criteria(a,b, p.tolerance)) {
     m = (b+a)/2;
 
-    if( position_with_friction(h,vi,a, alpha) * position_with_friction(h,vi,m,alpha) > 0 )
+    if( position_with_friction(p.h,p.v,a, alpha) * position_with_friction(p.h,p.v,m,alpha) > 0 )
       a = m;
     else
       b = m;
   }
 
-  printf("El valor encontrado es %lf en la position %lf a velocidad %lf \n", m, position_with_friction(h,vi,m,alpha), speed_with_friction(vi,m,alpha));
+  printf("El valor encontrado es %lf en la position %lf a velocidad %lf \n", m, position_with_friction(p.h,p.v,m,alpha), speed_with_friction(p.v,m,alpha));
 }
 
 /*
