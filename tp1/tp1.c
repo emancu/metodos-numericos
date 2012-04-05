@@ -40,7 +40,7 @@ double speed_with_friction(double, double, double);
 
 int main(int argc, char* argv[]){
   // Aca se asignan los params parseados del CLI al estilo -h <valor> -v <valor>
-  static const char *optString = "Mhvtmciabx:";
+  static const char *optString = "M::h::v::t::m::c::i::a::b::x::";
   int method;
   params p;
   int c;
@@ -77,20 +77,10 @@ int main(int argc, char* argv[]){
         p.x = atof(optarg);
         break;
       default:
-        printf("no te parseo un carajo");
+        printf("no te parseo un carajo\n");
+        break;
     }
   }
-
-  // int method            = atoi(argv[1]);
-  // p.h              = atof(argv[2]);
-  // p.v              = atof(argv[3]);
-  // p.tolerance      = atof(argv[4]);
-  // p.mass           = atof(argv[5]);
-  // p.cr             = atof(argv[6]);
-  // p.max_iterations = atoi(argv[7]);
-  // p.a              = atof(argv[8]);
-  // p.b              = atof(argv[9]);
-  // p.x              = atof(argv[10]);
 
   switch(method) {
     case 0:
