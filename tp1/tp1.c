@@ -11,7 +11,7 @@
 
 int main(int argc, char* argv[]){
   // Aca se asignan los params parseados del CLI al estilo -h <valor> -v <valor>
-  static const char *optString = "M:h:v:t:m::c::i:a::b::x::";
+  static const char *optString = "M:h:v:t:m:c:i:a:b:x:";
   int method, c;
   Params p;
 
