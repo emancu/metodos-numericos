@@ -1,5 +1,5 @@
 /******************************************************
- * Clase TFloat - Versión 1.00
+ * Clase TFloat - Versión 1.01
  *
  * La clase TFloat encapsula el comportamiento de una
  * aritmética finita de punto flotante que utiliza una
@@ -39,6 +39,7 @@ class TFloat
 	 * El parámetro t en cada constructor indica la cantidad
 	 * de bits de mantisa que se desean usar en el TFloat
 	 */
+    TFloat();
 	TFloat(size_t t);
 	TFloat(double f, size_t t);
 	TFloat(float f, size_t t);
@@ -52,15 +53,18 @@ class TFloat
 	size_t precision() { return _t; } const
 	void set_precision(const size_t t) { _t = (t <= 52? t : 52); }
 
-	// Operadores
+	// Operadores de asignacion y comparacion
 	void operator=(const TFloat& );
+	void operator=(const double& );
 	bool operator==(const TFloat& ) const;
+
+	// Operadores aritméticos
 	TFloat operator+(const TFloat&) const;
 	TFloat operator-(const TFloat&) const;
 	TFloat operator*(const TFloat&) const;
 	TFloat operator/(const TFloat&) const;
 
-	// Operadores (que reciben un tipo primitivo)
+	// Operadores aritméticos (que reciben un tipo primitivo)
 	TFloat operator+(const double&) const;
 	TFloat operator-(const double&) const;
 	TFloat operator*(const double&) const;

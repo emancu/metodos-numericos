@@ -1,6 +1,13 @@
 #include "TFloat.h"
 #include <math.h>
 
+TFloat::TFloat()
+{
+	_valor = 0.0;
+	set_precision(52);
+	recortar();
+}
+
 TFloat::TFloat(size_t t)
 {
 	_valor = 0.0;
@@ -38,6 +45,12 @@ void  TFloat::operator =(const TFloat& f)
 {
 	_valor = f._valor;
 	_t = f._t;
+}
+
+void  TFloat::operator =(const double& f)
+{
+	_valor = f;
+	recortar();
 }
 
 bool  TFloat::operator ==(const TFloat& f) const
