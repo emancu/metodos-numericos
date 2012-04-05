@@ -3,7 +3,7 @@
 #include <tipos.h>
 #include <bisection.h>
 #include <newton.h>
-
+#include <bounce.h>
 
 /*
  *  Main
@@ -56,19 +56,27 @@ int main(int argc, char* argv[]){
   switch(method) {
     case 0:
       printf("Bisection: \n");
-      bisection(p);
+      bisection(&p);
       break;
     case 1:
       printf("Bisection with friction: \n");
-      bisection_with_friction(p);
+      bisection_with_friction(&p);
       break;
     case 2:
       printf("Newton: \n");
-      newton(p);
+      newton(&p);
       break;
     case 3:
       printf("Newton with friction: \n");
-      newton_with_friction(p);
+      newton_with_friction(&p);
+      break;
+    case 4:
+      printf("Bounce: \n");
+      bounce(&p);
+      break;
+    case 5:
+      printf("Bounce with friction: \n");
+      bounce_with_friction(&p);
       break;
     default:
       printf("Metodo no valido.\n");

@@ -8,7 +8,7 @@
 #include <tipos.h>
 #include <tools.h>
 
-void newton(Params);
-void newton_with_friction(Params);
+void newton(Params*);
+void newton_with_friction(Params*);
 
 #endif

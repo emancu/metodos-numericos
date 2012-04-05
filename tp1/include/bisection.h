@@ -7,7 +7,7 @@
 #include <tipos.h>
 #include <tools.h>
 
-void bisection(Params);
-void bisection_with_friction(Params);
+void bisection(Params*);
+void bisection_with_friction(Params*);
 
 #endif

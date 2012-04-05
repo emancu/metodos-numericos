@@ -5,6 +5,7 @@ typedef struct str_params {
   // General params
   double h;
   double v;
+  double t;
   double tolerance;
   double mass;
   double cr;
