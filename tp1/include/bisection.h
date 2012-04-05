@@ -10,4 +10,7 @@
 void bisection(Params*);
 void bisection_with_friction(Params*);
 
+void zero_position(Params*);
+void zero_speed(Params*);
+
 #endif
