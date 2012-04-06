@@ -1,14 +1,16 @@
 #include <tools.h>
 
-double speed(double v, double time){
-  return v - GRAVITY*time;
+double speed(Params *p, double time){
+  return p->v - GRAVITY*time;
 }
 
 bool stopping_criteria(double a, double b, double tolerance){
   return fabs(a - b) < tolerance;
 }
 
-double position(double h, double v, double time){
+double position(Params *p, double time){
+  double h = p->h;
+  double v = p->v;
   return h + v*time - GRAVITY*time*time/2;
 }
 
@@ -16,12 +18,17 @@ double position(double h, double v, double time){
  * With friction
  */
 
-double position_with_friction(double h, double v, double time, double alpha) {
+double position_with_friction(Params *p, double time) {
+  double h = p->h;
+  double v = p->v;
+  double alpha = p->cr/p->mass;
   double e = pow(M_E, - alpha * time);
   return h + v/alpha + GRAVITY/(alpha*alpha) - GRAVITY*time/alpha - (v/alpha + GRAVITY/(alpha*alpha)) * e;
 }
 
-double speed_with_friction(double v, double time, double alpha) {
+double speed_with_friction(Params *p, double time) {
+  double alpha = p->cr/p->mass;
+  double v = p->v;
   double e = pow(M_E, - alpha * time);
   return -GRAVITY/alpha + ( v + GRAVITY/alpha) * e;
 }

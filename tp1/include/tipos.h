@@ -11,6 +11,8 @@ typedef struct str_params {
   double cr;
   int max_iterations;
 
+  double tolerance_combination;
+
   // Bisection params
   double a;
   double b;

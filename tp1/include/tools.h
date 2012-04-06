@@ -2,14 +2,16 @@
 #define __TOOLS__
 
 #include <math.h>
+#include <tipos.h>
 
 #define GRAVITY 9.81
 
-double speed(double, double);
-double position(double, double, double);
+double speed(Params*, double);
+double position(Params*, double);
 bool stopping_criteria(double, double, double);
 
-double position_with_friction(double h, double v, double time, double alpha);
-double speed_with_friction(double, double, double);
+
+double position_with_friction(Params*, double);
+double speed_with_friction(Params*, double);
 
 #endif

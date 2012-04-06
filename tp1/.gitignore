@@ -1,4 +1,7 @@
 *.o
 tp
 tp1_1_2012.pdf
+tp1/
 tp1.cbp
+tp1.depend
+tp1.layout
