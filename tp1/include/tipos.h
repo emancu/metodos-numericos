@@ -5,7 +5,6 @@ typedef struct str_params {
   // General params
   double h;
   double v;
-  double t;
   double mass;
   double cr;
   int max_iterations;
@@ -22,7 +21,7 @@ typedef struct str_params {
 
 typedef struct str_result {
   // General params
-  double speed;
+  double speed; // FIXME: Quizas no se usa
   double zero;
 
 } Result;

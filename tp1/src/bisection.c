@@ -1,96 +1,55 @@
 #include <bisection.h>
 
+void bisection_without_friction(Params* p) {
+  bisection(p, &position, &speed);
+}
 
-void bisection(Params* p) {
+void bisection_with_friction(Params* p) {
+  bisection(p, &position_with_friction, &speed_with_friction);
+}
+
+/*
+ * Auxiliar
+ */
+
+void bisection(Params* p, double (*fn_pos)(Params*,double), double (*fn_speed)(Params*, double)) {
+  double instant = 0;
   Result res;
-  p->t = 0;
+
   // Primer impacto
-  res = zero_position_bisection(p, &position, &speed);
+  res = zero_bisection(p, fn_pos);
+  res.speed = fn_speed(p,res.zero);
+  instant += res.zero;
+  printf("  Primer impacto  = %lf al instante: %lf. Velocidad final = %lf \n", fn_pos(p, res.zero), instant, res.speed);
 
   // Altura Maxima
   p->h = 0;
   p->b = 100 ; // FIXME: ver este tema del intervalo que es bastante sensible!!!!!!!!!
   p->v = -res.speed;
-  zero_speed_bisection(p, &position, &speed);
+  instant += res.zero;
+  res = zero_bisection(p, fn_speed);
+  printf("  Altura Maxima   = %lf al instante: %lf. Velocidad final = %lf \n", fn_pos(p,res.zero), instant, fn_speed(p,res.zero));
 
-  // segundo impacto
-  zero_position_bisection(p, &position, &speed);
+  // Segundo impacto
+  zero_bisection(p, fn_pos);
+  instant += res.zero;
+  printf("  Segundo impacto = %lf al instante: %lf. Velocidad final = %lf \n", fn_pos(p, res.zero), instant, fn_speed(p, res.zero));
 }
 
 
-void bisection_with_friction(Params* p) {
-  p->t = 0;
-  zero_position_bisection(p, &position_with_friction, &speed_with_friction);
-
-  //Altura Maxima
-  zero_speed_bisection(p, &position_with_friction, &speed_with_friction);
-
-  // segundo impacto
-  zero_position_bisection(p, &position_with_friction, &speed_with_friction);
-}
-
-
-Result zero_position_bisection(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
-  Result res;
+Result zero_bisection(Params *p, double (*fn)(Params *, double)) {
   int    iteracion = p->max_iterations;
-  double a = p->a;
-  double b = p->b;
-  double m;
-
-  printf("Tolerance = %.10f\n" , p->tol_bisect);
-
-
-  if ( functionPositionToCall(p,a)*functionPositionToCall(p,b) > 0){
-    printf("-----Los bordes del intervalo no cumplen las condiciones.-----\n");
-    // assert(true);
-  }
-
-  while( --iteracion > 0 && !stopping_criteria(a,b, p->tol_bisect)) {
-    m = (b+a)/2;
-
-    if( functionPositionToCall(p,a) * functionPositionToCall(p,m) > 0 )
-      a = m;
-    else
-      b = m;
-  }
-
-  //FIXME: Corregir!
-  p->t = p->t + m;
-  printf("Alcanza la posicion %lf en el instante %lf a velocidad %lf\n\n", functionPositionToCall(p,m), p->t, functionSpeedToCall(p,m));
-
-  res.speed = functionSpeedToCall(p,m);
-  res.zero = m;
-
-  return res;
-}
-
-Result zero_speed_bisection(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
+  double a = p->a, b = p->b, m;
   Result res;
-  double m;
-  double a = p->a;
-  double b = p->b;
-  int iteracion = p->max_iterations;
 
-  printf("zero speed con velocidad : %lf \n", p->v);
-
-  if (functionSpeedToCall(p,a) * functionSpeedToCall(p,b) > 0){
-    printf("-----Los bordes del intervalo no cumplen las condiciones.-----\n");
-    printf("Valor a (%lf) => f(a) = %lf ; valor b (%lf) => f(b) = %lf \n\n" ,a,functionSpeedToCall(p,a),b,functionSpeedToCall(p,b) );
-    // assert(true);
-  }
+  assert_intervals(fn, p);
 
   while( --iteracion > 0 && !stopping_criteria(a,b, p->tol_bisect)) {
     m = (b+a)/2;
-
-    if( functionSpeedToCall(p,a) * functionSpeedToCall(p,m) > 0 )
-      a = m;
-    else
-      b = m;
+    ( fn(p,a) * fn(p,m) > 0 )? a = m : b = m;
   }
 
-  printf("Max position %lf  en el instante: %lf a velocidad %lf \n\n", functionPositionToCall(p,m),p->t + m, functionSpeedToCall(p,m));
-  res.speed = functionPositionToCall(p,m);
-  res.zero  = m;
+  res.zero = m;
 
   return res;
 }

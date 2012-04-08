@@ -1,7 +1,6 @@
 #include <newton.h>
 
 void newton(Params* p){
-  p->t = 0;
   // Primer impacto
   zero_newton(p, &position, &speed);
 
@@ -15,7 +14,6 @@ void newton(Params* p){
 
 
 void newton_with_friction(Params* p){
-  p->t = 0;
   // Primer impacto
   zero_newton(p, &position_with_friction, &speed_with_friction);
 
@@ -25,6 +23,10 @@ void newton_with_friction(Params* p){
   // segundo impacto
   // zero_newton(p, &position_with_friction, &speed_with_friction);
 }
+
+/*
+ * Auxiliar
+ */
 
 Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (Params *, double)){
   Result res;

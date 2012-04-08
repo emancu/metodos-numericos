@@ -2,10 +2,9 @@
 
 void combinated(Params* p){
   Result res;
-  p->t = 0;
 
   // Primer impacto
-  res = zero_position_bisection(p, &position, &speed); // Nos acercamos con bisection
+  res = zero_bisection(p, &position); // Nos acercamos con bisection
 
   // Solo actualizamos el punto inicial para Newton
   p->x = res.zero;
@@ -17,7 +16,7 @@ void combinated(Params* p){
   p->h = 0;
   p->b = 100 ; // FIXME: ver este tema del intervalo que es bastante sensible!!!!!!!!!
   p->v = -res.speed;
-  res = zero_speed_bisection(p, &position, &speed); // Nos acercamos con bisection
+  res = zero_bisection(p, &speed); // Nos acercamos con bisection
 
   p->x = res.zero;
 
@@ -27,7 +26,7 @@ void combinated(Params* p){
 
   // Segundo impacto
 
-  res = zero_position_bisection(p, &position, &speed); // Nos acercamos con bisection
+  res = zero_bisection(p, &position); // Nos acercamos con bisection
   p->x = res.zero;
   zero_newton(p, &position, &speed);
 
@@ -35,7 +34,6 @@ void combinated(Params* p){
 
 
 void combinated_with_friction(Params* p){
-  p->t = 0;
   // Primer impacto
   zero_newton(p, &position_with_friction, &speed_with_friction);
 

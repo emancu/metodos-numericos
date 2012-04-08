@@ -7,10 +7,10 @@
 #include <tipos.h>
 #include <tools.h>
 
-void bisection(Params*);
 void bisection_with_friction(Params*);
+void bisection_without_friction(Params*);
 
-Result zero_position_bisection(Params*, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double));
-Result zero_speed_bisection(Params*, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double));
+void bisection(Params*, double (*fn_pos)(Params*, double), double (*fn_speed)(Params*, double));
+Result zero_bisection(Params*, double (*fn)(Params *, double));
 
 #endif

@@ -38,7 +38,6 @@ double speed_with_friction(Params *p, double time) {
   return -GRAVITY/alpha + ( v + GRAVITY/alpha) * e;
 }
 
-
 // Derivada de ecuacion (4) - Aceleracion
 double acceleration_with_friction(Params *p, double time) {
   double alpha = p->cr/p->mass;
@@ -46,4 +45,18 @@ double acceleration_with_friction(Params *p, double time) {
   double e = pow(M_E, - alpha * time);
 
   return (v - GRAVITY) * e;
+}
+
+/*
+ * Asserts
+ */
+
+void assert_intervals(double (*fn)(Params *, double), Params *p) {
+  double a = p->a, b = p->b;
+  if (fn(p,a) * fn(p,b) > 0){
+    printf("-----Los bordes del intervalo no cumplen las condiciones.-----\n");
+    printf("Valor a (%lf) => f(a) = %lf ; valor b (%lf) => f(b) = %lf \n\n", a, fn(p, a), b, fn(p, b) );
+    exit(1);
+  }
+
 }

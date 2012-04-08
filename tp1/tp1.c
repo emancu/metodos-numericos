@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <tipos.h>
-#include <bisection.h>
 #include <newton.h>
+#include <bisection.h>
 #include <combinated.h>
 
 /*
@@ -28,17 +28,17 @@ int main(int argc, char* argv[]){
       case 'b': { p.b = atof(optarg);               break; }
       case 'x': { p.x = atof(optarg);               break; }
       case 'z': { p.tol_newton = atof(optarg);      break; }
-      default:  { printf("no te parseo un carajo\n"); }
+      default:  { printf("Cannot parse.\n"); }
     }
   }
 
   switch(method) {
-    case 0:  { printf("Bisection: \n");               bisection(&p);                break; }
-    case 1:  { printf("Bisection with friction:\n");  bisection_with_friction(&p);  break; }
-    case 2:  { printf("Newton: \n");                  newton(&p);                   break; }
-    case 3:  { printf("Newton with friction: \n");    newton_with_friction(&p);     break; }
-    case 4:  { printf("Combinated: \n");              combinated(&p);               break; }
-    case 5:  { printf("Combinated with friction:\n"); combinated_with_friction(&p); break; }
+    case 0:  { printf("Bisection: \n");               bisection_without_friction(&p); break; }
+    case 1:  { printf("Bisection with friction:\n");  bisection_with_friction(&p);    break; }
+    case 2:  { printf("Newton: \n");                  newton(&p);                     break; }
+    case 3:  { printf("Newton with friction: \n");    newton_with_friction(&p);       break; }
+    case 4:  { printf("Combinated: \n");              combinated(&p);                 break; }
+    case 5:  { printf("Combinated with friction:\n"); combinated_with_friction(&p);   break; }
     default: { printf("Metodo no valido.\n"); }
   }
 
