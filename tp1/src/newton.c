@@ -1,27 +1,24 @@
 #include <newton.h>
 
-void newton(Params* p){
-  // Primer impacto
-  zero_newton(p, &position, &speed);
-
-  // Altura Maxima
-  // zero_newton(p, &speed, &acceleration);
-
-  // segundo impacto
-  // zero_newton(p, &position, &speed);
-
+void newton_without_friction(Params* p){
+  newton(p, &position, &speed, &acceleration);
 }
 
-
 void newton_with_friction(Params* p){
+  newton(p, &position_with_friction, &speed_with_friction, &acceleration_with_friction);
+}
+
+void newton(Params* p, double (*fn_pos)(Params*, double), double (*fn_speed)(Params*, double), double (*fn_accel)(Params*, double)){
+  Result res;
   // Primer impacto
-  zero_newton(p, &position_with_friction, &speed_with_friction);
+  res = zero_newton(p, fn_pos, fn_speed);
+  printf("f= %lf en el instante %lf y f'= %lf \n\n", fn_pos(p, res.zero), res.zero, fn_speed(p,res.zero));
 
   // Altura Maxima
-  // zero_newton(p, &speed_with_friction, &acceleration_with_friction);
+  // zero_newton(p, &fn_speed, &fn_accel);
 
   // segundo impacto
-  // zero_newton(p, &position_with_friction, &speed_with_friction);
+  // zero_newton(p, &fn_pos, &fn_speed);
 }
 
 /*
@@ -29,19 +26,15 @@ void newton_with_friction(Params* p){
  */
 
 Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (Params *, double)){
+  double current = p->x, previous = 0.0;
   Result res;
-  int i;
-  double current = p->x;
-  double previous = 0.0;
 
   printf("Newton con x= %lf \n", current);
 
-  for(i = 0; i < p->max_iterations && !stopping_criteria(previous, current, p->tol_newton); i++){
+  for(int i = p->max_iterations; i > 0 && !stopping_criteria(previous, current, p->tol_newton); i--){
     previous = current;
     current = previous - (fn(p, previous)/deriv(p, previous));
   }
-
-  printf("f= %lf en el instante %lf y f'= %lf \n\n", fn(p,current), current, deriv(p,current));
 
   res.speed = deriv(p,current);
   res.zero  = current;

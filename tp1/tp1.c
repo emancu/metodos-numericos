@@ -35,7 +35,7 @@ int main(int argc, char* argv[]){
   switch(method) {
     case 0:  { printf("Bisection: \n");               bisection_without_friction(&p); break; }
     case 1:  { printf("Bisection with friction:\n");  bisection_with_friction(&p);    break; }
-    case 2:  { printf("Newton: \n");                  newton(&p);                     break; }
+    case 2:  { printf("Newton: \n");                  newton_without_friction(&p);    break; }
     case 3:  { printf("Newton with friction: \n");    newton_with_friction(&p);       break; }
     case 4:  { printf("Combinated: \n");              combinated(&p);                 break; }
     case 5:  { printf("Combinated with friction:\n"); combinated_with_friction(&p);   break; }

@@ -8,9 +8,16 @@
 #include <tipos.h>
 #include <tools.h>
 
-void newton(Params*);
 void newton_with_friction(Params*);
+void newton_without_friction(Params*);
 
-Result zero_newton(Params*, double (*fn)(Params *, double), double (*deriv) (Params *, double));
+void newton(Params*,
+            double (*fn_pos)   (Params *, double),
+            double (*fn_speed) (Params *, double),
+            double (*fn_accel) (Params *, double));
+
+Result zero_newton(Params*,
+    double (*fn)    (Params *, double),
+    double (*deriv) (Params *, double));
 
 #endif
