@@ -3,13 +3,13 @@
 void newton(Params* p){
   p->t = 0;
   // Primer impacto
-  zero_position_newton(p, &position, &speed);
+  zero_newton(p, &position, &speed);
 
   // Altura Maxima
-  //zero_speed_newton(p, &position, &speed);
+  // zero_newton(p, &speed, &acceleration);
 
   // segundo impacto
-  //zero_position_newton(p, &position, &speed);
+  // zero_newton(p, &position, &speed);
 
 }
 
@@ -17,35 +17,27 @@ void newton(Params* p){
 void newton_with_friction(Params* p){
   p->t = 0;
   // Primer impacto
-  zero_position_newton(p, &position_with_friction, &speed_with_friction);
+  zero_newton(p, &position_with_friction, &speed_with_friction);
 
   // Altura Maxima
-  //zero_speed_newton(p, &position_with_friction, &speed_with_friction);
+  // zero_newton(p, &speed_with_friction, &acceleration_with_friction);
 
   // segundo impacto
-  //zero_position_newton(p, &position_with_friction, &speed_with_friction);
+  // zero_newton(p, &position_with_friction, &speed_with_friction);
 }
 
-void zero_position_newton(Params* p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)){
+void zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (Params *, double)){
   int i;
   double current = p->x;
   double previous = 0.0;
+
+  printf("Newton con x= %lf \n", current);
+
   for(i = 0; i < p->max_iterations && !stopping_criteria(previous, current, p->tolerance); i++){
     previous = current;
-    current = previous - (functionPositionToCall(p, previous)/functionSpeedToCall(p, previous));
+    current = previous - (fn(p, previous)/deriv(p, previous));
   }
 
-  double m = current;
-  printf("Alcanza la posicion %lf en el instante %lf a velocidad %lf\n\n", functionPositionToCall(p,m), m, functionSpeedToCall(p,m));
+  printf("f= %lf en el instante %lf y f'= %lf \n\n", fn(p,current), current, deriv(p,current));
 }
-
-void zero_speed_newton(Params* p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)){
-  //FALTA IMPLEMENTAR
-}
-
-
-
-
-
-
 

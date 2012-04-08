@@ -4,29 +4,29 @@
 void bisection(Params* p) {
   p->t = 0;
   // Primer impacto
-  zero_position_biseccion(p, &position, &speed);
+  zero_position_bisection(p, &position, &speed);
 
   // Altura Maxima
-  zero_speed_biseccion(p, &position, &speed);
+  zero_speed_bisection(p, &position, &speed);
 
   // segundo impacto
-  zero_position_biseccion(p, &position, &speed);
+  zero_position_bisection(p, &position, &speed);
 }
 
 
 void bisection_with_friction(Params* p) {
   p->t = 0;
-  zero_position_biseccion(p, &position_with_friction, &speed_with_friction);
+  zero_position_bisection(p, &position_with_friction, &speed_with_friction);
 
   //Altura Maxima
-  zero_speed_biseccion(p, &position_with_friction, &speed_with_friction);
+  zero_speed_bisection(p, &position_with_friction, &speed_with_friction);
 
   // segundo impacto
-  zero_position_biseccion(p, &position_with_friction, &speed_with_friction);
+  zero_position_bisection(p, &position_with_friction, &speed_with_friction);
 }
 
 
-void zero_position_biseccion(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
+void zero_position_bisection(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
   int    iteracion = p->max_iterations;
   double a = p->a;
   double b = p->b;
@@ -56,9 +56,10 @@ void zero_position_biseccion(Params *p, double (*functionPositionToCall)(Params 
   p->b = 100 ; // todo ver este tema del intervalo que es bastante sensible!!!!!!!!!
   p->h = 0;
   p->v = -functionSpeedToCall(p, m);
+  p->x = 9;
 }
 
-void zero_speed_biseccion(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
+void zero_speed_bisection(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
   double m;
   double a = p->a;
   double b = p->b;

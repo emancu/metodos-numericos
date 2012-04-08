@@ -11,8 +11,6 @@
 void newton(Params*);
 void newton_with_friction(Params*);
 
-void zero_position_newton(Params*, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double));
-void zero_speed_newton(Params*, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double));
-
+void zero_newton(Params*, double (*fn)(Params *, double), double (*deriv) (Params *, double));
 
 #endif

@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS= -Wall -ggdb -I include/
-OBJ= src/TFloat.o src/bisection.o src/newton.o src/tools.o src/bounce.o tp1.o
+OBJ= src/TFloat.o src/bisection.o src/newton.o src/tools.o src/combinated.o tp1.o
 
 .PHONY	: all clean install
 
