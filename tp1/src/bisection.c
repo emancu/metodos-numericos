@@ -2,11 +2,15 @@
 
 
 void bisection(Params* p) {
+  Result res;
   p->t = 0;
   // Primer impacto
-  zero_position_bisection(p, &position, &speed);
+  res = zero_position_bisection(p, &position, &speed);
 
   // Altura Maxima
+  p->h = 0;
+  p->b = 100 ; // FIXME: ver este tema del intervalo que es bastante sensible!!!!!!!!!
+  p->v = -res.speed;
   zero_speed_bisection(p, &position, &speed);
 
   // segundo impacto
@@ -26,13 +30,14 @@ void bisection_with_friction(Params* p) {
 }
 
 
-void zero_position_bisection(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
+Result zero_position_bisection(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
+  Result res;
   int    iteracion = p->max_iterations;
   double a = p->a;
   double b = p->b;
   double m;
 
-  printf("tolerance = %.10f\n" , p->tolerance);
+  printf("Tolerance = %.10f\n" , p->tol_bisect);
 
 
   if ( functionPositionToCall(p,a)*functionPositionToCall(p,b) > 0){
@@ -40,7 +45,7 @@ void zero_position_bisection(Params *p, double (*functionPositionToCall)(Params 
     // assert(true);
   }
 
-  while( --iteracion > 0 && !stopping_criteria(a,b, p->tolerance)) {
+  while( --iteracion > 0 && !stopping_criteria(a,b, p->tol_bisect)) {
     m = (b+a)/2;
 
     if( functionPositionToCall(p,a) * functionPositionToCall(p,m) > 0 )
@@ -49,17 +54,18 @@ void zero_position_bisection(Params *p, double (*functionPositionToCall)(Params 
       b = m;
   }
 
+  //FIXME: Corregir!
   p->t = p->t + m;
   printf("Alcanza la posicion %lf en el instante %lf a velocidad %lf\n\n", functionPositionToCall(p,m), p->t, functionSpeedToCall(p,m));
 
-  //p->a = m;
-  p->b = 100 ; // todo ver este tema del intervalo que es bastante sensible!!!!!!!!!
-  p->h = 0;
-  p->v = -functionSpeedToCall(p, m);
-  p->x = 9;
+  res.speed = functionSpeedToCall(p,m);
+  res.zero = m;
+
+  return res;
 }
 
-void zero_speed_bisection(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
+Result zero_speed_bisection(Params *p, double (*functionPositionToCall)(Params *, double), double (*functionSpeedToCall) (Params *, double)) {
+  Result res;
   double m;
   double a = p->a;
   double b = p->b;
@@ -73,7 +79,7 @@ void zero_speed_bisection(Params *p, double (*functionPositionToCall)(Params *, 
     // assert(true);
   }
 
-  while( --iteracion > 0 && !stopping_criteria(a,b, p->tolerance)) {
+  while( --iteracion > 0 && !stopping_criteria(a,b, p->tol_bisect)) {
     m = (b+a)/2;
 
     if( functionSpeedToCall(p,a) * functionSpeedToCall(p,m) > 0 )
@@ -83,4 +89,8 @@ void zero_speed_bisection(Params *p, double (*functionPositionToCall)(Params *, 
   }
 
   printf("Max position %lf  en el instante: %lf a velocidad %lf \n\n", functionPositionToCall(p,m),p->t + m, functionSpeedToCall(p,m));
+  res.speed = functionPositionToCall(p,m);
+  res.zero  = m;
+
+  return res;
 }

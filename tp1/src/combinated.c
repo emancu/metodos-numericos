@@ -1,26 +1,35 @@
 #include <combinated.h>
 
 void combinated(Params* p){
+  Result res;
   p->t = 0;
+
   // Primer impacto
-  // Cambiar tolerancias y formas de exit
+  res = zero_position_bisection(p, &position, &speed); // Nos acercamos con bisection
 
-  double backup_tolerance = p->tolerance;
+  // Solo actualizamos el punto inicial para Newton
+  p->x = res.zero;
 
-  zero_position_bisection(p, &position, &speed); // Nos acercamos con bisection
-  p->tolerance = p->tolerance_combination;
+  res = zero_newton(p, &position, &speed);
 
-  zero_newton(p, &position, &speed);
-  p->tolerance = backup_tolerance;
   // Altura Maxima
-  // FIXME: como son
-  // zero_speed_bisection(p, &position, &speed); // Nos acercamos con bisection
-  // zero_newton(p, &speed, &acceleration);
 
-  // segundo impacto
-  // zero_position_bisection(p, &position, &speed); // Nos acercamos con bisection
-  // zero_newton(p, &position, &speed);
-  // zero_newton(p, &position, &speed);
+  p->h = 0;
+  p->b = 100 ; // FIXME: ver este tema del intervalo que es bastante sensible!!!!!!!!!
+  p->v = -res.speed;
+  res = zero_speed_bisection(p, &position, &speed); // Nos acercamos con bisection
+
+  p->x = res.zero;
+
+  res = zero_newton(p, &speed, &acceleration);
+  printf("Altura %lf \n", position(p, res.zero));
+
+
+  // Segundo impacto
+
+  res = zero_position_bisection(p, &position, &speed); // Nos acercamos con bisection
+  p->x = res.zero;
+  zero_newton(p, &position, &speed);
 
 }
 

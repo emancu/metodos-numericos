@@ -11,6 +11,6 @@
 void newton(Params*);
 void newton_with_friction(Params*);
 
-void zero_newton(Params*, double (*fn)(Params *, double), double (*deriv) (Params *, double));
+Result zero_newton(Params*, double (*fn)(Params *, double), double (*deriv) (Params *, double));
 
 #endif

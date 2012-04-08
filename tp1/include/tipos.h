@@ -6,20 +6,25 @@ typedef struct str_params {
   double h;
   double v;
   double t;
-  double tolerance;
   double mass;
   double cr;
   int max_iterations;
 
-  double tolerance_combination;
-
   // Bisection params
   double a;
   double b;
+  double tol_bisect;
 
   // Newton params
   double x;
+  double tol_newton;
 } Params;
 
+typedef struct str_result {
+  // General params
+  double speed;
+  double zero;
+
+} Result;
 
 #endif

@@ -20,14 +20,14 @@ int main(int argc, char* argv[]){
       case 'M': { method = atoi(optarg);            break; }
       case 'h': { p.h = atof(optarg);               break; }
       case 'v': { p.v = atof(optarg);               break; }
-      case 't': { p.tolerance = atof(optarg);       break; }
+      case 't': { p.tol_bisect = atof(optarg);      break; }
       case 'm': { p.mass = atof(optarg);            break; }
       case 'c': { p.cr = atof(optarg);              break; }
       case 'i': { p.max_iterations = atoi(optarg);  break; }
       case 'a': { p.a = atof(optarg);               break; }
       case 'b': { p.b = atof(optarg);               break; }
       case 'x': { p.x = atof(optarg);               break; }
-      case 'z': { p.tolerance_combination = atof(optarg);               break; }
+      case 'z': { p.tol_newton = atof(optarg);      break; }
       default:  { printf("no te parseo un carajo\n"); }
     }
   }
