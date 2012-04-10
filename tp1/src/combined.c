@@ -1,11 +1,11 @@
-#include <combinated.h>
+#include <combined.h>
 
 
-void combinated_without_friction(Params* p){
+void combined_without_friction(Params* p){
   newton(p, &position, &speed, &acceleration);
 }
 
-void combinated_with_friction(Params* p){
+void combined_with_friction(Params* p){
   newton(p, &position_with_friction, &speed_with_friction, &acceleration_with_friction);
 }
 
@@ -13,7 +13,7 @@ void combinated_with_friction(Params* p){
  * Auxiliar
  */
 
-void combinated(Params* p, double (*fn_pos)(Params *, double), double (*fn_speed)(Params*, double), double (*fn_accel)(Params*, double) ) {
+void combined(Params* p, double (*fn_pos)(Params *, double), double (*fn_speed)(Params*, double), double (*fn_accel)(Params*, double) ) {
   Result res;
 
   // Primer impacto

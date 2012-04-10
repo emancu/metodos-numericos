@@ -1,5 +1,5 @@
-#ifndef __COMBINATED__
-#define __COMBINATED__
+#ifndef __COMBINED__
+#define __COMBINED__
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,10 +11,10 @@
 #include <bisection.h>
 #include <newton.h>
 
-void combinated_with_friction(Params*);
-void combinated_without_friction(Params*);
+void combined_with_friction(Params*);
+void combined_without_friction(Params*);
 
-void combinated(Params*,
+void combined(Params*,
     double (*fn_pos)(Params *, double),
     double (*fn_speed)(Params*, double),
     double (*fn_accel)(Params*, double) );

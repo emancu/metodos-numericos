@@ -3,7 +3,7 @@
 #include <tipos.h>
 #include <newton.h>
 #include <bisection.h>
-#include <combinated.h>
+#include <combined.h>
 
 /*
  *  Main
@@ -37,8 +37,8 @@ int main(int argc, char* argv[]){
     case 1:  { printf("Bisection with friction:\n");  bisection_with_friction(&p);      break; }
     case 2:  { printf("Newton: \n");                  newton_without_friction(&p);      break; }
     case 3:  { printf("Newton with friction: \n");    newton_with_friction(&p);         break; }
-    case 4:  { printf("Combinated: \n");              combinated_without_friction(&p);  break; }
-    case 5:  { printf("Combinated with friction:\n"); combinated_with_friction(&p);     break; }
+    case 4:  { printf("Combined: \n");                combined_without_friction(&p);    break; }
+    case 5:  { printf("Combined with friction:\n");   combined_with_friction(&p);       break; }
     default: { printf("Metodo no valido.\n"); }
   }
 
