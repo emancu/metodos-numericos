@@ -39,17 +39,15 @@ void bisection(Params* p, double (*fn_pos)(Params*,double), double (*fn_speed)(P
 
 Result zero_bisection(Params *p, double (*fn)(Params *, double)) {
   int    iteracion = p->max_iterations;
-  double a = p->a, b = p->b, m;
+  double a = p->a, b = p->b;
   Result res;
 
   assert_intervals(fn, p);
 
   while( --iteracion > 0 && !stopping_criteria(a,b, p->tol_bisect)) {
-    m = (b+a)/2;
-    ( fn(p,a) * fn(p,m) > 0 )? a = m : b = m;
+    res.zero = (b+a)/2;
+    ( fn(p,a) * fn(p, res.zero) > 0 )? a = res.zero : b = res.zero;
   }
-
-  res.zero = m;
 
   return res;
 }
