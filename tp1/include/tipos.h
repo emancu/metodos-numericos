@@ -7,7 +7,7 @@ typedef struct str_params {
   double v;
   double mass;
   double cr;
-  int max_iterations;
+  unsigned long  max_iterations;
 
   // Bisection params
   double a;
@@ -23,6 +23,7 @@ typedef struct str_result {
   // General params
   double speed; // FIXME: Quizas no se usa
   double zero;
+  unsigned long iterations;
 
 } Result;
 

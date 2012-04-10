@@ -20,8 +20,18 @@ void bisection(Params* p, double (*fn_pos)(Params*,double), double (*fn_speed)(P
   res = zero_bisection(p, fn_pos);
   res.speed = fn_speed(p,res.zero);
   instant += res.zero;
-  printf("  Primer impacto  = %lf al instante: %lf. Velocidad final = %lf \n", fn_pos(p, res.zero), instant, res.speed);
+  printf("  Primer impacto  = %.20lf al instante: %.20lf. Velocidad final = %.20lf \n", fn_pos(p, res.zero), instant, res.speed);
+  if(res.iterations == p->max_iterations){
+    printf("  SALIO POR ITERACIONES MAXIMAS!!! = %lu \n", p->max_iterations);
+  } else{
+    printf("  CANT ITERACIONES = %lu , max = %lu\n", res.iterations, p->max_iterations);
+    printf("  tolerance %.30lf\n", p->tol_bisect);
 
+  }
+
+
+
+/*
   // Altura Maxima
   p->h = 0;
   p->b = 100 ; // FIXME: ver este tema del intervalo que es bastante sensible!!!!!!!!!
@@ -34,12 +44,13 @@ void bisection(Params* p, double (*fn_pos)(Params*,double), double (*fn_speed)(P
   zero_bisection(p, fn_pos);
   instant += res.zero;
   printf("  Segundo impacto = %lf al instante: %lf. Velocidad final = %lf \n", fn_pos(p, res.zero), instant, fn_speed(p, res.zero));
+  */
 }
 
 
 Result zero_bisection(Params *p, double (*fn)(Params *, double)) {
-  int    iteracion = p->max_iterations;
-  double a = p->a, b = p->b, m;
+  unsigned long iteracion = p->max_iterations;
+  double a = p->a, b = p->b,m;
   Result res;
 
   assert_intervals(fn, p);
@@ -50,6 +61,7 @@ Result zero_bisection(Params *p, double (*fn)(Params *, double)) {
   }
 
   res.zero = m;
+  res.iterations = p->max_iterations - iteracion;
 
   return res;
 }
