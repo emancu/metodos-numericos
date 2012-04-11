@@ -48,19 +48,23 @@
 
 \newpage
 \section{Resumen TODO}
-El resumen, de no más de 200 palabras, debería explicar brevemente el trabajo realizado y las conclusiones de los autores de manera que pueda ser u ́til por s ́ı solo para dar una idea del contenido del trabajo. Las palabras clave, no m ́as de cuatro, deben ser t ́erminos t ́ecnicos que den una idea del contenido del trabajo para facilitar su bu ́squeda en una base de datos tem ́atica.
+%El resumen, de no más de 200 palabras, debería explicar brevemente el trabajo realizado y las conclusiones de los autores de manera que pueda ser u ́til por s ́ı solo para dar una idea del contenido del trabajo. Las palabras clave, no m ́as de cuatro, deben ser t ́erminos t ́ecnicos que den una idea del contenido del trabajo para facilitar su bu ́squeda en una base de datos tem ́atica.
 
-\section{Introducción Teórica TODO}
-Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
-\\
-
+\section{Introducción Teórica}
+%Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
 \subsection{Bisección}
 También conocido como método de \textbf{Búsqueda binaria}, se basa en el teorema del valor intermedio. 
-Requiere dividir varias veces a la mitad los subintervalos de [a,b] y, en cada paso, localizar la mitad que contenga a \textbf{p}, tal que $\mathbf{f(p) = 0}$.
-Si bien tiene una importante propiedad, que asegura la convergencia en una solución, esta convergencia puede ser muy lenta. Por eso, a menudo se utiliza para iniciar otros métodos mas eficientes, como por ejemplo \textbf{Newton-Raphson}.
+Requiere dividir varias veces a la mitad los subintervalos de [a,b] y, en cada paso, localizar la mitad que 
+contenga a \textbf{p}, tal que $\mathbf{f(p) = 0}$.
+Si bien tiene una importante propiedad, que asegura la convergencia en una solución, 
+esta convergencia puede ser muy lenta. 
+Por eso, a menudo se utiliza para iniciar otros métodos mas eficientes, como por ejemplo \textbf{Newton-Raphson}.
 
 \subsection{Newton-Raphson}
-El \textbf{método de Newton} es una de las técnicas más eficientes para calcular ceros de función, dado que nos provee convergencia cuadrática. El método precisa de un $\mathbf{x_0}$ cercano al \textbf{p} tal que $\mathbf{f(p) = 0}$ y la ecuación del mismo se inspira en el desarrollo de Taylor de grado dos alrededor de $\mathbf{x_0}$:
+El \textbf{método de Newton-Raphson} es una de las técnicas más eficientes para calcular ceros de función,
+dado que nos provee convergencia cuadrática. El método precisa de un $\mathbf{x_0}$ cercano 
+al \textbf{p} tal que $\mathbf{f(p) = 0}$ y la ecuación del mismo se inspira en el desarrollo de
+Taylor de grado dos alrededor de $\mathbf{x_0}$:
 
 $$f(x) = f(x_0) + (x - x_0)f'(x_0) + \frac{(x - x_0)^2}{2}f''(x_0)$$
 Evaluando en \textbf{p}:
@@ -73,17 +77,36 @@ De esta manera, podemos generar la serie $x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n
 
 % Discutir si anexamos la demostración de este punto.
 
-\section{Desarrollo TODO}
-Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
+\section{Desarrollo TO BE CONTINUED}
+%Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
+
+Para resolver lo planteado por el trabajo práctico decidimos dividir el problema en tres etapas:
+\begin{enumerate}
+\item Primer impacto
+\item Altura máxima
+\item Segundo impacto
+\end{enumerate}
+Para cada una de ellas, aplicamos los algoritmos de Bisección y Newton. En 1 y 3, sobre las ecuacines de la posición y en 2, sobre las ecuaciones de velocidad.
+El código está escrito en el lenguaje C y en cuanto a la implementación nos topamos con varias dificultades que desarrollaremos a continuación.
+\begin{description}
+\item \textbf{Parámetros}\\
+Dado que las instancias de este problema son muy variadas en cuanto a la cantidad de variables a tener en cuenta, como posición y velocidad inical, cantidad máxima de iteraciones de los algoritmos, tolerancia del resultado, etc, la primer dificultad que encontramos fue poder generar un binario al que fuera cómodo pasarle los diferentes valores. Para eso utilizamos la biblioteca \textit{getopt} de C que parsea los parámetros del CLI.
+\item \textbf{Ecuaciones}\\
+Este trabajo práctico nos propone dos modelos del problema de caída libre y rebote: uno con rozamiento y uno sin rozamiento. Para esto nos provee de dos pares de ecuaciones de posición y velocidad, contemplando ambas situaciones, lo cual en un principio nos llevó a escribir dos versiones de cada algoritmo, con la única diferencia de que en una se utilizaban las ecuaciones sin rozamiento y en la otra, con.
+El problema con esto es que hace un código más complejo, más largo y propenso a errores. Finalmente este punto fue resuelto implementando una única vez los algoritmos de Bisección y Newton, haciéndolos recibir punteros a función, según el caso correspondiente.
+\item \textbf{Presición y representación numérica}\\
+Con motivo de minimizar el error de representación en los números, la cátedra nos facilitó una clase de C++ que nos permite representar los números de punto flotante con una cantidad determinada de bits en la mantisa, sin importar las operaciones que se realicen entre ellos. EXPLICAR ACA EL PROBLEMA DEL PRINTF Y LA CANTIDAD DE DECIMALES.
+
+\end{description} 
 
 \section{Resultados TODO}
-Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
+%Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 
 \section{Discusión TODO}
-Se incluir ́a aqu ́ı un an ́alisis de los resultados obtenidos en la secci ́on anterior (se analizar ́a su validez, coherencia, etc.). Deben analizarse como m ́ınimo los  ́ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
+%Se incluir ́a aqu ́ı un an ́alisis de los resultados obtenidos en la secci ́on anterior (se analizar ́a su validez, coherencia, etc.). Deben analizarse como m ́ınimo los  ́ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
 \section{Conclusiones TODO}
-Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
+%Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
 
 \newpage
 
@@ -148,10 +171,10 @@ Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (P
 \newpage
 
 \section{Referencias TODO}
-Es importante incluir referencias a libros, art ́ıculos y p ́aginas de Internet consultados durante el desarrollo del trabajo, haciendo referencia a estos materiales a lo largo del informe. Se deben citar tambi ́en las comunicaciones personales con otros grupos.
+%Es importante incluir referencias a libros, art ́ıculos y p ́aginas de Internet consultados durante el desarrollo del trabajo, haciendo referencia a estos materiales a lo largo del informe. Se deben citar tambi ́en las comunicaciones personales con otros grupos.
 
 \begin{center}
-	\includegraphics[scale=0.50]{Graficos/07-01.png}
+	%\includegraphics[scale=0.50]{Graficos/07-01.png}
 \end{center}
 
 \end{document}
