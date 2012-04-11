@@ -9,7 +9,6 @@
 \usepackage{listings}
 \usepackage{float}
 
-
 \setlength{\leftmargin}{2cm}
 \setlength{\rightmargin}{2cm}
 \setlength{\oddsidemargin}{-1cm}
@@ -34,11 +33,11 @@
 \materia{Métodos Numéricos}
 \submateria{Primer Cuatrimestre de 2012}
 \titulo{Aproximación de Ceros o Raíces de una función. }
-\subtitulo{ Aproximación Numérica, Newton-Raphson, Bisección  }
+\subtitulo{ Aproximación Numérica,  Bisección, Newton-Raphson }
 \grupo{Trabajo Práctico N$^{\circ}$1}
-\integrante{Mancuso Emiliano}{597/07}{emiliano.mancuso@gmail.com}
-\integrante{Mataloni Alejandro}{706/07}{amataloni@gmail.com}
-\integrante{Tolchinsky Lucas}{591/07}{lucas.tolchinsky@gmail.com}
+\integrante{Mancuso, Emiliano}{597/07}{emiliano.mancuso@gmail.com}
+\integrante{Mataloni, Alejandro}{706/07}{amataloni@gmail.com}
+\integrante{Tolchinsky, Lucas}{591/07}{lucas.tolchinsky@gmail.com}
 \maketitle
 \newpage
 
@@ -48,11 +47,8 @@
 % Main project
 
 \newpage
-
-\begin{large}\textbf{Conjunto Independiente de Peso M\'aximo}\end{large} \\
-
 \section{Resumen TODO}
-El resumen, de no m ́as de 200 palabras, deber ́a explicar brevemente el trabajo realizado y las conclusiones de los autores de manera que pueda ser u ́til por s ́ı solo para dar una idea del contenido del trabajo. Las palabras clave, no m ́as de cuatro, deben ser t ́erminos t ́ecnicos que den una idea del contenido del trabajo para facilitar su bu ́squeda en una base de datos tem ́atica.
+El resumen, de no más de 200 palabras, debería explicar brevemente el trabajo realizado y las conclusiones de los autores de manera que pueda ser u ́til por s ́ı solo para dar una idea del contenido del trabajo. Las palabras clave, no m ́as de cuatro, deben ser t ́erminos t ́ecnicos que den una idea del contenido del trabajo para facilitar su bu ́squeda en una base de datos tem ́atica.
 
 \section{Introducción Teórica TODO}
 Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
@@ -60,12 +56,22 @@ Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m
 
 \subsection{Bisección}
 También conocido como método de \textbf{Búsqueda binaria}, se basa en el teorema del valor intermedio. 
-Requiere dividir varias veces a la mitad los subintervalos de [a,b] y, en cada paso, localizar la mitad que contenga a \textbf{p}, tal que \textbf{f(p) = 0}.
+Requiere dividir varias veces a la mitad los subintervalos de [a,b] y, en cada paso, localizar la mitad que contenga a \textbf{p}, tal que $\mathbf{f(p) = 0}$.
 Si bien tiene una importante propiedad, que asegura la convergencia en una solución, esta convergencia puede ser muy lenta. Por eso, a menudo se utiliza para iniciar otros métodos mas eficientes, como por ejemplo \textbf{Newton-Raphson}.
 
-\subsection{Newton-Raphson TODO}
+\subsection{Newton-Raphson}
+El \textbf{método de Newton} es una de las técnicas más eficientes para calcular ceros de función, dado que nos provee convergencia cuadrática. El método precisa de un $\mathbf{x_0}$ cercano al \textbf{p} tal que $\mathbf{f(p) = 0}$ y la ecuación del mismo se inspira en el desarrollo de Taylor de grado dos alrededor de $\mathbf{x_0}$:
 
+$$f(x) = f(x_0) + (x - x_0)f'(x_0) + \frac{(x - x_0)^2}{2}f''(x_0)$$
+Evaluando en \textbf{p}:
+$$0 = f(x_0) + (p - x_0)f'(x_0) + \frac{(p - x_0)^2}{2}f''(x_0)$$
+Como  $|p - x_0|$ es muy chico $(p - x_0)^2 \approx 0$, luego:  
+$$0 \approx f(x_0) + (p - x_0)f'(x_0)$$
+$$p \approx x_0 - \frac{f(x_0)}{f'(x_0)}$$
 
+De esta manera, podemos generar la serie $x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n)}$ que, arrancando de un $x_0$ adecuado, converge a \textbf{p}.
+
+% Discutir si anexamos la demostración de este punto.
 
 \section{Desarrollo TODO}
 Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
