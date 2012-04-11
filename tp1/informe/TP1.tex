@@ -1,0 +1,151 @@
+\documentclass[a4paper]{article}
+\usepackage[spanish]{babel}
+\title{Trabajo Práctico 1}
+
+\usepackage[utf8]{inputenc}
+\usepackage{caratula}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{float}
+
+
+\setlength{\leftmargin}{2cm}
+\setlength{\rightmargin}{2cm}
+\setlength{\oddsidemargin}{-1cm}
+\setlength{\evensidemargin}{-1cm}
+\setlength{\topmargin}{-1cm}
+\setlength{\textwidth}{18cm}
+\setlength{\textheight}{25cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead [LO,LE]{\scriptsize Trabajo Práctico N$^{\circ}$1}
+\fancyhead [RO,RE]{\scriptsize Mancuso, Mataloni, Tolchinsky}
+\fancyfoot[CE,CO]{\thepage}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage[pdftex, bookmarks=true, colorlinks, citecolor=black, linkcolor=black]{hyperref}
+\usepackage{multirow}
+
+\begin{document}
+
+\materia{Métodos Numéricos}
+\submateria{Primer Cuatrimestre de 2012}
+\titulo{Aproximación de Ceros o Raíces de una función. }
+\subtitulo{ Aproximación Numérica, Newton-Raphson, Bisección  }
+\grupo{Trabajo Práctico N$^{\circ}$1}
+\integrante{Mancuso Emiliano}{597/07}{emiliano.mancuso@gmail.com}
+\integrante{Mataloni Alejandro}{706/07}{amataloni@gmail.com}
+\integrante{Tolchinsky Lucas}{ XXX/07}{lucas.tolchinsky@gmail.com}
+\maketitle
+\newpage
+
+\addcontentsline{toc}{section}{Índice}
+\tableofcontents
+
+% Main project
+
+\newpage
+
+\begin{large}\textbf{Conjunto Independiente de Peso M\'aximo}\end{large} \\
+
+\section{Resumen TODO}
+El resumen, de no m ́as de 200 palabras, deber ́a explicar brevemente el trabajo realizado y las conclusiones de los autores de manera que pueda ser u ́til por s ́ı solo para dar una idea del contenido del trabajo. Las palabras clave, no m ́as de cuatro, deben ser t ́erminos t ́ecnicos que den una idea del contenido del trabajo para facilitar su bu ́squeda en una base de datos tem ́atica.
+
+\section{Introducción Teórica TODO}
+Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
+\\
+
+\subsection{Bisección}
+También conocido como método de \textbf{Búsqueda binaria}, se basa en el teorema del valor intermedio. 
+Requiere dividir varias veces a la mitad los subintervalos de [a,b] y, en cada paso, localizar la mitad que contenga a \textbf{p}, tal que \textbf{f(p) = 0}.
+Si bien tiene una importante propiedad, que asegura la convergencia en una solución, esta convergencia puede ser muy lenta. Por eso, a menudo se utiliza para iniciar otros métodos mas eficientes, como por ejemplo \textbf{Newton-Raphson}.
+
+\subsection{Newton-Raphson TODO}
+
+
+
+\section{Desarrollo TODO}
+Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
+
+\section{Resultados TODO}
+Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
+
+\section{Discusión TODO}
+Se incluir ́a aqu ́ı un an ́alisis de los resultados obtenidos en la secci ́on anterior (se analizar ́a su validez, coherencia, etc.). Deben analizarse como m ́ınimo los  ́ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
+
+\section{Conclusiones TODO}
+Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
+
+\newpage
+
+\section{Apéndices}
+\subsection{A - Enunciado}
+
+En este trabajo práctico se deberá hacer un programa que, dadas las características del cuerpo (masa y coeficiente de rozamiento) y las condiciones iniciales (altura y velocidad de lanzamiento) calcule el momento en que se produce el primer impacto contra el suelo y la velocidad en ese instante. Asumir que la aceleración de la gravedad es $g = 9.81$ m/s$^2$.
+
+Utilizando este programa:
+\begin{enumerate}
+  \item Analizar el efecto de la precisión numérica utilizada y las tolerancias adoptadas en la solución obtenida al calcular el primer impacto.
+  
+  \item Considerar que luego del primer impacto el cuerpo ``rebota'' en el suelo de manera no elástica, calcular la altura máxima del objeto luego del primer rebote y el momento del segundo impacto.
+
+  \item ¿Cómo varía la energía mecánica ($E = g y +\dot{y}^2/2$) del cuerpo entre el lanzamiento y el segundo rebote? Estudiar el efecto de $\alpha$ (donde $\alpha = 0$ implica considerar el caso sin rozamiento), $f_r$ y la precisión numérica en esta variación.
+\end{enumerate}
+
+\subsection{B - Códigos Fuente}
+
+\subsubsection{Stopping criteria}
+\begin{verbatim}
+bool stopping_criteria(double a, double b, double tolerance) {
+  return fabs(a - b) < tolerance;
+}
+\end{verbatim}
+
+\subsubsection{Bisección}
+\begin{verbatim}
+Result zero_bisection(Params *p, double (*fn)(Params *, double)) {
+  int  iteracion = p->max_iterations;
+  double a = p->a, b = p->b, m;
+  Result res;
+
+  while( --iteracion > 0 && !stopping_criteria(a,b, p->tolerance)) {
+     res.zero = (b+a)/2;
+    ( fn(p,a) * fn(p, res.zero) > 0 )? a = res.zero : b =  res.zero;
+  }
+
+  return res;
+}
+\end{verbatim}
+
+
+\subsubsection{Newton-Raphson}
+\begin{verbatim}
+Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (Params *, double)){
+  double current = p->x, previous = 0.0;
+  Result res;
+
+  for(int i = p->max_iterations; i > 0 && !stopping_criteria(previous, current, p->tolerance); i--){
+    previous = current;
+    current = previous - (fn(p, previous)/deriv(p, previous));
+  }
+
+  res.speed = deriv(p,current);
+  res.zero  = current;
+
+  return res;
+}
+\end{verbatim}
+
+\newpage
+
+\section{Referencias TODO}
+Es importante incluir referencias a libros, art ́ıculos y p ́aginas de Internet consultados durante el desarrollo del trabajo, haciendo referencia a estos materiales a lo largo del informe. Se deben citar tambi ́en las comunicaciones personales con otros grupos.
+
+\begin{center}
+	\includegraphics[scale=0.50]{Graficos/07-01.png}
+\end{center}
+
+\end{document}

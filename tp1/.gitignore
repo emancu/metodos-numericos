@@ -5,3 +5,9 @@ tp1/
 tp1.cbp
 tp1.depend
 tp1.layout
+informe/*.aux
+informe/*.log
+informe/*.synctex
+informe/*.toc
+informe/*.out
+informe/TSWLatexianTemp*
