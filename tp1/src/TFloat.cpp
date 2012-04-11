@@ -58,6 +58,17 @@ bool  TFloat::operator ==(const TFloat& f) const
 	return (_valor == f._valor);
 }
 
+
+bool  TFloat::operator <(const TFloat& f) const
+{
+	return (_valor < f._valor);
+}
+
+bool  TFloat::operator >(const TFloat& f) const
+{
+	return (_valor > f._valor);
+}
+
 TFloat TFloat::operator + (const TFloat& f) const
 {
 	double result = _valor + f._valor;
@@ -84,7 +95,7 @@ TFloat TFloat::operator / (const TFloat& f) const
 
 TFloat TFloat::exponencial() const
 {
-	double result = exp(_valor);
+    double result = exp(_valor);
     return TFloat(result, _t);
 }
 

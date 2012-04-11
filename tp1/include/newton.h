@@ -12,12 +12,12 @@ void newton_with_friction(Params*);
 void newton_without_friction(Params*);
 
 void newton(Params*,
-            double (*fn_pos)   (Params *, double),
-            double (*fn_speed) (Params *, double),
-            double (*fn_accel) (Params *, double));
+            TFloat (*fn_pos)   (Params *,TFloat),
+            TFloat (*fn_speed) (Params *, TFloat),
+            TFloat (*fn_accel) (Params *, TFloat));
 
 Result zero_newton(Params*,
-    double (*fn)    (Params *, double),
-    double (*deriv) (Params *, double));
+    TFloat (*fn)    (Params *, TFloat),
+    TFloat (*deriv) (Params *, TFloat));
 
 #endif

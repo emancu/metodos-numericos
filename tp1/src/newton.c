@@ -8,11 +8,13 @@ void newton_with_friction(Params* p){
   newton(p, &position_with_friction, &speed_with_friction, &acceleration_with_friction);
 }
 
-void newton(Params* p, double (*fn_pos)(Params*, double), double (*fn_speed)(Params*, double), double (*fn_accel)(Params*, double)){
+void newton(Params* p, TFloat (*fn_pos)(Params*, TFloat), TFloat (*fn_speed)(Params*, TFloat), TFloat (*fn_accel)(Params*, TFloat)){
   Result res;
+  TFloat instant = TFloat(0,T);
   // Primer impacto
   res = zero_newton(p, fn_pos, fn_speed);
-  printf("f= %lf en el instante %lf y f'= %lf \n\n", fn_pos(p, res.zero), res.zero, fn_speed(p,res.zero));
+  instant = instant + res.zero;
+  printf("  Primer impacto  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero).dbl(), instant.dbl(), res.speed.dbl());
   if(res.iterations == p->max_iterations){
     printf("  SALIO POR ITERACIONES MAXIMAS!!! = %lu \n", p->max_iterations);
   } else{
@@ -29,11 +31,11 @@ void newton(Params* p, double (*fn_pos)(Params*, double), double (*fn_speed)(Par
  * Auxiliar
  */
 
-Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (Params *, double)){
-  double current = p->x, previous = 0.0;
+Result zero_newton(Params* p, TFloat (*fn)(Params *, TFloat), TFloat (*deriv) (Params *, TFloat)){
+  TFloat current = p->x, previous = 0.0;
   Result res;
 
-  printf("Newton con x= %lf \n", current);
+  printf("Newton con x= %.15lf \n", current.dbl());
   unsigned long i;
 
   for(i = p->max_iterations; i > 0 && !stopping_criteria(previous, current, p->tol_newton); i--){

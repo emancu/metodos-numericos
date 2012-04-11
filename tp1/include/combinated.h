@@ -15,8 +15,8 @@ void combinated_with_friction(Params*);
 void combinated_without_friction(Params*);
 
 void combinated(Params*,
-    double (*fn_pos)(Params *, double),
-    double (*fn_speed)(Params*, double),
-    double (*fn_accel)(Params*, double) );
+    TFloat (*fn_pos)(Params *, TFloat),
+    TFloat (*fn_speed)(Params*, TFloat),
+    TFloat (*fn_accel)(Params*, TFloat) );
 
 #endif

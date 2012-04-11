@@ -1,4 +1,7 @@
 #include <bisection.h>
+#include <TFloat.h>
+#include <float.h>
+
 
 void bisection_without_friction(Params* p) {
   bisection(p, &position, &speed);
@@ -12,21 +15,22 @@ void bisection_with_friction(Params* p) {
  * Auxiliar
  */
 
-void bisection(Params* p, double (*fn_pos)(Params*,double), double (*fn_speed)(Params*, double)) {
-  double instant = 0;
+void bisection(Params* p, TFloat (*fn_pos)(Params*,TFloat), TFloat (*fn_speed)(Params*, TFloat)) {
+  TFloat instant = TFloat(0,T);
+  //TFloat instant = 0;
   Result res;
 
   // Primer impacto
   res = zero_bisection(p, fn_pos);
   res.speed = fn_speed(p,res.zero);
-  instant += res.zero;
-  printf("  Primer impacto  = %.20lf al instante: %.20lf. Velocidad final = %.20lf \n", fn_pos(p, res.zero), instant, res.speed);
+  instant = instant + res.zero;
+  printf("  Primer impacto  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero).dbl(), instant.dbl(), res.speed.dbl());
   if(res.iterations == p->max_iterations){
     printf("  SALIO POR ITERACIONES MAXIMAS!!! = %lu \n", p->max_iterations);
+    printf("  tolerance %.15lf\n",(p->tol_bisect).dbl());
   } else{
     printf("  CANT ITERACIONES = %lu , max = %lu\n", res.iterations, p->max_iterations);
-    printf("  tolerance %.30lf\n", p->tol_bisect);
-
+    printf("  tolerance %.15lf\n",(p->tol_bisect).dbl());
   }
 
 
@@ -48,16 +52,20 @@ void bisection(Params* p, double (*fn_pos)(Params*,double), double (*fn_speed)(P
 }
 
 
-Result zero_bisection(Params *p, double (*fn)(Params *, double)) {
+Result zero_bisection(Params *p, TFloat (*fn)(Params *, TFloat)) {
   unsigned long iteracion = p->max_iterations;
-  double a = p->a, b = p->b,m;
+  TFloat a = p->a, b = p->b,m;
   Result res;
 
   assert_intervals(fn, p);
 
+  TFloat cero = TFloat(0,T);
+  TFloat dos = TFloat(2,T);
+
   while( --iteracion > 0 && !stopping_criteria(a,b, p->tol_bisect)) {
-    m = (b+a)/2;
-    ( fn(p,a) * fn(p,m) > 0 )? a = m : b = m;
+    m = (b+a)/dos;
+    ( fn(p,a) * fn(p,m) > cero )? a = m : b = m;
+    //printf("iteracion = %lu \n" , iteracion);
   }
 
   res.zero = m;

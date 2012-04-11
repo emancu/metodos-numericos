@@ -13,19 +13,24 @@ void combinated_with_friction(Params* p){
  * Auxiliar
  */
 
-void combinated(Params* p, double (*fn_pos)(Params *, double), double (*fn_speed)(Params*, double), double (*fn_accel)(Params*, double) ) {
+void combinated(Params* p, TFloat (*fn_pos)(Params *, TFloat), TFloat (*fn_speed)(Params*, TFloat), TFloat (*fn_accel)(Params*, TFloat) ) {
   Result res;
-  double instant = 0;
+  TFloat instant = 0;
 
 
   // Primer impacto
   res = zero_bisection(p, fn_pos); // Nos acercamos con bisection
+  if(res.iterations == p->max_iterations){
+    printf("  BISECCION :SALIO POR ITERACIONES MAXIMAS!!! = %lu \n", p->max_iterations);
+  } else{
+    printf("  BISECCION :CANT ITERACIONES = %lu \n", res.iterations);
+  }
 
   // Solo actualizamos el punto inicial para Newton
   p->x = res.zero;
   res = zero_newton(p, fn_pos, fn_speed);
-  instant += res.zero;
-  printf("  Primer impacto  = %.20lf al instante: %.20lf. Velocidad final = %.20lf \n", fn_pos(p, res.zero), instant, res.speed);
+  instant = instant + res.zero;
+  printf("  Primer impacto  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero).dbl(), instant.dbl(), res.speed.dbl());
   if(res.iterations == p->max_iterations){
     printf("  SALIO POR ITERACIONES MAXIMAS!!! = %lu \n", p->max_iterations);
   } else{

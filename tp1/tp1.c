@@ -5,6 +5,7 @@
 #include <bisection.h>
 #include <combinated.h>
 
+
 /*
  *  Main
  */
@@ -19,22 +20,25 @@ int main(int argc, char* argv[]){
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
       case 'M': { method = atoi(optarg);                              break; }
-      case 'h': { p.h = atof(optarg);                                 break; }
-      case 'v': { p.v = atof(optarg);                                 break; }
-      case 't': { p.tol_bisect = atof(optarg);                        break; }
-      case 'm': { p.mass = atof(optarg);                              break; }
-      case 'c': { p.cr = atof(optarg);                                break; }
+      case 'h': { p.h = TFloat(atof(optarg),T);                                 break; }
+      case 'v': { p.v = TFloat(atof(optarg),T);                                 break; }
+      case 't': { p.tol_bisect = TFloat(atof(optarg),T);                        break; }
+      case 'm': { p.mass = TFloat(atof(optarg),T);                              break; }
+      case 'c': { p.cr = TFloat(atof(optarg),T);                                break; }
       case 'i': { p.max_iterations = strtoul(optarg,&pEnd,10);        break; }
-      case 'a': { p.a = atof(optarg);                                 break; }
-      case 'b': { p.b = atof(optarg);                                 break; }
-      case 'x': { p.x = atof(optarg);                                 break; }
-      case 'z': { p.tol_newton = atof(optarg);                        break; }
+      case 'a': { p.a = TFloat(atof(optarg),T);                                 break; }
+      case 'b': { p.b = TFloat(atof(optarg),T);                                 break; }
+      case 'x': { p.x = TFloat(atof(optarg),T);                                 break; }
+      case 'z': { p.tol_newton = TFloat(atof(optarg),T);                        break; }
       default:  { printf("Cannot parse.\n"); }
     }
   }
 
   switch(method) {
-    case 0:  { printf("Bisection: \n");               bisection_without_friction(&p);   break; }
+    case 0:  {
+      printf("Bisection: \n");
+      bisection_without_friction(&p);   break;
+    }
     case 1:  { printf("Bisection with friction:\n");  bisection_with_friction(&p);      break; }
     case 2:  { printf("Newton: \n");                  newton_without_friction(&p);      break; }
     case 3:  { printf("Newton with friction: \n");    newton_with_friction(&p);         break; }

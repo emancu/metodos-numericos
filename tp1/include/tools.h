@@ -6,23 +6,27 @@
 #include <math.h>
 #include <tipos.h>
 
-#define GRAVITY 9.81
 
-bool stopping_criteria(double, double, double);
+#define T 49
+#define GRAVITY TFloat(9.81,T)
 
-double speed(Params*, double);
-double position(Params*, double);
-double acceleration(Params *p, double);
 
-double position_with_friction(Params*, double);
-double speed_with_friction(Params*, double);
-double acceleration_with_friction(Params *p, double);
+
+bool stopping_criteria(TFloat, TFloat, TFloat);
+
+TFloat speed(Params*, TFloat);
+TFloat position(Params*, TFloat);
+TFloat acceleration(Params *p, TFloat);
+
+TFloat position_with_friction(Params*, TFloat);
+TFloat speed_with_friction(Params*, TFloat);
+TFloat acceleration_with_friction(Params *p, TFloat);
 
 /*
  * Asserts
  */
 
-void assert_intervals(double (*fn)(Params *, double), Params *p);
+void assert_intervals(TFloat (*fn)(Params *, TFloat), Params *p);
 
 
 #endif

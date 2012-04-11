@@ -57,6 +57,8 @@ class TFloat
 	void operator=(const TFloat& );
 	void operator=(const double& );
 	bool operator==(const TFloat& ) const;
+	bool operator<(const TFloat& ) const;
+	bool operator>(const TFloat& ) const;
 
 	// Operadores aritméticos
 	TFloat operator+(const TFloat&) const;

@@ -11,9 +11,9 @@ void bisection_with_friction(Params*);
 void bisection_without_friction(Params*);
 
 void bisection(Params*,
-    double (*fn_pos)  (Params*, double),
-    double (*fn_speed)(Params*, double));
+    TFloat (*fn_pos)  (Params*, TFloat),
+    TFloat (*fn_speed)(Params*, TFloat));
 
-Result zero_bisection(Params*, double (*fn)(Params *, double));
+Result zero_bisection(Params*, TFloat (*fn)(Params *, TFloat));
 
 #endif
