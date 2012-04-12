@@ -15,6 +15,12 @@ int main(int argc, char* argv[]){
   int method, c;
   Params p;
 
+  // Default params
+  p.f = 1;
+  p.max_iterations = 1000000;
+  p.tol_bisect = 0.000000000000001;
+  p.tol_newton = 0.000000000000001;
+
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
       case 'M': { method = atoi(optarg);            break; }
