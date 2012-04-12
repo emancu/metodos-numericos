@@ -1,13 +1,17 @@
 CC=g++
 CFLAGS= -Wall -ggdb -I include/
-OBJ= src/TFloat.o src/bisection.o src/newton.o src/tools.o src/combined.o tp1.o
+OBJ= src/TFloat.o src/bisection.o src/newton.o src/tools.o src/combined.o
+MAINS= tp1.o mechanical_energy.o
 
 .PHONY	: all clean install
 
-all	: clean tp
+all	: clean tp mechanical_energy
 
-tp :  $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o tp
+tp :  $(OBJ) tp1.o
+	$(CC) $(CFLAGS) $(OBJ) tp1.o -o tp
+
+mechanical_energy : $(OBJ) mechanical_energy.o
+	$(CC) $(CFLAGS) $(OBJ) mechanical_energy.o -o mechanical_energy
 
 src/TFloat.o : src/TFloat.cpp
 	$(CC) $(CFLAGS) -c src/TFloat.cpp -o src/TFloat.o
@@ -16,4 +20,4 @@ src/%.o: src/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean :
-	rm -rf $(OBJ) tp
+	rm -rf $(OBJ) $(MAINS) tp mechanical_energy

@@ -11,7 +11,7 @@
 
 int main(int argc, char* argv[]){
   // Aca se asignan los params parseados del CLI al estilo -h <valor> -v <valor>
-  static const char *optString = "M:h:v:t:m:c:i:a:b:x:z:";
+  static const char *optString = "M:h:v:t:m:c:i:a:b:x:z:f:";
   int method, c;
   Params p;
 
@@ -28,6 +28,7 @@ int main(int argc, char* argv[]){
       case 'b': { p.b = atof(optarg);               break; }
       case 'x': { p.x = atof(optarg);               break; }
       case 'z': { p.tol_newton = atof(optarg);      break; }
+      case 'f': { p.f = atof(optarg);               break; }
       default:  { printf("Cannot parse.\n"); }
     }
   }
