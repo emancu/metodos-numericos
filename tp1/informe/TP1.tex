@@ -17,9 +17,6 @@
 \setlength{\textwidth}{18cm}
 \setlength{\textheight}{25cm}
 
-
-\DeclareGraphicsExtensions{.pdf,.png,.jpg}
-
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
@@ -122,6 +119,19 @@ Con motivo de minimizar el error de representación en los números, la cátedra
   \caption{Aproximación con Bisección limitada a una tolerancia de 2. }
 \end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/4-energiaMecanica-alpha.png}
+  \caption{Comparación diferencia de energía mecánica. Variando \alpha }
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/5-energiaMecanica-fr.png}
+  \caption{Comparación diferencia de energía mecánica. Variando \textit{Fr} }
+\end{figure}
+
+
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 
 \section{Discusión TODO}
@@ -220,7 +230,14 @@ Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (P
 \end{verbatim}
 
 \subsection{C - Cómo compilar y usar el TP}
-El directorio del TP contiene un Makefile, con lo cual para compilarlo basta sólamente con ejecutar \textbf{make}. El binario generado se llama \textbf{tp} y recibe los siguientes parámetros:
+El directorio del TP contiene un Makefile, con lo cual para compilarlo basta sólamente con ejecutar \textbf{make}. Los binarios generados son: 
+
+\begin{itemize}
+  \item \textbf{tp} Calcula primer impacto, altura máxima y segundo impacto.
+  \item \textbf{mechanical\_energy} Para ver la variación de la energía mecánica. Utiliza metodos de bisección.
+\end{itemize}
+
+Y reciben los siguientes parámetros:
 
 \begin{description}
 \item[-M] es el método a ejecutar y se mapean del siguiente modo:
@@ -237,6 +254,7 @@ El directorio del TP contiene un Makefile, con lo cual para compilarlo basta só
 \item[-t] tolerancia para Bisección.
 \item[-m] masa de la pelota.
 \item[-c] coeficiente de rozamiento.
+\item[-f] factor de restitución.
 \item[-i] cantidad máxima de iteraciones.
 \item[-a] borde inicial del intervalo.
 \item[-b] borde final del intervalo.
@@ -248,9 +266,5 @@ El directorio del TP contiene un Makefile, con lo cual para compilarlo basta só
 
 \section{Referencias TODO}
 %Es importante incluir referencias a libros, art ́ıculos y p ́aginas de Internet consultados durante el desarrollo del trabajo, haciendo referencia a estos materiales a lo largo del informe. Se deben citar tambi ́en las comunicaciones personales con otros grupos.
-
-\begin{center}
-	%\includegraphics[scale=0.50]{Graficos/07-01.png}
-\end{center}
 
 \end{document}
