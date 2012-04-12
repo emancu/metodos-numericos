@@ -17,6 +17,9 @@
 \setlength{\textwidth}{18cm}
 \setlength{\textheight}{25cm}
 
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
@@ -99,11 +102,59 @@ Con motivo de minimizar el error de representación en los números, la cátedra
 
 \end{description} 
 
-\section{Resultados TODO}
+\section{Resultados}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.80]{graficos/1-Biseccion_vs_BiseccionNewton.png}
+  \caption{Cantidad de Iteraciones. Bisección vs Newton (con aproximación de Bisección) }
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.80]{graficos/2-BiseccionXIteraciones.png}
+  \caption{Aproximación con Bisección limitada a 5 iteraciones. }
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.80]{graficos/3-BiseccionXTolerancia.png}
+  \caption{Aproximación con Bisección limitada a una tolerancia de 2. }
+\end{figure}
+
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 
 \section{Discusión TODO}
-%Se incluir ́a aqu ́ı un an ́alisis de los resultados obtenidos en la secci ́on anterior (se analizar ́a su validez, coherencia, etc.). Deben analizarse como m ́ınimo los  ́ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
+Sabiendo que el método de \textbf{Newton-Raphson} converge de forma cuadrática, decidímos comparar la cantidad de iteraciones que requiere cada algoritmo para mostrar de forma gráfica la eficiencia de los mismos. \\
+
+Para esto, nos centramos en resolver el problema con parámetros fijos de solución exacta.
+Los gráficos representan los resultados con los siguientes parámetros, 
+\begin{itemize}
+  \item{G = 9.81}
+  \item{Velocidad Inicial = 29.43 (3G)} 
+  \item{Altura Inicial = 78.48 (8G)} 
+  \item{Tolerancia = $10^{-14}$} 
+  \item{Máx. Iteraciones = $10^5$}
+\end{itemize}
+
+Bajo estas condiciones, es fácil probar que la solución es exactamente 8, basta con resolver la siguiente ecuación cuadrática:
+
+\begin{displaymath}
+  \frac{-3G \pm \sqrt{9G^2 + 4*\frac{G}{2}*8G}}{-2\frac{G}{2}}
+\end{displaymath}
+
+Ahora, con este problema bien definido, variamos la longitud del intervalo donde comienza \textbf{bisección} y graficamos la cantidad de iteraciones que necesita cada algoritmo (\textit{Figura 1}).
+En primer lugar, encontramos una gran diferencia entre la cantidad de iteraciones necesarias por parte de \textbf{Bisección puro} y \textbf{Bisección + Newton}. Sin embargo, necesitabamos un criterio de aproximacion por Bisección para la semilla de Newton, y decidimos probar las 2 alternativas. 
+
+
+%Agregado por Ale. Corregir y formatear
+
+Otra prueba que realizamos fue para fijar el parámetro de parada para bisección cuando lo utilizabamos para darle una "semilla" a Newton. Teníamos dos alternativas: iterar una cantidad fija de veces, o acercarnos al valor a una distancia d.
+En el gráfico podemos observar que no variaba mucho la cantidad final de iteraciones del algoritmo total para encontrar la raiz, por lo que dado que para este problema en particular Newton se comporta "bien" para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones.
+Si en algun otro problema fuera necesario tener una semilla buena, en ese caso se optaria por el otro criterio de parada.
+ 
+ 
+%Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
 \section{Conclusiones TODO}
 %Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
@@ -174,12 +225,12 @@ El directorio del TP contiene un Makefile, con lo cual para compilarlo basta só
 \begin{description}
 \item[-M] es el método a ejecutar y se mapean del siguiente modo:
 \begin{itemize}
-\item 0 para Bisección
-\item 1 para Bisección con fricción
-\item 2 para Newton
-\item 3 para Newton con fricción
-\item 4 para Bisección + Newton
-\item 5 para Bisección + Newton con fricción
+  \item 0 para Bisección
+  \item 1 para Bisección con fricción
+  \item 2 para Newton
+  \item 3 para Newton con fricción
+  \item 4 para Bisección + Newton
+  \item 5 para Bisección + Newton con fricción
 \end{itemize}
 \item[-h] posición inicial.
 \item[-v] velocidad inicial.
