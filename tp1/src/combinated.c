@@ -26,6 +26,7 @@ void combinated(Params* p, TFloat (*fn_pos)(Params *, TFloat), TFloat (*fn_speed
     printf("  BISECCION :CANT ITERACIONES = %lu \n", res.iterations);
   }
 
+  unsigned long iterationsBisection = res.iterations;
   // Solo actualizamos el punto inicial para Newton
   p->x = res.zero;
   res = zero_newton(p, fn_pos, fn_speed);
@@ -34,7 +35,7 @@ void combinated(Params* p, TFloat (*fn_pos)(Params *, TFloat), TFloat (*fn_speed
   if(res.iterations == p->max_iterations){
     printf("  SALIO POR ITERACIONES MAXIMAS!!! = %lu \n", p->max_iterations);
   } else{
-    printf("  CANT ITERACIONES = %lu \n", res.iterations);
+    printf("  CANT ITERACIONES = %lu \n", res.iterations + iterationsBisection);
   }
 
 /*

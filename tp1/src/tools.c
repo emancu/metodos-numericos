@@ -58,5 +58,16 @@ void assert_intervals(TFloat (*fn)(Params *, TFloat), Params *p) {
     printf("Valor a (%lf) => f(a) = %lf ; valor b (%lf) => f(b) = %lf \n\n", a.dbl(), fn(p, a).dbl(), b.dbl(), fn(p, b).dbl() );
     exit(1);
   }
-
 }
+
+
+TFloat mechanical_without(Params *p, TFloat time){
+    return GRAVITY * position(p,time) + (speed(p,time)*speed(p,time)) / 2;
+}
+
+TFloat mechanical_with_friction(Params *p, TFloat time){
+    return GRAVITY * position_with_friction(p,time) + (speed_with_friction(p,time) * speed_with_friction(p,time)) / 2;
+}
+
+
+

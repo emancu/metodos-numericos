@@ -12,7 +12,7 @@ void bisection_without_friction(Params*);
 
 void bisection(Params*,
     TFloat (*fn_pos)  (Params*, TFloat),
-    TFloat (*fn_speed)(Params*, TFloat));
+    TFloat (*fn_speed)(Params*, TFloat),TFloat (*mechanicalToCall)(Params*, TFloat));
 
 Result zero_bisection(Params*, TFloat (*fn)(Params *, TFloat));
 

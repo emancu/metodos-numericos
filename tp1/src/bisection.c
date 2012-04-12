@@ -4,53 +4,56 @@
 
 
 void bisection_without_friction(Params* p) {
-  bisection(p, &position, &speed);
+  bisection(p, &position, &speed,&mechanical_without);
 }
 
 void bisection_with_friction(Params* p) {
-  bisection(p, &position_with_friction, &speed_with_friction);
+  bisection(p, &position_with_friction, &speed_with_friction, &mechanical_with_friction);
 }
 
 /*
  * Auxiliar
  */
 
-void bisection(Params* p, TFloat (*fn_pos)(Params*,TFloat), TFloat (*fn_speed)(Params*, TFloat)) {
+void bisection(Params* p, TFloat (*fn_pos)(Params*,TFloat), TFloat (*fn_speed)(Params*, TFloat),TFloat (*mechanicalToCall)(Params*, TFloat)) {
   TFloat instant = TFloat(0,T);
-  //TFloat instant = 0;
   Result res;
 
+
   // Primer impacto
+
   res = zero_bisection(p, fn_pos);
   res.speed = fn_speed(p,res.zero);
   instant = instant + res.zero;
   printf("  Primer impacto  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero).dbl(), instant.dbl(), res.speed.dbl());
   if(res.iterations == p->max_iterations){
     printf("  SALIO POR ITERACIONES MAXIMAS!!! = %lu \n", p->max_iterations);
-    printf("  tolerance %.15lf\n",(p->tol_bisect).dbl());
   } else{
     printf("  CANT ITERACIONES = %lu , max = %lu\n", res.iterations, p->max_iterations);
-    printf("  tolerance %.15lf\n",(p->tol_bisect).dbl());
   }
 
-
-
-/*
   // Altura Maxima
   p->h = 0;
   p->b = 100 ; // FIXME: ver este tema del intervalo que es bastante sensible!!!!!!!!!
-  p->v = -res.speed;
-  instant += res.zero;
+  p->v = res.speed * -1;
+
   res = zero_bisection(p, fn_speed);
-  printf("  Altura Maxima   = %lf al instante: %lf. Velocidad final = %lf \n", fn_pos(p,res.zero), instant, fn_speed(p,res.zero));
+  printf("  Altura Maxima   = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p,res.zero).dbl(), (instant + res.zero).dbl(), fn_speed(p,res.zero).dbl());
 
   // Segundo impacto
-  zero_bisection(p, fn_pos);
-  instant += res.zero;
-  printf("  Segundo impacto = %lf al instante: %lf. Velocidad final = %lf \n", fn_pos(p, res.zero), instant, fn_speed(p, res.zero));
-  */
-}
+  res = zero_bisection(p, fn_pos);
+  instant = instant + res.zero;
+  printf("  Segundo impacto = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero).dbl(), instant.dbl(), fn_speed(p, res.zero).dbl());
 
+
+  TFloat mechanical = TFloat();
+  int j;
+  for (j = 0 ; j <= res.zero.dbl() + 1 ; j++){
+    mechanical = mechanicalToCall(p,j);
+    printf(" %d, %.15lf  \n ", j, mechanical.dbl());
+  }
+
+}
 
 Result zero_bisection(Params *p, TFloat (*fn)(Params *, TFloat)) {
   unsigned long iteracion = p->max_iterations;
