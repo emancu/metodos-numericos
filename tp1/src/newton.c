@@ -8,36 +8,45 @@ void newton_with_friction(Params* p){
   newton(p, &position_with_friction, &speed_with_friction, &acceleration_with_friction);
 }
 
-void newton(Params* p, double (*fn_pos)(Params*, double), double (*fn_speed)(Params*, double), double (*fn_accel)(Params*, double)){
-  Result res;
-  // Primer impacto
-  res = zero_newton(p, fn_pos, fn_speed);
-  printf("f= %lf en el instante %lf y f'= %lf \n\n", fn_pos(p, res.zero), res.zero, fn_speed(p,res.zero));
-
-  // Altura Maxima
-  // zero_newton(p, &fn_speed, &fn_accel);
-
-  // segundo impacto
-  // zero_newton(p, &fn_pos, &fn_speed);
-}
-
 /*
  * Auxiliar
  */
 
+void newton(Params *p, double (*fn_pos)(Params*, double), double (*fn_speed)(Params*, double), double (*fn_accel)(Params*, double)){
+  double instant = 0;
+  Result res;
+
+  // Primer impacto
+  res = zero_newton(p, fn_pos, fn_speed);
+  instant += res.zero;
+  printf("  Primer impacto  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero), instant, res.speed);
+
+  // Altura Maxima
+  p->h=0;
+  p->v = -res.speed * p->f;
+
+  res = zero_newton(p, fn_speed, fn_accel);
+  printf("  Altura Maxima  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p,res.zero), instant + res.zero, res.speed);
+
+  // Segundo impacto
+  res = zero_newton(p, fn_pos, fn_speed);
+  instant += res.zero;
+  printf("  Segundo impacto = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero), instant, fn_speed(p, res.zero));
+}
+
 Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (Params *, double)){
   double current = p->x, previous = 0.0;
   Result res;
+  int i;
 
-  printf("Newton con x= %lf \n", current);
-
-  for(int i = p->max_iterations; i > 0 && !stopping_criteria(previous, current, p->tol_newton); i--){
+  for(i = p->max_iterations; i > 0 && !stopping_criteria(previous, current, p->tol_newton); i--){
     previous = current;
     current = previous - (fn(p, previous)/deriv(p, previous));
   }
 
   res.speed = deriv(p,current);
   res.zero  = current;
+  res.iterations = p->max_iterations - i;
 
   return res;
 }

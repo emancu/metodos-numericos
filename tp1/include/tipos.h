@@ -22,7 +22,7 @@ typedef struct str_params {
 
 typedef struct str_result {
   // General params
-  double speed; // FIXME: Quizas no se usa
+  double speed;
   double zero;
   int iterations;
 
