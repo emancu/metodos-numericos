@@ -49,6 +49,8 @@
 \newpage
 \section{Resumen TODO}
 %El resumen, de no más de 200 palabras, debería explicar brevemente el trabajo realizado y las conclusiones de los autores de manera que pueda ser u ́til por s ́ı solo para dar una idea del contenido del trabajo. Las palabras clave, no m ́as de cuatro, deben ser t ́erminos t ́ecnicos que den una idea del contenido del trabajo para facilitar su bu ́squeda en una base de datos tem ́atica.
+El trabajo implementa un programa que permite aproximar la raiz de una función por los métodos de $Bisección$ y $Newton$, utilizando para esto aritmética de punto flotante variando la presición de la mantisa, hasta un máximo de 52 bits. En cuanto a la calidad de resultados ambos algoritmos nos proporcionan la misma precisión, sin embargo $Newton$ lo hace con un orden de convergencia cuadrático (contra el lineal de $Biseccion$). Sin embargo, éste nesecita una "semilla" inicial cercana a la raiz buscada para asegurar la convergencia, por lo que decidimos implementar una combinacion de ambos, aplicando primero $Biseccion$ para encontrar un punto inicial cercano, y luego aplicar $Newton$ con la misma.  
+
 
 \section{Introducción Teórica}
 %Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
