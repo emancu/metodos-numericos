@@ -83,7 +83,7 @@ De esta manera, podemos generar la serie $x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n
 Para resolver lo planteado por el trabajo práctico decidimos dividir el problema en tres etapas:
 \begin{enumerate}
 \item Primer impacto
-\item Altura máxima
+\item Altura máxima del rebote
 \item Segundo impacto
 \end{enumerate}
 Para cada una de ellas, aplicamos los algoritmos de Bisección y Newton. En 1 y 3, sobre las ecuacines de la posición y en 2, sobre las ecuaciones de velocidad.
@@ -167,6 +167,31 @@ Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (P
   return res;
 }
 \end{verbatim}
+
+\subsection{C - Cómo compilar y usar el TP}
+El directorio del TP contiene un Makefile, con lo cual para compilarlo basta sólamente con ejecutar \textbf{make}. El binario generado se llama \textbf{tp} y recibe los siguientes parámetros:
+
+\begin{description}
+\item[-M] es el método a ejecutar y se mapean del siguiente modo:
+\begin{itemize}
+\item 0 para Bisección
+\item 1 para Bisección con fricción
+\item 2 para Newton
+\item 3 para Newton con fricción
+\item 4 para Bisección + Newton
+\item 5 para Bisección + Newton con fricción
+\end{itemize}
+\item[-h] posición inicial.
+\item[-v] velocidad inicial.
+\item[-t] tolerancia para Bisección.
+\item[-m] masa de la pelota.
+\item[-c] coeficiente de rozamiento.
+\item[-i] cantidad máxima de iteraciones.
+\item[-a] borde inicial del intervalo.
+\item[-b] borde final del intervalo.
+\item[-x] valor inicial para Newton.
+\item[-z] tolerancia para Newton.
+\end{description}
 
 \newpage
 
