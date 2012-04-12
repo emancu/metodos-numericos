@@ -179,6 +179,38 @@ Si en algun otro problema fuera necesario tener una semilla buena, en ese caso s
 
 \section{Apéndices}
 \subsection{A - Enunciado}
+{\bf Introducción}
+
+La manzana que golpeó la cabeza de Issac Newton (1643 -- 1727) además de dejarle un lindo chichón, lo hizo reflexionar sobre las leyes de la mecánica clásica. Estas leyes se siguen utilizando aun en nuestros días para analizar el movimiento de cuerpos y partículas en situaciones donde la realidad se parece bastante a las hipótesis asumidas por las mismas, por ejemplo el movimiento del los planetas en el espacio o el desplazamiento de cuerpos a velocidades bajas respecto de la de la luz ($\sim 300.000$ km/s). En nuestro caso nos interesa estudiar la caída de objetos en la atmósfera terrestre.
+
+Modelaremos el problema de caída de dos maneras diferentes. 
+\begin{description}
+ \item[Caída libre:] En este caso despreciamos los efectos del rozamiento con el aire y consideramos que la única fuerza que actúa sobre el cuerpo es la gravedad $g$. Así, para un cuerpo lanzado verticalmente desde una altura $h$, con una velocidad inicial $v_0$, en un sistema de referencia donde la coordenada vertical $y$ crece hacia arriba desde el suelo y la gravedad apunta hacia abajo, la posición del cuerpo estará dada en cada instante de tiempo por
+\begin{equation}
+ y(t) = h + v_0 t - \frac{g}{2} t^2,
+\end{equation}
+y la velocidad del mismo será
+\begin{equation}
+ \dot{y}(t) = v_0 - g t.
+\end{equation}
+ \item[Caída con rozamiento: ] En este caso asumiremos que hay una fuerza de rozamiento que tiende a detener el movimiento del cuerpo y que es proporcional y opuesta a la velocidad en cada instante dada por: $F_r = - c_r \dot{y}$ y llamaremos a $c_r$ coeficiente de rozamiento. En este caso, la posición del cuerpo estará dada por
+\begin{equation}
+ y(t) = h + \frac{v_0}{\alpha} + \frac{g}{\alpha^2} - \frac{g}{\alpha} t -\left( \frac{v_0}{\alpha} + \frac{g}{\alpha^2} \right) e^{-\alpha t},
+\end{equation}
+donde hemos abreviado escribiendo $\alpha = c_r / m$ y $m$ es la masa del cuerpo. Así, la velocidad será 
+\begin{equation}
+ \dot{y}(t) = - \frac{g}{\alpha} +\left( v_0 + \frac{g}{\alpha} \right) e^{-\alpha t}.
+\end{equation}
+\end{description}
+
+El impacto contra el suelo se produce cuando $y=0$. En caso que se desee estudiar el comportamiento luego del impacto se puede considerar que el cuerpo ``rebota'' en el suelo de manera no elástica tal que la velocidad inmediatamente después del rebote es 
+\begin{equation}
+\dot{y}(t_{impacto+}) = - f_r \, \dot{y}(t_{impacto-})
+\end{equation}
+donde $0 \leq f_r \leq 1$ se llama factor de restitución y toma en cuenta los efectos no elásticos del rebote. En este caso, $f_r = 1$ implica que el rebote fue completamente elástico.
+
+
+{\bf Enunciado}
 
 En este trabajo práctico se deberá hacer un programa que, dadas las características del cuerpo (masa y coeficiente de rozamiento) y las condiciones iniciales (altura y velocidad de lanzamiento) calcule el momento en que se produce el primer impacto contra el suelo y la velocidad en ese instante. Asumir que la aceleración de la gravedad es $g = 9.81$ m/s$^2$.
 
@@ -190,6 +222,8 @@ Utilizando este programa:
 
   \item ¿Cómo varía la energía mecánica ($E = g y +\dot{y}^2/2$) del cuerpo entre el lanzamiento y el segundo rebote? Estudiar el efecto de $\alpha$ (donde $\alpha = 0$ implica considerar el caso sin rozamiento), $f_r$ y la precisión numérica en esta variación.
 \end{enumerate}
+
+\newpage
 
 \subsection{B - Códigos Fuente}
 
