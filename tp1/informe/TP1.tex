@@ -54,6 +54,8 @@ El trabajo implementa un programa que permite aproximar la raíz de una función
 
 \section{Introducción Teórica}
 %Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
+Sea $f(x)$ una función, un problema interesante a resolver es el de encontrar todos los $x$ pertenecientes al dominio de $f$ tal que $\mathbf{f(x) = 0}$. Para resolver este problema se conocen varias técnicas que utilizaremos en este trabajo. Supongamos que el dominio de $f$ son los números reales. Dado que vamos a resolver el problema con una computadora nos encontramos frente al primer inconveniente. Las maquinas tienen una cantidad acotada de bits para representar los números. Es por esto que no todos los números pueden ser representados, por ejemplo $\sqrt(3)$ no puede ser representado ya que es irracional y tiene infinitas cifras decimales. Es por esta razon que los algoritmos no pueden dar una solución exacta a este problema, aunque si lo bastante cercana a la misma para que sea aceptable en la mayor parte de las situaciones.  
+  
 \subsection{Bisección}
 También conocido como método de \textbf{Búsqueda binaria}, se basa en el teorema del valor intermedio. 
 Requiere dividir varias veces a la mitad los subintervalos de [a,b] y, en cada paso, localizar la mitad que 
