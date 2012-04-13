@@ -94,14 +94,14 @@ De esta manera, podemos generar la serie $x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n
 \section{Desarrollo}
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
 El lenguaje utilizado para resolver los algoritmos es C++. En un principio implementamos los algoritmos especificos para cada problema, pero al poco tiempo nos dimos cuenta de que ibamos a repetir el código y sería mas díficil el mantenimiento.   
-Fue por esto que decidimos implementar una función genérica para cada método, que recibe como parametro la función a la cual se le quiere aplicar el mismo. Ademas de \textit{Newton} y \textit{Bisección}, decidimos implementar la combinacion de los mismos, es decir conseguir una 'semilla' con el metodo de bisección y luego utilizar la misma para aplicar Newton.\\\\
+Fue por esto que decidimos implementar una función genérica para cada método, que recibe como parametro la función a la cual se le quiere aplicar el mismo. Ademas de \textit{Newton} y \textit{Bisección}, decidimos implementar la combinación de los mismos, es decir conseguir una 'semilla' con el metodo de bisección y luego utilizar la misma para aplicar Newton.\\\\
 
-Los parametros los pasa el usuario por linea de comandos y son almacenados en una estructura interna.  
+Los parámetros los pasa el usuario por linea de comandos y son almacenados en una estructura interna.  
 En un principio utilizamos el tipo \textit{double} para asegurarnos de que todo funcionaba según lo esperado.Luego fue suplantado por la clase \textit{TFLoat} proporcionada por la cátedra, con la cual ibamos a poder manejar la cantidad de bits de la mantisa.   
 Un error que se nos presento fue justamente el de la presentación de la información. Al imprimir los valores de las variables, al imprimir pocos decimales, estos eran redoneados dandonos valores alejados de lo esperado. Para saber la cantidad máxima de digitos consultamos la clase $float.h$\footnote{http://www.cplusplus.com/reference/clibrary/cfloat/} la cual contiene una constante que indica el número de decimales significativos. \\\\
 
-En el punto dos para calcular la altura máxima luego del primer rebote lo que hicimos fue calcular la raíz a la función velocidad y con este resultado cacular la posición, ya que la altura maxima seria en el momento en el que la pelota tiene velocidad nula. En cambio para el segundo impacto utilizamos calculamos el cero de la función posición, pero cambiando los parámetros iniciales. En el instante del primer rebote la altura de la pelota es 0 y calculamos la velocidad con la que rebota, siendo estos los nuevos parámetros para la función posición
-En el punto dos para calcular la altura maxima luego del primer rebote, fue aplicar el método correspondiente a la función $velocidad$ con los parámetros correctos. 
+En el punto dos para calcular la altura máxima luego del primer rebote lo que hicimos fue calcular la raíz a la función velocidad y con este resultado calcular la posición, ya que la altura máxima seria en el momento en el que la pelota tiene velocidad nula. En cambio para el segundo impacto utilizamos calculamos el cero de la función posición, pero cambiando los parámetros iniciales. En el instante del primer rebote la altura de la pelota es 0 y calculamos la velocidad con la que rebota, siendo estos los nuevos parámetros para la función posición
+En el punto dos para calcular la altura máxima luego del primer rebote, fue aplicar el método correspondiente a la función $velocidad$ con los parámetros correctos. 
 
 
 
@@ -132,7 +132,7 @@ En el punto dos para calcular la altura maxima luego del primer rebote, fue apli
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.75]{graficos/4-energiaMecanica-alpha.png}
-  \caption{Comparación diferencia de energía mecánica. Variando \alpha }
+  \caption{Comparación diferencia de energía mecánica. Variando $\alpha$ }
 \end{figure}
 
 \begin{figure}[H]
@@ -141,6 +141,11 @@ En el punto dos para calcular la altura maxima luego del primer rebote, fue apli
   \caption{Comparación diferencia de energía mecánica. Variando \textit{Fr} }
 \end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/6-errorAbsoluto.png}
+  \caption{Error absoluto cambiando los bits de la mantisa }
+\end{figure}
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 
