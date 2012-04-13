@@ -93,19 +93,15 @@ De esta manera, podemos generar la serie $x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n
 
 \section{Desarrollo}
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
-El lenguaje utilizado para resolver los algoritmos es C++. En un principio implementamos los algoritmos especificos para cada problema, pero al poco tiempo nos dimos cuenta de que ibamos a repetir el código y sería mas díficil el mantenimiento.   
-Fue por esto que decidimos implementar una función genérica para cada método, que recibe como parametro la función a la cual se le quiere aplicar el mismo. Ademas de \textit{Newton} y \textit{Bisección}, decidimos implementar la combinación de los mismos, es decir conseguir una 'semilla' con el metodo de bisección y luego utilizar la misma para aplicar Newton.\\\\
+
+El lenguaje utilizado para resolver los algoritmos es C++. En un principio implementamos los algoritmos específicos para cada problema, pero al poco tiempo nos dimos cuenta de que íbamos a repetir el código y sería más difícil el mantenimiento.   
+Fue por esto que decidimos implementar una función genérica para cada método, que recibe como parámetro la función a la cual se le quiere aplicar el mismo. Ademas de \textit{Newton} y \textit{Bisección}, decidimos implementar la combinación de los mismos, es decir conseguir una \textit{semilla} con el método de \textbf{bisección} y luego utilizar la misma para aplicar \textbf{Newton}. \\ \hspace{1em}
 
 Los parámetros los pasa el usuario por linea de comandos y son almacenados en una estructura interna.  
-En un principio utilizamos el tipo \textit{double} para asegurarnos de que todo funcionaba según lo esperado.Luego fue suplantado por la clase \textit{TFLoat} proporcionada por la cátedra, con la cual ibamos a poder manejar la cantidad de bits de la mantisa.   
-Un error que se nos presento fue justamente el de la presentación de la información. Al imprimir los valores de las variables, al imprimir pocos decimales, estos eran redoneados dandonos valores alejados de lo esperado. Para saber la cantidad máxima de digitos consultamos la clase $float.h$\footnote{http://www.cplusplus.com/reference/clibrary/cfloat/} la cual contiene una constante que indica el número de decimales significativos. \\\\
+En un principio utilizamos el tipo \textit{double} para asegurarnos de que todo funcionaba según lo esperado. Luego fue reemplazado por la clase \textit{TFLoat} proporcionada por la cátedra, con la cual íbamos a poder manejar la cantidad de bits de la mantisa.   
+Un error que se nos presentó fue justamente el de la presentación de la información. Al imprimir los valores de las variables, imprimimos pocos decimales, estos eran redoneados dandonos valores alejados de lo esperado. Para saber la cantidad máxima de dígitos consultamos la clase $float.h$\footnote{http://www.cplusplus.com/reference/clibrary/cfloat/} la cual contiene una constante que indica el número de decimales significativos. \\ \hspace{1em}
 
-En el punto dos para calcular la altura máxima luego del primer rebote lo que hicimos fue calcular la raíz a la función velocidad y con este resultado calcular la posición, ya que la altura máxima seria en el momento en el que la pelota tiene velocidad nula. En cambio para el segundo impacto utilizamos calculamos el cero de la función posición, pero cambiando los parámetros iniciales. En el instante del primer rebote la altura de la pelota es 0 y calculamos la velocidad con la que rebota, siendo estos los nuevos parámetros para la función posición
-En el punto dos para calcular la altura máxima luego del primer rebote, fue aplicar el método correspondiente a la función $velocidad$ con los parámetros correctos. 
-
-
-
-
+En el punto dos para calcular la altura máxima luego del primer rebote lo que hicimos fue calcular la raíz a la función velocidad y con este resultado calcular la posición, ya que la altura máxima seria en el momento en que la pelota tiene velocidad nula. En cambio para el segundo impacto calculamos el cero de la función posición, pero cambiando los parámetros iniciales. En el instante del primer rebote la altura de la pelota es 0 y calculamos la velocidad con la que rebota, siendo estos los nuevos parámetros para la función posición.
 
 \end{description} 
 
@@ -148,14 +144,14 @@ En el punto dos para calcular la altura máxima luego del primer rebote, fue apl
 \end{figure}
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
+\newpage
 
 \section{Discusión}
 Sabiendo que el método de \textbf{Newton-Raphson} converge de forma cuadrática, decidímos comparar la cantidad de iteraciones que requiere cada algoritmo para mostrar de forma gráfica la eficiencia de los mismos. \\
 
-\subsection{Ejercicio 1}
 Para esto, nos centramos en resolver el problema con parámetros fijos de solución exacta
 
-Las Figuras 1, 2 y 3 representan los resultados con los siguientes parámetros, 
+Las \textit{Figuras 1, 2 y 3} representan los resultados con los siguientes parámetros, 
 \begin{itemize}
   \item{G = 9.81}
   \item{Velocidad Inicial = 29.43 (3G)} 
@@ -171,38 +167,44 @@ Bajo estas condiciones, es fácil probar que la solución es exactamente 8, bast
 \end{displaymath}
 
 Ahora, con este problema bien definido, variamos la longitud del intervalo donde comienza \textbf{bisección} y graficamos la cantidad de iteraciones que necesita cada algoritmo (\textit{Figura 1}).
-En primer lugar, encontramos una gran diferencia entre la cantidad de iteraciones necesarias por parte de \textbf{Bisección puro} y \textbf{Bisección + Newton}. Este resultado ya lo sabiamos teóricamente con el orden de convergencia de ambos métodos y quedó demostrado. Cabe destacar que no solo probamos este caso en particular sino todas las pruebas que fuimos haciendo verificabamos esto.\\
- \ Por otro lado , necesitabamos un criterio de aproximacion por Bisección para la semilla de Newton, y decidimos probar las 2 alternativas: iterar una cantidad fija de veces, o acercarnos al valor a una distancia $d$ de la raiz.
-En la Figura 2 podemos observar que no variaba mucho la cantidad final de iteraciones del algoritmo total para encontrar la raiz. En las figuras 2 y 3 diferenciamos la cantidad de itraciones de cada algoritmo, y dado que para este problema en particular Newton se comporta "bien" para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones
-Si en algun otro problema fuera necesario tener una semilla buena, en ese caso se optaria por el otro criterio de parada.
-Este fue uno de los resultados que nos sorprendió, ya que esperabamos que el querer acercarse a una distancia $d$ de la raiz nos iba a aportar muchas mas iteraciones de las experimentadas.
+En primer lugar, encontramos una gran diferencia entre la cantidad de iteraciones necesarias por parte de \textbf{Bisección puro} y \textbf{Bisección + Newton}. Este resultado ya lo sabíamos teóricamente con el orden de convergencia de ambos métodos y quedó demostrado. Cabe destacar que no solo probamos este caso en particular sino todas las pruebas que fuimos haciendo verificábamos esto.\\ \vspace{1em}
+ 
+Por otro lado , necesitábamos un criterio de aproximación por \textbf{Bisección} para la semilla de \textbf{Newton}, y decidimos probar las 2 alternativas:
+\begin{itemize}
+  \item Iterar una cantidad fija de veces
+  \item Acercarnos al valor a una distancia \textbf{d} de la raíz
+\end{itemize}
+
+En la \textit{Figura 2} podemos observar que no variaba mucho la cantidad final de iteraciones del algoritmo total para encontrar la raíz. En las \textit{figuras 2 y 3} diferenciamos la cantidad de iteraciones de cada método, y dado que para este problema en particular \textbf{Newton} se comporta \textit{bien} para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones.
+En el caso de un problema en que sea necesario tener una semilla buena, se optaría por el otro criterio de parada.
+Este fue uno de los resultados que nos sorprendió, ya que esperábamos que acercarse a una distancia \textbf{d} de la raíz, nos iba a aportar muchas más iteraciones de las experimentadas.
  
  
- \subsection{Ejercicio 3}
-	En este caso debiamos analizar como variaba la energía mecánica entre el lanzamiento y el segundo rebote.
+En este caso debíamos analizar cómo variaba la energía mecánica entre el lanzamiento y el segundo rebote.
 	
-	En la Figura 4 comparamos la energía mecánica a traves del tiempo. En este primer experimento dejamos fijo el factor de restitución y variamos la variable \alpha  ( $\alpha == 0$ significa sin rozamiento ). Podemos observar que en el caso de no haber rozamiento la energía mecánica se mantiene igual todo el tiempo, en cambio a mayor $\alpha$, o sea a mayor rozamiento, la perdida de energía es mayor con el paso del tiempo. \\
+En la \textit{Figura 4} comparamos la energía mecánica a través del tiempo. En este primer experimento dejamos fijo el factor de restitución y variamos la variable \alpha  ( $\alpha == 0$ significa sin rozamiento ). Podemos observar que en el caso de no haber rozamiento la energía mecánica se conserva, en cambio a mayor $\alpha$, o sea a mayor rozamiento, la perdida de energía es mayor con el paso del tiempo. \\
 	
-	En la Figura 5 lo que hicimos fue, dejando fijo el $\alpha$, modificar el factor de restitución para ver como variaba la energía en este caso. Como era de esperar se puede observar que en el momento de los rebotes, a medida que el factor se acerca a 0 se pierde mas energía.  
-	
-	
+En la \textit{Figura 5} lo que hicimos fue, dejando fijo el $\alpha$, modificar el factor de restitución para ver como variaba la energía en este caso. Como era de esperar se puede observar que en el momento de los rebotes, a menor factor de restitución mayor pérdida de energía .
  
- 
- 
+En la \textit{Figura 6} graficamos el error que se produce al tener una menor precisión de representación para los números de punto flotante en aritmetica finita. 
+Como la clase TFloat, alcanza su máxima representación con 52 bits de mantisa, este fue el valor que utilizamos para tomar como valor válido. Luego, fuimos decrementando la mantisa y ejecutando el mismo problema pero con menor precisión.
+Una vez obtenidos los resultados, los comparamos con nuestro \textit{valor ideal} y representamos la diferencia en el gráfico.
+Claramente una precision acotada aumenta el error en los cálculos.
+
+
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
-\section{Conclusiones TODO}
+\newpage
+
+\section{Conclusiones}
 %Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
-La implementación de métodos númericos no es una tarea simple. En nuestro problema nos dimos cuenta que el resultado depende mucho de aritmetica finita de las computadoras. \\\\
+La implementación de métodos numéricos no es una tarea simple. En nuestro problema nos dimos cuenta que el resultado depende mucho de la aritmética finita de las computadoras. \\ \hspace{1em}
+Por esto, nos vimos obligados a calcular a mano, varios resultados a los problemas para averiguar si la solución arrojada por los métodos era correcta y cuanto error estábamos cometiendo, incluyendo el error de representación.  \\ \vspace{1em}
 
+En cuanto a los métodos, nos dimos cuenta de que lo mejor era aplicar una combinación de los mismos. Aplicando solo \textit{Bisección} si bien nos aseguramos la convergencia, el orden de la misma es lineal. Por otro lado \textit{Newton} no asegura la convergencia, pero en el caso de hacerlo, nos provee de un orden cuadrático. 
+Primero ejecutamos \textit{Bisección} una cantidad de veces para obtener una 'buena' semilla para el método de \textit{Newton}. En nuestro caso no hacia falta obtener una semilla demasiado cerca del valor de la raíz, pero eso depende de cada problema en particular. 
 
-En cuanto a los métodos, nos dimos cuenta de que lo mejor era aplicar una combinación de los mismos. Aplicando solo \textit{Biseccion} si bien nos aseguramos la convergencia, el orden de la misma es lineal. Por otro lado \textit{Newton} no asegura la convergencia, pero en el caso de hacerlo, nos provee de un orden cuadrático. 
-
-
-Primero ejecutamos \textit{Biseccion} una cantidad de veces para obtener una 'buena' semilla para el método de \textit{Newton}. En nuestro caso no hacia falta obtener una semilla demasiado cerca del valor de la raiz, pero eso depende de cada problema en particular. 
-
-
-
+Cierto es que nos concentramos en la resolución de los algoritmos, y de la aplicación de los métodos para el problema y no le dedicamos más tiempo al análisis de la variación de la precisión en números de punto flotante.
 
 \newpage
 
@@ -298,6 +300,8 @@ Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (P
 }
 \end{verbatim}
 
+\newpage
+
 \subsection{C - Cómo compilar y usar el TP}
 El directorio del TP contiene un Makefile, con lo cual para compilarlo basta sólamente con ejecutar \textbf{make}. Los binarios generados son: 
 
@@ -333,7 +337,7 @@ Y reciben los siguientes parámetros:
 
 \newpage
 
-\section{Referencias TODO}
+%\section{Referencias TODO}
 %Es importante incluir referencias a libros, art ́ıculos y p ́aginas de Internet consultados durante el desarrollo del trabajo, haciendo referencia a estos materiales a lo largo del informe. Se deben citar tambi ́en las comunicaciones personales con otros grupos.
 
 
