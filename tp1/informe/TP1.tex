@@ -144,11 +144,13 @@ En el punto dos para calcular la altura maxima luego del primer rebote, fue apli
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 
-\section{Discusión TODO}
+\section{Discusión}
 Sabiendo que el método de \textbf{Newton-Raphson} converge de forma cuadrática, decidímos comparar la cantidad de iteraciones que requiere cada algoritmo para mostrar de forma gráfica la eficiencia de los mismos. \\
 
-Para esto, nos centramos en resolver el problema con parámetros fijos de solución exacta.
-Los gráficos representan los resultados con los siguientes parámetros, 
+\subsection{Ejercicio 1}
+Para esto, nos centramos en resolver el problema con parámetros fijos de solución exacta
+
+Las Figuras 1, 2 y 3 representan los resultados con los siguientes parámetros, 
 \begin{itemize}
   \item{G = 9.81}
   \item{Velocidad Inicial = 29.43 (3G)} 
@@ -164,20 +166,38 @@ Bajo estas condiciones, es fácil probar que la solución es exactamente 8, bast
 \end{displaymath}
 
 Ahora, con este problema bien definido, variamos la longitud del intervalo donde comienza \textbf{bisección} y graficamos la cantidad de iteraciones que necesita cada algoritmo (\textit{Figura 1}).
-En primer lugar, encontramos una gran diferencia entre la cantidad de iteraciones necesarias por parte de \textbf{Bisección puro} y \textbf{Bisección + Newton}. Sin embargo, necesitabamos un criterio de aproximacion por Bisección para la semilla de Newton, y decidimos probar las 2 alternativas. 
-
-
-%Agregado por Ale. Corregir y formatear
-
-Otra prueba que realizamos fue para fijar el parámetro de parada para \textbf{Bisección} cuando lo utilizabamos para darle una \textit{semilla} a Newton. Teníamos dos alternativas: iterar una cantidad fija de veces, o acercarnos al valor a una distancia d.
-En el gráfico podemos observar que no variaba mucho la cantidad final de iteraciones del algoritmo total para encontrar la raiz, por lo que dado que para este problema en particular Newton se comporta "bien" para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones.
+En primer lugar, encontramos una gran diferencia entre la cantidad de iteraciones necesarias por parte de \textbf{Bisección puro} y \textbf{Bisección + Newton}. Este resultado ya lo sabiamos teóricamente con el orden de convergencia de ambos métodos y quedó demostrado. Cabe destacar que no solo probamos este caso en particular sino todas las pruebas que fuimos haciendo verificabamos esto.\\
+ \ Por otro lado , necesitabamos un criterio de aproximacion por Bisección para la semilla de Newton, y decidimos probar las 2 alternativas: iterar una cantidad fija de veces, o acercarnos al valor a una distancia $d$ de la raiz.
+En la Figura 2 podemos observar que no variaba mucho la cantidad final de iteraciones del algoritmo total para encontrar la raiz. En las figuras 2 y 3 diferenciamos la cantidad de itraciones de cada algoritmo, y dado que para este problema en particular Newton se comporta "bien" para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones
 Si en algun otro problema fuera necesario tener una semilla buena, en ese caso se optaria por el otro criterio de parada.
+Este fue uno de los resultados que nos sorprendió, ya que esperabamos que el querer acercarse a una distancia $d$ de la raiz nos iba a aportar muchas mas iteraciones de las experimentadas.
+ 
+ 
+ \subsection{Ejercicio 3}
+	En este caso debiamos analizar como variaba la energía mecánica entre el lanzamiento y el segundo rebote.
+	
+	En la Figura 4 comparamos la energía mecánica a traves del tiempo. En este primer experimento dejamos fijo el factor de restitución y variamos la variable \alpha  ( $\alpha == 0$ significa sin rozamiento ). Podemos observar que en el caso de no haber rozamiento la energía mecánica se mantiene igual todo el tiempo, en cambio a mayor $\alpha$, o sea a mayor rozamiento, la perdida de energía es mayor con el paso del tiempo. \\
+	
+	En la Figura 5 lo que hicimos fue, dejando fijo el $\alpha$, modificar el factor de restitución para ver como variaba la energía en este caso. Como era de esperar se puede observar que en el momento de los rebotes, a medida que el factor se acerca a 0 se pierde mas energía.  
+	
+	
+ 
  
  
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
 \section{Conclusiones TODO}
 %Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
+La implementación de métodos númericos no es una tarea simple. En nuestro problema nos dimos cuenta que el resultado depende mucho de aritmetica finita de las computadoras. \\\\
+
+
+En cuanto a los métodos, nos dimos cuenta de que lo mejor era aplicar una combinación de los mismos. Aplicando solo \textit{Biseccion} si bien nos aseguramos la convergencia, el orden de la misma es lineal. Por otro lado \textit{Newton} no asegura la convergencia, pero en el caso de hacerlo, nos provee de un orden cuadrático. 
+
+
+Primero ejecutamos \textit{Biseccion} una cantidad de veces para obtener una 'buena' semilla para el método de \textit{Newton}. En nuestro caso no hacia falta obtener una semilla demasiado cerca del valor de la raiz, pero eso depende de cada problema en particular. 
+
+
+
 
 \newpage
 
