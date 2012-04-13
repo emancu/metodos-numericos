@@ -83,25 +83,21 @@ De esta manera, podemos generar la serie $x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n
 % Discutir si anexamos la demostración de este punto.
 \newpage
 
-\section{Desarrollo TO BE CONTINUED}
+\section{Desarrollo}
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
+El lenguaje utilizado para resolver los algoritmos es C++. En un principio implementamos los algoritmos especificos para cada problema, pero al poco tiempo nos dimos cuenta de que ibamos a repetir el código y sería mas díficil el mantenimiento.   
+Fue por esto que decidimos implementar una función genérica para cada método, que recibe como parametro la función a la cual se le quiere aplicar el mismo. Ademas de \textit{Newton} y \textit{Bisección}, decidimos implementar la combinacion de los mismos, es decir conseguir una 'semilla' con el metodo de bisección y luego utilizar la misma para aplicar Newton.\\\\
 
-Para resolver lo planteado por el trabajo práctico decidimos dividir el problema en tres etapas:
-\begin{enumerate}
-\item Primer impacto
-\item Altura máxima del rebote
-\item Segundo impacto
-\end{enumerate}
-Para cada una de ellas, aplicamos los algoritmos de Bisección y Newton. En 1 y 3, sobre las ecuacines de la posición y en 2, sobre las ecuaciones de velocidad.
-El código está escrito en el lenguaje C y en cuanto a la implementación nos topamos con varias dificultades que desarrollaremos a continuación.
-\begin{description}
-\item \textbf{Parámetros}\\
-Dado que las instancias de este problema son muy variadas en cuanto a la cantidad de variables a tener en cuenta, como posición y velocidad inical, cantidad máxima de iteraciones de los algoritmos, tolerancia del resultado, etc, la primer dificultad que encontramos fue poder generar un binario al que fuera cómodo pasarle los diferentes valores. Para eso utilizamos la biblioteca \textit{getopt} de C que parsea los parámetros del CLI.
-\item \textbf{Ecuaciones}\\
-Este trabajo práctico nos propone dos modelos del problema de caída libre y rebote: uno con rozamiento y uno sin rozamiento. Para esto nos provee de dos pares de ecuaciones de posición y velocidad, contemplando ambas situaciones, lo cual en un principio nos llevó a escribir dos versiones de cada algoritmo, con la única diferencia de que en una se utilizaban las ecuaciones sin rozamiento y en la otra, con.
-El problema con esto es que hace un código más complejo, más largo y propenso a errores. Finalmente este punto fue resuelto implementando una única vez los algoritmos de Bisección y Newton, haciéndolos recibir punteros a función, según el caso correspondiente.
-\item \textbf{Presición y representación numérica}\\
-Con motivo de minimizar el error de representación en los números, la cátedra nos facilitó una clase de C++ que nos permite representar los números de punto flotante con una cantidad determinada de bits en la mantisa, sin importar las operaciones que se realicen entre ellos. EXPLICAR ACA EL PROBLEMA DEL PRINTF Y LA CANTIDAD DE DECIMALES.
+Los parametros los pasa el usuario por linea de comandos y son almacenados en una estructura interna.  
+En un principio utilizamos el tipo \textit{double} para asegurarnos de que todo funcionaba según lo esperado.Luego fue suplantado por la clase \textit{TFLoat} proporcionada por la cátedra, con la cual ibamos a poder manejar la cantidad de bits de la mantisa.   
+Un error que se nos presento fue justamente el de la presentación de la información. Al imprimir los valores de las variables, al imprimir pocos decimales, estos eran redoneados dandonos valores alejados de lo esperado. Para saber la cantidad máxima de digitos consultamos la clase $float.h$\footnote{http://www.cplusplus.com/reference/clibrary/cfloat/} la cual contiene una constante que indica el número de decimales significativos. \\\\
+
+En el punto dos para calcular la altura máxima luego del primer rebote lo que hicimos fue calcular la raíz a la función velocidad y con este resultado cacular la posición, ya que la altura maxima seria en el momento en el que la pelota tiene velocidad nula. En cambio para el segundo impacto utilizamos calculamos el cero de la función posición, pero cambiando los parámetros iniciales. En el instante del primer rebote la altura de la pelota es 0 y calculamos la velocidad con la que rebota, siendo estos los nuevos parámetros para la función posición
+En el punto dos para calcular la altura maxima luego del primer rebote, fue aplicar el método correspondiente a la función $velocidad$ con los parámetros correctos. 
+
+
+
+
 
 \end{description} 
 
@@ -165,7 +161,7 @@ En primer lugar, encontramos una gran diferencia entre la cantidad de iteracione
 
 %Agregado por Ale. Corregir y formatear
 
-Otra prueba que realizamos fue para fijar el parámetro de parada para bisección cuando lo utilizabamos para darle una "semilla" a Newton. Teníamos dos alternativas: iterar una cantidad fija de veces, o acercarnos al valor a una distancia d.
+Otra prueba que realizamos fue para fijar el parámetro de parada para \textbf{Bisección} cuando lo utilizabamos para darle una \textit{semilla} a Newton. Teníamos dos alternativas: iterar una cantidad fija de veces, o acercarnos al valor a una distancia d.
 En el gráfico podemos observar que no variaba mucho la cantidad final de iteraciones del algoritmo total para encontrar la raiz, por lo que dado que para este problema en particular Newton se comporta "bien" para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones.
 Si en algun otro problema fuera necesario tener una semilla buena, en ese caso se optaria por el otro criterio de parada.
  
@@ -181,7 +177,7 @@ Si en algun otro problema fuera necesario tener una semilla buena, en ese caso s
 \subsection{A - Enunciado}
 {\bf Introducción}
 
-La manzana que golpeó la cabeza de Issac Newton (1643 -- 1727) además de dejarle un lindo chichón, lo hizo reflexionar sobre las leyes de la mecánica clásica. Estas leyes se siguen utilizando aun en nuestros días para analizar el movimiento de cuerpos y partículas en situaciones donde la realidad se parece bastante a las hipótesis asumidas por las mismas, por ejemplo el movimiento del los planetas en el espacio o el desplazamiento de cuerpos a velocidades bajas respecto de la de la luz ($\sim 300.000$ km/s). En nuestro caso nos interesa estudiar la caída de objetos en la atmósfera terrestre.
+La manzana que golpeó la cabeza de Isaac Newton (1643 -- 1727) además de dejarle un lindo chichón, lo hizo reflexionar sobre las leyes de la mecánica clásica. Estas leyes se siguen utilizando aun en nuestros días para analizar el movimiento de cuerpos y partículas en situaciones donde la realidad se parece bastante a las hipótesis asumidas por las mismas, por ejemplo el movimiento del los planetas en el espacio o el desplazamiento de cuerpos a velocidades bajas respecto de la de la luz ($\sim 300.000$ km/s). En nuestro caso nos interesa estudiar la caída de objetos en la atmósfera terrestre.
 
 Modelaremos el problema de caída de dos maneras diferentes. 
 \begin{description}
