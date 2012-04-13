@@ -16,3 +16,6 @@ informe/*.bbl
 informe/*.blg
 informe/*.pdf
 informe/*.synctex.gz
+graficos/*
+*.xls
+*.csv
