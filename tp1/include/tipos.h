@@ -1,30 +1,32 @@
 #ifndef __TIPOS__
 #define __TIPOS__
 
+#include <TFloat.h>
+
 typedef struct str_params {
   // General params
-  double h;
-  double v;
-  double mass;
-  double cr;
-  double f;
-  int max_iterations;
+  TFloat h;
+  TFloat v;
+  TFloat mass;
+  TFloat cr;
+  TFloat f;
+  unsigned long max_iterations;
 
   // Bisection params
-  double a;
-  double b;
-  double tol_bisect;
+  TFloat a;
+  TFloat b;
+  TFloat tol_bisect;
 
   // Newton params
-  double x;
-  double tol_newton;
+  TFloat x;
+  TFloat tol_newton;
 } Params;
 
 typedef struct str_result {
   // General params
-  double speed;
-  double zero;
-  int iterations;
+  TFloat speed;
+  TFloat zero;
+  unsigned long iterations;
 
 } Result;
 

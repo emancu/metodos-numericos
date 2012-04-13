@@ -13,6 +13,7 @@ int main(int argc, char* argv[]){
   // Aca se asignan los params parseados del CLI al estilo -h <valor> -v <valor>
   static const char *optString = "M:h:v:t:m:c:i:a:b:x:z:f:";
   int method, c;
+  char * pEnd;
   Params p;
 
   // Default params
@@ -21,20 +22,21 @@ int main(int argc, char* argv[]){
   p.tol_bisect = 0.000000000000001;
   p.tol_newton = 0.000000000000001;
 
+
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
-      case 'M': { method = atoi(optarg);            break; }
-      case 'h': { p.h = atof(optarg);               break; }
-      case 'v': { p.v = atof(optarg);               break; }
-      case 't': { p.tol_bisect = atof(optarg);      break; }
-      case 'm': { p.mass = atof(optarg);            break; }
-      case 'c': { p.cr = atof(optarg);              break; }
-      case 'i': { p.max_iterations = atoi(optarg);  break; }
-      case 'a': { p.a = atof(optarg);               break; }
-      case 'b': { p.b = atof(optarg);               break; }
-      case 'x': { p.x = atof(optarg);               break; }
-      case 'z': { p.tol_newton = atof(optarg);      break; }
-      case 'f': { p.f = atof(optarg);               break; }
+      case 'M': { method = atoi(optarg);                              break; }
+      case 'h': { p.h = TFloat(atof(optarg),T);                       break; }
+      case 'v': { p.v = TFloat(atof(optarg),T);                       break; }
+      case 't': { p.tol_bisect = TFloat(atof(optarg),T);              break; }
+      case 'm': { p.mass = TFloat(atof(optarg),T);                    break; }
+      case 'c': { p.cr = TFloat(atof(optarg),T);                      break; }
+      case 'i': { p.max_iterations = strtoul(optarg,&pEnd,10);        break; }
+      case 'a': { p.a = TFloat(atof(optarg),T);                       break; }
+      case 'b': { p.b = TFloat(atof(optarg),T);                       break; }
+      case 'x': { p.x = TFloat(atof(optarg),T);                       break; }
+      case 'z': { p.tol_newton = TFloat(atof(optarg),T);              break; }
+      case 'f': { p.f = TFloat(atof(optarg),T);                       break; }
       default:  { printf("Cannot parse.\n"); }
     }
   }

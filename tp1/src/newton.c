@@ -12,30 +12,30 @@ void newton_with_friction(Params* p){
  * Auxiliar
  */
 
-void newton(Params *p, double (*fn_pos)(Params*, double), double (*fn_speed)(Params*, double), double (*fn_accel)(Params*, double)){
-  double instant = 0;
+void newton(Params *p, TFloat (*fn_pos)(Params*, TFloat), TFloat (*fn_speed)(Params*, TFloat), TFloat (*fn_accel)(Params*, TFloat)){
+  TFloat instant = 0;
   Result res;
 
   // Primer impacto
   res = zero_newton(p, fn_pos, fn_speed);
-  instant += res.zero;
-  printf("  Primer impacto  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero), instant, res.speed);
+  instant = res.zero;
+  output(0, fn_pos(p, res.zero), instant, res.speed);
 
   // Altura Maxima
   p->h=0;
-  p->v = -res.speed * p->f;
+  p->v = res.speed * -1 * p->f;
 
   res = zero_newton(p, fn_speed, fn_accel);
-  printf("  Altura Maxima  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p,res.zero), instant + res.zero, res.speed);
+  output(1, fn_pos(p,res.zero), instant + res.zero, res.speed);
 
   // Segundo impacto
   res = zero_newton(p, fn_pos, fn_speed);
-  instant += res.zero;
-  printf("  Segundo impacto = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero), instant, fn_speed(p, res.zero));
+  instant = instant + res.zero;
+  output(2, fn_pos(p, res.zero), instant, fn_speed(p, res.zero));
 }
 
-Result zero_newton(Params* p, double (*fn)(Params *, double), double (*deriv) (Params *, double)){
-  double current = p->x, previous = 0.0;
+Result zero_newton(Params* p, TFloat (*fn)(Params *, TFloat), TFloat (*deriv) (Params *, TFloat)){
+  TFloat current = p->x, previous = 0.0;
   Result res;
   int i;
 

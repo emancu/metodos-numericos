@@ -12,8 +12,8 @@ void combined_with_friction(Params* p){
  * Auxiliar
  */
 
-void combined(Params* p, double (*fn_pos)(Params *, double), double (*fn_speed)(Params*, double), double (*fn_accel)(Params*, double) ) {
-  double instant = 0;
+void combined(Params* p, TFloat (*fn_pos)(Params *, TFloat), TFloat (*fn_speed)(Params*, TFloat), TFloat (*fn_accel)(Params*, TFloat) ) {
+  TFloat instant = 0;
   Result res;
 
   // Primer impacto
@@ -21,24 +21,24 @@ void combined(Params* p, double (*fn_pos)(Params *, double), double (*fn_speed)(
   p->x = res.zero; // Solo actualizamos el punto inicial para Newton
   res = zero_newton(p, fn_pos, fn_speed);
 
-  instant += res.zero;
-  printf("  Primer impacto  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero), instant, res.speed);
+  instant = res.zero;
+  output(0, fn_pos(p, res.zero), instant, res.speed);
 
   // Altura Maxima
   p->h = 0;
   p->b = 100 ; // Seteamos el intervalo, luego de hacer consultas no valia la pena calcular cuanto podria ser.
-  p->v = -res.speed * p->f;
+  p->v = res.speed * -1 * p->f;
 
   res = zero_bisection(p, fn_speed); // Nos acercamos con bisection
   p->x = res.zero;
   res = zero_newton(p, fn_speed, fn_accel);
 
-  printf("  Altura Maxima  = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p,res.zero), instant + res.zero, res.speed);
+  output(1, fn_pos(p,res.zero), instant + res.zero, res.speed);
 
   // Segundo impacto
   res = zero_bisection(p, fn_pos); // Nos acercamos con bisection
   p->x = res.zero;
   res = zero_newton(p, fn_pos, fn_speed);
-  instant += res.zero;
-  printf("  Segundo impacto = %.15lf al instante: %.15lf. Velocidad final = %.15lf \n", fn_pos(p, res.zero), instant, fn_speed(p, res.zero));
+  instant = instant + res.zero;
+  output(2, fn_pos(p, res.zero), instant, fn_speed(p, res.zero));
 }
