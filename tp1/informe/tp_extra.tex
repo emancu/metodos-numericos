@@ -14,31 +14,35 @@
 
 \begin{document}
 
-En un principio, el algoritmo que hicimos para calcular la cantidad de impactos utilizaba como tolerancia de la energía mecánica $E_n < 10^{-3}E_0$.
-Luego de probar con un par de instancias del problema, dimos con una donde, utilizando 10 bits de mantisa, al hacer los cálculos para conocer el instante del próximo rebote, la velocidad inicial utilizada contenía errores de precisión tales que el algoritmo no terminaba y se quedaba oscilando entre dos valores de energía mecánica.\\
+En un principio, el algoritmo que hicimos para calcular la cantidad de impactos utilizaba como tolerancia de la energía mecánica $E_n < 10^{-3}E_0$ (por un error nuestro).
+Éste error nos permitió ver en un par de instancias del problema, que utilizando 10 bits de mantisa, al hacer los cálculos para conocer el instante del próximo rebote, la velocidad inicial utilizada contenía errores de precisión tales que el algoritmo no terminaba y se quedaba oscilando entre dos valores de energía mecánica.\\
 
 El problema no solo estaba en la cota, sino en las operaciones que realizábamos para calcular la velocidad. El cálculo que utilizábamos estaba optimizado para realizar la menor cantidad de divisiones, sin embargo nos dimos cuenta que el mayor error es introducido por las restas de números muy chicos o cercanos.\\
 
 Ejemplo de resta: lo explica mancu que entendió todo.\\
 
 Luego, reacomodamos analíticamente las fórmulas para minimizar la cantidad de restas.
-Sorteando todos estos inconvenientes, podemos ver en la tabla a cotinuación que con mayor precisión de representación decimal podemos contaibilizar mejor la cantidad de impactos.
+Sorteando todos estos inconvenientes, podemos ver en la tabla a continuación que con mayor precisión de representación decimal podemos contabilizar mejor la cantidad de impactos.
+
+\section{52 dígitos binarios}
 
 \begin{center}
-\begin{tabular}{|ll|ll|}
+\begin{tabular}{|ll|cl|lc|c|c|}
 \hline
-$f_r$ & $\alpha$ & impactos & $t_f$\\ \hline
-1 & 0 & {} & {}\\
-  & 1 & {} & {}\\
-  & 10 & {} & {}\\
-  & 51 & {} & {}\\
-  & 100 & {} & {}\\ \hline
-0.75 & 0 & {} & {}\\
-     & 1 & {} & {}\\
-     & 10 & {} & {}\\
-     & 51 & {} & {}\\ \hline
+ & & 52 bits &  & 10 bits &  \\ \hline
+$f_r$ & $\alpha$ & impactos & $t_f$ & impactos & $t_f$ \\ \hline
+1 & 0 & {$\infty$} & {$\infty$} & {$\infty$} & {$\infty$} \\
+  & 1 & {75} & {14.587772255816281} & {} & {NO TERMINA/VARIA}\\
+  & 10 & {7} & {20.589254594436561} & {8} & {20.641052246093750}\\
+  & 51 & {1} & {102.019607843137251} & {1} & {102.062500000000000}\\
+  & 100 & {1} & {200.009999999999991} & {1} & {200.125000000000000}\\ \hline
+0.75 & 0 & {14} & {13.714912831783295} & {13} & {13.592529296875000}\\
+     & 1 & {11} & {6.049291220781893} & {} & {NO TERMINA/VARIA}\\
+     & 10 & {4} & {20.333696373793355} & {4} & {20.344177246093750}\\
+     & 51 & {1} & {102.019607843137251} & {1} & {102.062500000000000}\\ \hline
 \end{tabular}
 \end{center}
+
 
 \end{document}
 
