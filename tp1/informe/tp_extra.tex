@@ -1,0 +1,44 @@
+\documentclass[10pt, a4paper,english,spanish]{article}
+\usepackage{babel}
+% \usepackage{a4wide}
+\parindent = 0 pt
+\parskip = 11 pt
+\usepackage[width=15.5cm, left=3cm, top=2.5cm, height= 24.5cm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+
+\pagestyle{empty}
+
+\begin{document}
+
+En un principio, el algoritmo que hicimos para calcular la cantidad de impactos utilizaba como tolerancia de la energía mecánica $E_n < 10^{-3}E_0$.
+Luego de probar con un par de instancias del problema, dimos con una donde, utilizando 10 bits de mantisa, al hacer los cálculos para conocer el instante del próximo rebote, la velocidad inicial utilizada contenía errores de precisión tales que el algoritmo no terminaba y se quedaba oscilando entre dos valores de energía mecánica.\\
+
+El problema no solo estaba en la cota, sino en las operaciones que realizábamos para calcular la velocidad. El cálculo que utilizábamos estaba optimizado para realizar la menor cantidad de divisiones, sin embargo nos dimos cuenta que el mayor error es introducido por las restas de números muy chicos o cercanos.\\
+
+Ejemplo de resta: lo explica mancu que entendió todo.\\
+
+Luego, reacomodamos analíticamente las fórmulas para minimizar la cantidad de restas.
+Sorteando todos estos inconvenientes, podemos ver en la tabla a cotinuación que con mayor precisión de representación decimal podemos contaibilizar mejor la cantidad de impactos.
+
+\begin{center}
+\begin{tabular}{|ll|ll|}
+\hline
+$f_r$ & $\alpha$ & impactos & $t_f$\\ \hline
+1 & 0 & {} & {}\\
+  & 1 & {} & {}\\
+  & 10 & {} & {}\\
+  & 51 & {} & {}\\
+  & 100 & {} & {}\\ \hline
+0.75 & 0 & {} & {}\\
+     & 1 & {} & {}\\
+     & 10 & {} & {}\\
+     & 51 & {} & {}\\ \hline
+\end{tabular}
+\end{center}
+
+\end{document}
+
