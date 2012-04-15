@@ -5,7 +5,7 @@ MAINS= tp1.o mechanical_energy.o tp_extra.o
 
 .PHONY	: all clean install
 
-all	: tp mechanical_energy tp_extra
+all	: clean tp mechanical_energy tp_extra
 
 tp :  $(OBJ) tp1.o
 	$(CC) $(CFLAGS) $(OBJ) tp1.o -o tp
