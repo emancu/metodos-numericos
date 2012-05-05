@@ -23,4 +23,6 @@ src/%.o: src/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean :
-	rm -rf $(OBJ) $(MAINS) tp mechanical_energy
+	rm -rf $(OBJ) $(MAINS) tp mechanical_energy tp_extra
+
+clear: clean
