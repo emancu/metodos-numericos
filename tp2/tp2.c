@@ -19,16 +19,14 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
-
-
 void binaryImage(){
   printf("holaaaa \n");
 
-  FILE* file = fopen ("/home/alemata/facultad/metNum/tps/tp2/imagenes/128x128/amber.pgm", "r+b");
-  FILE* output = fopen ("/home/alemata/facultad/metNum/tps/tp2/testA.pgm", "w");
+  FILE* file = fopen ("imagenes/128x128/amber.pgm", "r+b");
+  FILE* output = fopen ("testA.pgm", "w");
 
   char name[256];
-  char numero[256];
+  char number[256];
 
 
   int i,j ;
@@ -44,22 +42,20 @@ void binaryImage(){
   fscanf (file, "%d", &max);
   printf("width = %d \nheight = %d \nmax = %d \n" , widthInt, heightInt, max);
 
-  sprintf(numero, "%i %i\n" , widthInt, heightInt);
-  fputs(numero, output);
+  sprintf(number, "%i %i\n" , widthInt, heightInt);
+  fputs(number, output);
 
-  sprintf(numero, "%i" , max);
-  fputs(numero, output);
+  sprintf(number, "%i" , max);
+  fputs(number, output);
 
   //leo el salto de linea
   fread(name,1, 1, file);
   fwrite(name,1,1,output);
 
-
   for(i = 0; i <=256 ; i++){
     name[i] = 0x0;
-    numero[i] = 0x0;
+    number[i] = 0x0;
   }
-
 
   for(i = 0; i < heightInt ; i++){
      for(j=0; j < widthInt;j++){
