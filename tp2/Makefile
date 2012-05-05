@@ -5,7 +5,7 @@ MAINS= tp2.o
 
 .PHONY	: all clean install
 
-all	:clean tp tp2
+all	:clean tp
 
 tp :  $(OBJ) tp2.o
 	$(CC) $(CFLAGS) $(OBJ) tp2.o -o tp
