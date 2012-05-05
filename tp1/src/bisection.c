@@ -20,7 +20,7 @@ void bisection(Params* p, TFloat (*fn_pos)(Params*,TFloat), TFloat (*fn_speed)(P
   res = zero_bisection(p, fn_pos);
   res.speed = fn_speed(p,res.zero);
   instant = res.zero;
-  output(0, fn_pos(p, res.zero).dbl(), instant.dbl(), res.speed.dbl());
+  output(0, fn_pos(p, res.zero), instant, res.speed);
 
   // Altura Maxima
   p->h = 0;
