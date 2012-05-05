@@ -7,8 +7,8 @@
 
 using namespace std;
 
-void buildMatrix(double);
-void printMatrix(map<int, map<int, int> >);
+void build_matrix(double);
+void print_matrix(map<int, map<int, int> >);
 
 int main(int argc, char* argv[]){
   static const char *optString = "l:";
@@ -24,12 +24,12 @@ int main(int argc, char* argv[]){
   }
 
   if(lambda == NULL) lambda = 1;
-  buildMatrix(lambda);
+  build_matrix(lambda);
 
   return 0;
 }
 
-void buildMatrix(double lambda){
+void build_matrix(double lambda){
   FILE* file = fopen("imagenes/64x64/blond.pgm", "r+b");
 
   // buffers
@@ -83,10 +83,10 @@ void buildMatrix(double lambda){
     }
   }
 
-  printMatrix(matrix);
+  print_matrix(matrix);
 }
 
-void printMatrix(map<int, map<int, int> > matrix){
+void print_matrix(map<int, map<int, int> > matrix){
   map<int, map<int, int> >::iterator rows;
   for(rows = matrix.begin(); rows != matrix.end(); rows++){
     printf("row: %d\n", rows->first);
