@@ -8,15 +8,13 @@
 using namespace std;
 
 void buildMatrix(double);
-
-/*
- *  Main
- */
+void printMatrix(map<int, map<int, int> >);
 
 int main(int argc, char* argv[]){
   static const char *optString = "l:";
   int c;
-  double lambda;
+  int lambda; // it should be a double.
+  // double lambda;
 
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
@@ -49,7 +47,6 @@ void buildMatrix(double lambda){
   fscanf (file, "%d", &max);
 
   sprintf(number, "%i %i\n", width, height);
-
   sprintf(number, "%i" , max);
 
   //leo el salto de linea
@@ -84,5 +81,20 @@ void buildMatrix(double lambda){
       matrix[element] = row;
       element++;
     }
+  }
+
+  printMatrix(matrix);
+}
+
+void printMatrix(map<int, map<int, int> > matrix){
+  map<int, map<int, int> >::iterator rows;
+  for(rows = matrix.begin(); rows != matrix.end(); rows++){
+    printf("row: %d\n", rows->first);
+    map<int, int>::iterator pairs;
+    for(pairs = rows->second.begin(); pairs != rows->second.end(); pairs++){
+      printf("  position: %d\n", pairs->first);
+      printf("  value   : %d\n", pairs->second);
+    }
+    printf("\n");
   }
 }
