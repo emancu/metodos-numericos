@@ -8,14 +8,13 @@
 using namespace std;
 
 void build_matrix(double, char*);
-void print_matrix(map<int, map<int, int> >);
+void print_matrix(map<int, map<int, double> >);
 
 int main(int argc, char* argv[]){
   static const char *optString = "l:f:";
   int c;
-  int lambda; // it should be a double.
   char* picture;
-  // double lambda;
+  double lambda;
 
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
@@ -35,53 +34,48 @@ void build_matrix(double lambda, char* picture){
   FILE* file = fopen(picture, "r+b");
 
   // buffers
-  char name[256];
-  char number[256];
+  unsigned char pixel[256];
   int i,j ;
 
   for(i = 0; i <= 1 ; i++){
-    fgets(name, 256, file);
+    fgets((char*) pixel, 256, file);
   }
 
   int width, height, max;
-  fscanf (file, "%d", &width);
-  fscanf (file, "%d", &height);
-  fscanf (file, "%d", &max);
-
-  sprintf(number, "%i %i\n", width, height);
-  sprintf(number, "%i" , max);
+  fscanf(file, "%d", &width);
+  fscanf(file, "%d", &height);
+  fscanf(file, "%d", &max);
 
   //leo el salto de linea
-  fread(name,1, 1, file);
+  fread(pixel,1, 1, file);
 
   for(i = 0; i <= 256; i++){
-    name[i] = 0x0;
-    number[i] = 0x0;
+    pixel[i]  = 0x0;
   }
 
-  map<int, map<int, int> > matrix;
-  int color;
-  int pixel = 0;
+  map<int, map<int, double> > matrix;
+  double color;
+  int element = 0;
 
   for(i = 0; i < height; i++){
     for(j = 0; j < width; j++){
-      map<int, int> row;
-      fread(name, 1, 1, file);
-      color = (int) name[0];
+      map<int, double> row;
+      fread(pixel, 1, 1, file);
+      color = (double) (unsigned int) pixel[0];
       row[-1] = color;
 
       if(i == 0 || i == height - 1 || j == 0 || j == width - 1){
-        row[pixel] = 1;
+        row[element] = 1;
       }else{
-        row[pixel - 4] = -1;
-        row[pixel - 1] = -1;
-        row[pixel]     = lambda + 4;
-        row[pixel + 1] = -1;
-        row[pixel + 4] = -1;
+        row[element - 4] = -1.0;
+        row[element - 1] = -1.0;
+        row[element]     = lambda + 4.0;
+        row[element + 1] = -1.0;
+        row[element + 4] = -1.0;
       }
 
-      matrix[pixel] = row;
-      pixel++;
+      matrix[element] = row;
+      element++;
     }
   }
 
@@ -89,14 +83,14 @@ void build_matrix(double lambda, char* picture){
   print_matrix(matrix);
 }
 
-void print_matrix(map<int, map<int, int> > matrix){
-  map<int, map<int, int> >::iterator rows;
+void print_matrix(map<int, map<int, double> > matrix){
+  map<int, map<int, double> >::iterator rows;
   for(rows = matrix.begin(); rows != matrix.end(); rows++){
     printf("row: %d\n", rows->first);
-    map<int, int>::iterator pairs;
+    map<int, double>::iterator pairs;
     for(pairs = rows->second.begin(); pairs != rows->second.end(); pairs++){
       printf("  position: %d\n", pairs->first);
-      printf("  value   : %d\n", pairs->second);
+      printf("  value   : %.5f\n", pairs->second);
     }
     printf("\n");
   }
