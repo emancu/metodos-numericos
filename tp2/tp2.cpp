@@ -59,7 +59,7 @@ void build_matrix(double lambda){
 
   map<int, map<int, int> > matrix;
   int color;
-  int element = 0;
+  int pixel = 0;
 
   for(i = 0; i < height; i++){
     for(j = 0; j < width; j++){
@@ -69,17 +69,17 @@ void build_matrix(double lambda){
       row[-1] = color;
 
       if(i == 0 || i == height - 1 || j == 0 || j == width - 1){
-        row[element] = 1;
+        row[pixel] = 1;
       }else{
-        row[element - 4] = -1;
-        row[element - 1] = -1;
-        row[element]     = lambda + 4;
-        row[element + 1] = -1;
-        row[element + 4] = -1;
+        row[pixel - 4] = -1;
+        row[pixel - 1] = -1;
+        row[pixel]     = lambda + 4;
+        row[pixel + 1] = -1;
+        row[pixel + 4] = -1;
       }
 
-      matrix[element] = row;
-      element++;
+      matrix[pixel] = row;
+      pixel++;
     }
   }
 
