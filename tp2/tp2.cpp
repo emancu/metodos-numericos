@@ -7,30 +7,32 @@
 
 using namespace std;
 
-void build_matrix(double);
+void build_matrix(double, char*);
 void print_matrix(map<int, map<int, int> >);
 
 int main(int argc, char* argv[]){
-  static const char *optString = "l:";
+  static const char *optString = "l:f:";
   int c;
   int lambda; // it should be a double.
+  char* picture;
   // double lambda;
 
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
-      case 'l': { lambda = atof(optarg); break; }
+      case 'l': { lambda  = atof(optarg); break; }
+      case 'f': { picture = optarg; break; }
       default:  { printf("Cannot parse.\n"); }
     }
   }
 
   if(lambda == NULL) lambda = 1;
-  build_matrix(lambda);
+  build_matrix(lambda, picture);
 
   return 0;
 }
 
-void build_matrix(double lambda){
-  FILE* file = fopen("imagenes/64x64/blond.pgm", "r+b");
+void build_matrix(double lambda, char* picture){
+  FILE* file = fopen(picture, "r+b");
 
   // buffers
   char name[256];
@@ -83,6 +85,7 @@ void build_matrix(double lambda){
     }
   }
 
+  fclose(file);
   print_matrix(matrix);
 }
 
