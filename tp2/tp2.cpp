@@ -24,7 +24,6 @@ int main(int argc, char* argv[]){
     }
   }
 
-  if(lambda == NULL) lambda = 1;
   build_matrix(lambda, picture);
 
   return 0;
@@ -32,10 +31,8 @@ int main(int argc, char* argv[]){
 
 void build_matrix(double lambda, char* picture){
   FILE* file = fopen(picture, "r+b");
-
-  // buffers
   unsigned char pixel[256];
-  int i,j ;
+  int i,j;
 
   for(i = 0; i <= 1 ; i++){
     fgets((char*) pixel, 256, file);
@@ -46,11 +43,11 @@ void build_matrix(double lambda, char* picture){
   fscanf(file, "%d", &height);
   fscanf(file, "%d", &max);
 
-  //leo el salto de linea
+  // skips the first linebreak.
   fread(pixel,1, 1, file);
 
   for(i = 0; i <= 256; i++){
-    pixel[i]  = 0x0;
+    pixel[i] = 0x0;
   }
 
   map<int, map<int, double> > matrix;
@@ -94,4 +91,8 @@ void print_matrix(map<int, map<int, double> > matrix){
     }
     printf("\n");
   }
+}
+
+void gauss(map<int, map<int, double> > matrix){
+
 }
