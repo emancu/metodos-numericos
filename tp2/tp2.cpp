@@ -6,10 +6,11 @@
 #include <map>
 
 using namespace std;
+typedef map<int, map<int, double> > Matrix;
 
-map<int, map<int, double> > build_matrix(double, char*);
-void print_matrix(map<int, map<int, double> >);
-void gauss(map<int, map<int, double> >, int);
+Matrix build_matrix(double, char*);
+void print_matrix(Matrix);
+void gauss(Matrix, int);
 
 int main(int argc, char* argv[]){
   static const char *optString = "l:f:";
@@ -25,14 +26,14 @@ int main(int argc, char* argv[]){
     }
   }
 
-  map<int, map<int, double> > matrix = build_matrix(lambda, picture);
+  Matrix matrix = build_matrix(lambda, picture);
   //print_matrix(matrix);
-  gauss(matrix, 64 * 64);
+  gauss(matrix, 64 * 64); // Find a way to retrieve the matrix size after building.
 
   return 0;
 }
 
-map<int, map<int, double> > build_matrix(double lambda, char* picture){
+Matrix build_matrix(double lambda, char* picture){
   FILE* file = fopen(picture, "r+b");
   unsigned char pixel[256];
   int i,j;
@@ -46,14 +47,14 @@ map<int, map<int, double> > build_matrix(double lambda, char* picture){
   fscanf(file, "%d", &height);
   fscanf(file, "%d", &max);
 
-  // skips a newline.
+  // Skips a newline.
   fread(pixel,1, 1, file);
 
   for(i = 0; i <= 256; i++){
     pixel[i] = 0x0;
   }
 
-  map<int, map<int, double> > matrix;
+  Matrix matrix;
   double color;
   int row_number = 0;
 
@@ -83,8 +84,8 @@ map<int, map<int, double> > build_matrix(double lambda, char* picture){
   return matrix;
 }
 
-void print_matrix(map<int, map<int, double> > matrix){
-  map<int, map<int, double> >::iterator row;
+void print_matrix(Matrix matrix){
+  Matrix::iterator row;
   for(row = matrix.begin(); row != matrix.end(); row++){
     printf("row: %d\n", row->first);
     map<int, double>::iterator pair;
@@ -96,17 +97,17 @@ void print_matrix(map<int, map<int, double> > matrix){
   }
 }
 
-void gauss(map<int, map<int, double> > matrix, int size){
+void gauss(Matrix matrix, int size){
   for(int column_number = 0; column_number < size; column_number++){
-    map<int, map<int, double> >::iterator row = matrix.begin();
-    for(int i = 0; i < column_number; i++) row++; // jump unnecesary rows
+    Matrix::iterator row = matrix.begin();
+    for(int i = 0; i <= column_number; i++) row++; // Jump unnecesary rows.
     while(row != matrix.end()){
-      if(row->first != column_number && row->second[column_number] != NULL){
+      if(row->second.count(column_number) > 0){
         printf("Gotta pull my gauss!\n");
         printf("  row: %d column: %d\n", row->first, column_number);
         printf("  diagional: %f\n", matrix[column_number][column_number]);
         printf("  element to make zero is: %f\n", row->second[column_number]);
-        //substract_rows(matrix, row->firsrt, column_number); implement this to make the substraction between the rows.
+        // substract_rows(matrix, row->firsrt, column_number); implement this to make the substraction between the rows.
       }
       row++;
     }
