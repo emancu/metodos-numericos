@@ -43,7 +43,7 @@ void build_matrix(double lambda, char* picture){
   fscanf(file, "%d", &height);
   fscanf(file, "%d", &max);
 
-  // skips the first linebreak.
+  // skips a newline.
   fread(pixel,1, 1, file);
 
   for(i = 0; i <= 256; i++){
@@ -52,7 +52,7 @@ void build_matrix(double lambda, char* picture){
 
   map<int, map<int, double> > matrix;
   double color;
-  int element = 0;
+  int row_number = 0;
 
   for(i = 0; i < height; i++){
     for(j = 0; j < width; j++){
@@ -62,17 +62,17 @@ void build_matrix(double lambda, char* picture){
       row[-1] = color;
 
       if(i == 0 || i == height - 1 || j == 0 || j == width - 1){
-        row[element] = 1;
+        row[row_number] = 1;
       }else{
-        row[element - 4] = -1.0;
-        row[element - 1] = -1.0;
-        row[element]     = lambda + 4.0;
-        row[element + 1] = -1.0;
-        row[element + 4] = -1.0;
+        row[row_number - 4] = -1.0;
+        row[row_number - 1] = -1.0;
+        row[row_number]     = lambda + 4.0;
+        row[row_number + 1] = -1.0;
+        row[row_number + 4] = -1.0;
       }
 
-      matrix[element] = row;
-      element++;
+      matrix[row_number] = row;
+      row_number++;
     }
   }
 
@@ -81,18 +81,21 @@ void build_matrix(double lambda, char* picture){
 }
 
 void print_matrix(map<int, map<int, double> > matrix){
-  map<int, map<int, double> >::iterator rows;
-  for(rows = matrix.begin(); rows != matrix.end(); rows++){
-    printf("row: %d\n", rows->first);
-    map<int, double>::iterator pairs;
-    for(pairs = rows->second.begin(); pairs != rows->second.end(); pairs++){
-      printf("  position: %d\n", pairs->first);
-      printf("  value   : %.5f\n", pairs->second);
+  map<int, map<int, double> >::iterator row;
+  for(row = matrix.begin(); row != matrix.end(); row++){
+    printf("row: %d\n", row->first);
+    map<int, double>::iterator pair;
+    for(pair = row->second.begin(); pair != row->second.end(); pair++){
+      printf("  position: %d\n", pair->first);
+      printf("  value   : %.5f\n", pair->second);
     }
     printf("\n");
   }
 }
 
 void gauss(map<int, map<int, double> > matrix){
-
+  map<int, map<int, double> >::iterator row;
+  for(row = matrix.begin(); row != matrix.end(); row++){
+    // :trollface: problem?
+  }
 }
