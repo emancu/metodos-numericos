@@ -6,11 +6,13 @@
 #include <map>
 
 using namespace std;
-typedef map<int, map<int, double> > Matrix;
+typedef map<int, double> Row;
+typedef map<int, Row> Matrix;
 
-Matrix build_matrix(double, char*);
-void print_matrix(Matrix);
-void gauss(Matrix, int);
+Matrix build_matrix(double, char*, int*);
+void print_matrix(Matrix*);
+void gauss(Matrix*, int);
+void substract_rows(Matrix*, int, int);
 
 int main(int argc, char* argv[]){
   static const char *optString = "l:f:";
@@ -26,14 +28,15 @@ int main(int argc, char* argv[]){
     }
   }
 
-  Matrix matrix = build_matrix(lambda, picture);
-  //print_matrix(matrix);
-  gauss(matrix, 64 * 64); // Find a way to retrieve the matrix size after building.
+  int size;
+  Matrix matrix = build_matrix(lambda, picture, &size);
+  gauss(&matrix, size);
+  print_matrix(&matrix);
 
   return 0;
 }
 
-Matrix build_matrix(double lambda, char* picture){
+Matrix build_matrix(double lambda, char* picture, int* size){
   FILE* file = fopen(picture, "r+b");
   unsigned char pixel[256];
   int i,j;
@@ -60,7 +63,7 @@ Matrix build_matrix(double lambda, char* picture){
 
   for(i = 0; i < height; i++){
     for(j = 0; j < width; j++){
-      map<int, double> row;
+      Row row;
       fread(pixel, 1, 1, file);
       color = (double) (unsigned int) pixel[0];
       row[-1] = color;
@@ -79,37 +82,40 @@ Matrix build_matrix(double lambda, char* picture){
       row_number++;
     }
   }
+  *size = row_number++;
 
   fclose(file);
   return matrix;
 }
 
-void print_matrix(Matrix matrix){
+void print_matrix(Matrix* matrix){
   Matrix::iterator row;
-  for(row = matrix.begin(); row != matrix.end(); row++){
+  for(row = matrix->begin(); row != matrix->end(); row++){
     printf("row: %d\n", row->first);
-    map<int, double>::iterator pair;
+    Row::iterator pair;
     for(pair = row->second.begin(); pair != row->second.end(); pair++){
-      printf("  position: %d\n", pair->first);
+      printf("  position: %d\n",   pair->first);
       printf("  value   : %.5f\n", pair->second);
     }
     printf("\n");
   }
 }
 
-void gauss(Matrix matrix, int size){
+void gauss(Matrix* matrix, int size){
   for(int column_number = 0; column_number < size; column_number++){
-    Matrix::iterator row = matrix.begin();
-    for(int i = 0; i <= column_number; i++) row++; // Jump unnecesary rows.
-    while(row != matrix.end()){
-      if(row->second.count(column_number) > 0){
-        printf("Gotta pull my gauss!\n");
-        printf("  row: %d column: %d\n", row->first, column_number);
-        printf("  diagional: %f\n", matrix[column_number][column_number]);
-        printf("  element to make zero is: %f\n", row->second[column_number]);
-        // substract_rows(matrix, row->firsrt, column_number); implement this to make the substraction between the rows.
-      }
-      row++;
+    for(int row_number = column_number + 1; row_number < size; row_number++){
+      if((*matrix)[row_number].count(column_number) > 0)
+        substract_rows(matrix, row_number, column_number);
     }
+  }
+}
+
+void substract_rows(Matrix* matrix, int row_number, int column_number){
+  Row* row_to_modify = &((*matrix)[row_number]);
+  Row* row_to_use    = &((*matrix)[column_number]);
+  Row::iterator pair;
+  for(pair = row_to_modify->begin(); pair != row_to_modify->end(); pair++){
+    if(row_to_use->count(pair->first) > 0)
+      (*row_to_modify)[pair->first] += (*row_to_use)[pair->first] / (*row_to_use)[column_number];
   }
 }
