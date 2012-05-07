@@ -68,11 +68,11 @@ Matrix build_matrix(double lambda, char* picture){
       if(i == 0 || i == height - 1 || j == 0 || j == width - 1){
         row[row_number] = 1;
       }else{
-        row[row_number - 4] = -1.0;
-        row[row_number - 1] = -1.0;
-        row[row_number]     = lambda + 4.0;
-        row[row_number + 1] = -1.0;
-        row[row_number + 4] = -1.0;
+        row[row_number - width] = -1.0;
+        row[row_number - 1]     = -1.0;
+        row[row_number]         = lambda + 4.0;
+        row[row_number + 1]     = -1.0;
+        row[row_number + width] = -1.0;
       }
 
       matrix[row_number] = row;
