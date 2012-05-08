@@ -4,15 +4,18 @@
 #include <stdlib.h>
 #include <sstream>
 #include <map>
+#include <list>
 
 using namespace std;
 typedef map<int, double> Row;
 typedef map<int, Row> Matrix;
+typedef map<int, list<int> > LowerBands;
 
-Matrix build_matrix(double, char*, int*);
+Matrix build_matrix(double, char*, LowerBands*);
 void print_matrix(Matrix*);
-void gauss(Matrix*, int);
+void gauss(Matrix*, LowerBands*);
 void substract_rows(Matrix*, int, int);
+void print_lower_bands(LowerBands*);
 
 int main(int argc, char* argv[]){
   static const char *optString = "l:f:";
@@ -28,15 +31,17 @@ int main(int argc, char* argv[]){
     }
   }
 
-  int size;
-  Matrix matrix = build_matrix(lambda, picture, &size);
-  gauss(&matrix, size);
+  LowerBands lower_bands;
+  Matrix matrix = build_matrix(lambda, picture, &lower_bands);
+  //print_lower_bands(&lower_bands);
+  //print_matrix(&matrix);
+  gauss(&matrix, &lower_bands);
   print_matrix(&matrix);
 
   return 0;
 }
 
-Matrix build_matrix(double lambda, char* picture, int* size){
+Matrix build_matrix(double lambda, char* picture, LowerBands* lower_bands){
   FILE* file = fopen(picture, "r+b");
   unsigned char pixel[256];
   int i,j;
@@ -58,6 +63,7 @@ Matrix build_matrix(double lambda, char* picture, int* size){
   }
 
   Matrix matrix;
+  LowerBands _lower_bands;
   double color;
   int row_number = 0;
 
@@ -76,13 +82,28 @@ Matrix build_matrix(double lambda, char* picture, int* size){
         row[row_number]         = lambda + 4.0;
         row[row_number + 1]     = -1.0;
         row[row_number + width] = -1.0;
+
+        // Saves the row numbers for each column of the lower bands.
+        if(_lower_bands.count(row_number - width) == 0){
+          list<int> rows(1, row_number);
+          _lower_bands[row_number - width] = rows;
+        }else if(_lower_bands[row_number - width].front() != row_number){
+          _lower_bands[row_number - width].push_back(row_number);
+        }
+
+        if(_lower_bands.count(row_number - 1) == 0){
+          list<int> rows(1, row_number);
+          _lower_bands[row_number - 1] = rows;
+        }else if(_lower_bands[row_number - width].front() != row_number){
+          _lower_bands[row_number - 1].push_back(row_number);
+        }
       }
 
       matrix[row_number] = row;
       row_number++;
     }
   }
-  *size = row_number++;
+  *lower_bands = _lower_bands;
 
   fclose(file);
   return matrix;
@@ -101,11 +122,24 @@ void print_matrix(Matrix* matrix){
   }
 }
 
-void gauss(Matrix* matrix, int size){
-  for(int column_number = 0; column_number < size; column_number++){
-    for(int row_number = column_number + 1; row_number < size; row_number++){
-      if((*matrix)[row_number].count(column_number) > 0)
-        substract_rows(matrix, row_number, column_number);
+void print_lower_bands(LowerBands* lower_bands){
+  LowerBands::iterator lower_band;
+  for(lower_band = lower_bands->begin(); lower_band != lower_bands->end(); lower_band++){
+    printf("lower band for column %d\n", lower_band->first);
+    list<int>::iterator row;
+    for(row = lower_band->second.begin(); row != lower_band->second.end(); row++){
+      printf(" %d ", *row);
+    }
+    printf("\n");
+  }
+}
+
+void gauss(Matrix* matrix, LowerBands* lower_bands){
+  LowerBands::iterator lower_band;
+  for(lower_band = lower_bands->begin(); lower_band != lower_bands->end(); lower_band++){
+    list<int>::iterator row;
+    for(row = lower_band->second.begin(); row != lower_band->second.end(); row++){
+      substract_rows(matrix, *row, lower_band->first);
     }
   }
 }
