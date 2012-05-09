@@ -1,21 +1,9 @@
-#include <stdio.h>
-#include <fstream>
-#include <iostream>
-#include <stdlib.h>
-#include <sstream>
-#include <map>
-#include <list>
-
-using namespace std;
-typedef map<int, double> Row;
-typedef map<int, Row> Matrix;
-typedef map<int, list<int> > LowerBands;
+#include <types.h>
+#include <tools.h>
 
 Matrix build_matrix(double, char*, LowerBands*);
-void print_matrix(Matrix*);
 void gauss(Matrix*, LowerBands*);
 void substract_rows(Matrix*, int, int);
-void print_lower_bands(LowerBands*);
 
 int main(int argc, char* argv[]){
   static const char *optString = "l:f:";
@@ -107,31 +95,6 @@ Matrix build_matrix(double lambda, char* picture, LowerBands* lower_bands){
 
   fclose(file);
   return matrix;
-}
-
-void print_matrix(Matrix* matrix){
-  Matrix::iterator row;
-  for(row = matrix->begin(); row != matrix->end(); row++){
-    printf("row: %d\n", row->first);
-    Row::iterator pair;
-    for(pair = row->second.begin(); pair != row->second.end(); pair++){
-      printf("  position: %d\n",   pair->first);
-      printf("  value   : %.5f\n", pair->second);
-    }
-    printf("\n");
-  }
-}
-
-void print_lower_bands(LowerBands* lower_bands){
-  LowerBands::iterator lower_band;
-  for(lower_band = lower_bands->begin(); lower_band != lower_bands->end(); lower_band++){
-    printf("lower band for column %d\n", lower_band->first);
-    list<int>::iterator row;
-    for(row = lower_band->second.begin(); row != lower_band->second.end(); row++){
-      printf(" %d ", *row);
-    }
-    printf("\n");
-  }
 }
 
 void gauss(Matrix* matrix, LowerBands* lower_bands){
