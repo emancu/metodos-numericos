@@ -4,6 +4,6 @@
 
 void print_matrix(Matrix*);
 void print_lower_bands(LowerBands*);
-void print_results(double*, int);
+void print_results(double*, int, bool);
 
 #endif

@@ -25,9 +25,18 @@ void print_lower_bands(LowerBands* lower_bands){
   }
 }
 
-void print_results(double* results, int size){
+void print_results(double* results, int size, bool verification){
   for(int i = 0; i < size; i++){
-    printf("%.5f ", results[i]);
-    if(i % size == 0) printf("\n");
+    if(verification){
+      unsigned int color = (unsigned int) results[i];
+      if(0 <= color && color < 256)
+        printf(".");
+      else
+        printf("F variable %d is %d", i, color);
+    }else{
+      printf("%.5f ", results[i]);
+    }
+
+    if(i % size == size - 1) printf("\n");
   }
 }

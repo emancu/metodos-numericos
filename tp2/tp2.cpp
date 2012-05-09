@@ -28,7 +28,7 @@ int main(int argc, char* argv[]){
   double results[matrix.size()];
   solve_equations(&matrix, results);
 
-  print_results(results, matrix.size());
+  print_results(results, matrix.size(), false);
 
   return 0;
 }
