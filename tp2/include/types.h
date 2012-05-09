@@ -1,6 +1,5 @@
 #ifndef __TYPES__
 #define __TYPES__
-
 #include <stdio.h>
 #include <fstream>
 #include <iostream>

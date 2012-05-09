@@ -4,6 +4,7 @@
 Matrix build_matrix(double, char*, LowerBands*);
 void gauss(Matrix*, LowerBands*);
 void substract_rows(Matrix*, int, int);
+void solve_equations(Matrix*, double*);
 
 int main(int argc, char* argv[]){
   static const char *optString = "l:f:";
@@ -21,10 +22,13 @@ int main(int argc, char* argv[]){
 
   LowerBands lower_bands;
   Matrix matrix = build_matrix(lambda, picture, &lower_bands);
-  //print_lower_bands(&lower_bands);
-  //print_matrix(&matrix);
+
   gauss(&matrix, &lower_bands);
-  print_matrix(&matrix);
+
+  double results[matrix.size()];
+  solve_equations(&matrix, results);
+
+  print_results(results, matrix.size());
 
   return 0;
 }
@@ -114,5 +118,17 @@ void substract_rows(Matrix* matrix, int row_number, int column_number){
   for(pair = row_to_modify->begin(); pair != row_to_modify->end(); pair++){
     if(row_to_use->count(pair->first) > 0)
       (*row_to_modify)[pair->first] += (*row_to_use)[pair->first] / (*row_to_use)[column_number];
+  }
+}
+
+void solve_equations(Matrix* matrix, double* results){
+  Matrix::reverse_iterator row;
+  for(row = matrix->rbegin(); row != matrix->rend(); row++){
+    double sum = row->second[-1];
+    Row::iterator pair;
+    for(pair = row->second.upper_bound(row->first); pair != row->second.end(); pair++){
+      sum -= pair->second * results[pair->first];
+    }
+    results[row->first] = sum / (*matrix)[row->first][row->first];
   }
 }

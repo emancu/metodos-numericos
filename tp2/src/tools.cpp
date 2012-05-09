@@ -25,3 +25,9 @@ void print_lower_bands(LowerBands* lower_bands){
   }
 }
 
+void print_results(double* results, int size){
+  for(int i = 0; i < size; i++){
+    printf("%.5f ", results[i]);
+    if(i % size == 0) printf("\n");
+  }
+}
