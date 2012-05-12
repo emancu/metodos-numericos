@@ -36,26 +36,26 @@ Matrix build_matrix(double lambda, char* picture, LowerBands* lower_bands){
       if(i == 0 || i == height - 1 || j == 0 || j == width - 1){
         row[row_number] = 1;
       }else{
+        // Forms the row.
         row[row_number - width] = -1.0;
         row[row_number - 1]     = -1.0;
         row[row_number]         = lambda + 4.0;
         row[row_number + 1]     = -1.0;
         row[row_number + width] = -1.0;
 
-        // Saves the row numbers for each column of the lower bands.
+        // Saves the row number for the column a *width* away from the diagonal.
         if(_lower_bands.count(row_number - width) == 0){
-          list<int> rows(1, row_number);
+          set<int> rows;
           _lower_bands[row_number - width] = rows;
-        }else if(_lower_bands[row_number - width].front() != row_number){
-          _lower_bands[row_number - width].push_back(row_number);
         }
+        _lower_bands[row_number - width].insert(row_number);
 
+        // Saves the row number for the column previous the diagonal.
         if(_lower_bands.count(row_number - 1) == 0){
-          list<int> rows(1, row_number);
+          set<int> rows;
           _lower_bands[row_number - 1] = rows;
-        }else if(_lower_bands[row_number - width].front() != row_number){
-          _lower_bands[row_number - 1].push_back(row_number);
         }
+        _lower_bands[row_number - 1].insert(row_number);
       }
 
       matrix[row_number] = row;
@@ -69,11 +69,11 @@ Matrix build_matrix(double lambda, char* picture, LowerBands* lower_bands){
 }
 
 void gauss(Matrix* matrix, LowerBands* lower_bands){
-  LowerBands::iterator lower_band;
+  LowerBands::iterator lower_band; // first: column number, second: set of row numbers
   for(lower_band = lower_bands->begin(); lower_band != lower_bands->end(); lower_band++){
-    list<int>::iterator row;
-    for(row = lower_band->second.begin(); row != lower_band->second.end(); row++){
-      substract_rows(matrix, *row, lower_band->first);
+    set<int>::iterator row_number; // pointer to row number.
+    for(row_number = lower_band->second.begin(); row_number != lower_band->second.end(); row_number++){
+      substract_rows(matrix, *row_number, lower_band->first);
     }
   }
 }
@@ -89,10 +89,10 @@ void substract_rows(Matrix* matrix, int row_number, int column_number){
 }
 
 void solve_equations(Matrix* matrix, double* results){
-  Matrix::reverse_iterator row;
+  Matrix::reverse_iterator row; // first: row number, second: Row
   for(row = matrix->rbegin(); row != matrix->rend(); row++){
     double sum = row->second[-1];
-    Row::iterator pair;
+    Row::iterator pair; // first: column number, second: value
     for(pair = row->second.upper_bound(row->first); pair != row->second.end(); pair++){
       sum -= pair->second * results[pair->first];
     }

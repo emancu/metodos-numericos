@@ -6,11 +6,11 @@
 #include <stdlib.h>
 #include <sstream>
 #include <map>
-#include <list>
+#include <set>
 
 using namespace std;
 typedef map<int, double> Row;
 typedef map<int, Row> Matrix;
-typedef map<int, list<int> > LowerBands;
+typedef map<int, set<int> > LowerBands;
 
 #endif

@@ -17,7 +17,7 @@ void print_lower_bands(LowerBands* lower_bands){
   LowerBands::iterator lower_band;
   for(lower_band = lower_bands->begin(); lower_band != lower_bands->end(); lower_band++){
     printf("lower band for column %d\n", lower_band->first);
-    list<int>::iterator row;
+    set<int>::iterator row;
     for(row = lower_band->second.begin(); row != lower_band->second.end(); row++){
       printf(" %d ", *row);
     }
