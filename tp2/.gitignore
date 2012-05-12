@@ -2,4 +2,5 @@ tp2.cbp
 tp2.layout
 tp
 *.o
-print_matrix
+print_matrix*
+pm*
