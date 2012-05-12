@@ -69,10 +69,8 @@ Matrix build_matrix(double lambda, char* picture, LowerBands* lower_bands){
 void gauss(Matrix* matrix, LowerBands* lower_bands){
   LowerBands::iterator lower_band; // first: column number, second: set of row numbers
   for(lower_band = lower_bands->begin(); lower_band != lower_bands->end(); lower_band++){
-    //printf("  column %d\n", lower_band->first);
     set<int>::iterator row_number; // pointer to row number.
     for(row_number = lower_band->second.begin(); row_number != lower_band->second.end(); row_number++){
-      //printf("    substracting row %d\n", *row_number);
       substract_rows(matrix, lower_bands, *row_number, lower_band->first);
     }
 
@@ -104,7 +102,6 @@ void substract_rows(Matrix* matrix, LowerBands* lower_bands, int row_number, int
       (*row_to_modify)[pair->first] = coefficient * (*row_to_use)[pair->first];
       // If that new value is below the main diagonal, it will need to be triangulated later.
       if(row_number > pair->first){
-        //printf("      for column %d inserting row %d\n", pair->first, row_number);
         insert_row_number(lower_bands, row_number, pair->first);
       }
     }
