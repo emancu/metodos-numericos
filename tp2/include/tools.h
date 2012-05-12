@@ -5,5 +5,6 @@
 void print_matrix(Matrix*);
 void print_lower_bands(LowerBands*);
 void print_results(double*, int, bool);
+void insert_row_number(LowerBands*, int, int);
 
 #endif

@@ -8,6 +8,8 @@ void print_matrix(Matrix* matrix){
     for(pair = row->second.begin(); pair != row->second.end(); pair++){
       printf("  position: %d\n",   pair->first);
       printf("  value   : %.5f\n", pair->second);
+      // printf("%.5f ", pair->second);
+      // if(pair->first % matrix->size() == matrix->size() - 1) printf("\n");
     }
     printf("\n");
   }
@@ -39,4 +41,13 @@ void print_results(double* results, int size, bool verification){
 
     if(i % size == size - 1) printf("\n");
   }
+}
+
+void insert_row_number(LowerBands* lower_bands, int row_number, int column_number){
+  // If there's no set for that column, make one.
+  //if(lower_bands->count(column_number) == 0){
+  //  set<int> rows;
+  //  (*lower_bands)[column_number] = rows;
+  //}
+  (*lower_bands)[column_number].insert(row_number);
 }
