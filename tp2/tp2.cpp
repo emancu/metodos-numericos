@@ -23,21 +23,21 @@ int main(int argc, char* argv[]){
   }
 
   printf("BUILDING MATRIX...");
-  LowerBands lower_bands;
   PGMInfo pgm_info = parse_pgm(picture);
-  Matrix matrix = build_matrix(lambda, &pgm_info, &lower_bands);
+  Matrix matrix = build_matrix(lambda, &pgm_info);
+  //print_pretty_matrix(matrix, &pgm_info);
   printf("DONE\nSTARTING GAUSS...");
 
-  gauss(&matrix, &lower_bands);
-  printf("DONE\nSOLVING EQUATIONS...");
+  //gauss(matrix);
+  // printf("DONE\nSOLVING EQUATIONS...");
 
-  double results[matrix.size()];
-  solve_equations(&matrix, results);
-  printf("DONE\n");
+  // double results[matrix.size()];
+  // solve_equations(&matrix, results);
+  // printf("DONE\n");
 
-  //print_pretty_matrix(&matrix);
-  create_new_picture(results,output, &pgm_info);
-  //print_results(results, matrix.size(), verification);
+  // print_pretty_matrix(&matrix);
+  // create_new_picture(results,output, (int) sqrt(matrix.size()));
+  // print_results(results, matrix.size(), verification);
 
   free_pixels_memory(&pgm_info);
   return 0;

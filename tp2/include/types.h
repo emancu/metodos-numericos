@@ -10,8 +10,7 @@
 
 using namespace std;
 typedef map<int, double> Row;
-typedef map<int, Row> Matrix;
-typedef map<int, set<int> > LowerBands;
+typedef double** Matrix;
 
 typedef struct pgminfo {
   int width;

@@ -2,11 +2,9 @@
 #define __TOOLS__
 #include <types.h>
 
-void print_matrix(Matrix*);
-void print_pretty_matrix(Matrix* matrix);
-void print_lower_bands(LowerBands*);
+// void print_matrix(Matrix*);
+void print_pretty_matrix(Matrix, PGMInfo*);
 void print_results(double*, int, bool);
-void insert_row_number(LowerBands*, int, int);
 
 void create_new_picture(double*,char*,PGMInfo*);
 PGMInfo parse_pgm(char*);
