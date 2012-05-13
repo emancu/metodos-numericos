@@ -130,7 +130,7 @@ void insert_row_number(LowerBands* lower_bands, int row_number, int column_numbe
 /*
  * Creates a new picture with the results.
  */
-void create_new_picture(double* results, char* output, int imageSize){
+void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
   FILE* outputFd = fopen (output, "w");
 
   char* name;
@@ -141,14 +141,14 @@ void create_new_picture(double* results, char* output, int imageSize){
   name = "# Created by Paint Shop Pro 5\n";
   fputs(name, outputFd);
 
-  sprintf(info, "%i %i\n" , imageSize, imageSize);
+  sprintf(info, "%i %i\n" , pgm_info->width, pgm_info->height);
   fputs(info, outputFd);
 
   sprintf(info, "%i\n" , 255);//TODO cableado a 255
   fputs(info, outputFd);
 
   int i;
-  for(i = 0; i < imageSize*imageSize ; i++ ){
+  for(i = 0; i < pgm_info->width * pgm_info->height ; i++ ){
     sprintf(info, "%c" ,(unsigned char) (unsigned int)results[i]);
     fputs(info, outputFd);
   }
