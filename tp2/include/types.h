@@ -13,4 +13,11 @@ typedef map<int, double> Row;
 typedef map<int, Row> Matrix;
 typedef map<int, set<int> > LowerBands;
 
+typedef struct pgminfo {
+  int width;
+  int height;
+  int max;
+  double** pixels;
+} PGMInfo;
+
 #endif

@@ -24,7 +24,8 @@ int main(int argc, char* argv[]){
 
   printf("BUILDING MATRIX...");
   LowerBands lower_bands;
-  Matrix matrix = build_matrix(lambda, picture, &lower_bands);
+  PGMInfo pgm_info = parse_pgm(picture);
+  Matrix matrix = build_matrix(lambda, &pgm_info, &lower_bands);
   printf("DONE\nSTARTING GAUSS...");
 
   gauss(&matrix, &lower_bands);
@@ -38,5 +39,6 @@ int main(int argc, char* argv[]){
   create_new_picture(results,output, (int) sqrt(matrix.size()));
   //print_results(results, matrix.size(), verification);
 
+  free_pixels_memory(&pgm_info);
   return 0;
 }

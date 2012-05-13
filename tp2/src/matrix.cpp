@@ -1,56 +1,33 @@
 #include <matrix.h>
 #include <tools.h>
 
-Matrix build_matrix(double lambda, char* picture, LowerBands* lower_bands){
-  FILE* file = fopen(picture, "r+b");
-  unsigned char pixel[256];
-  int i,j;
-
-  for(i = 0; i <= 1 ; i++){
-    fgets((char*) pixel, 256, file);
-  }
-
-  int width, height, max;
-  fscanf(file, "%d", &width);
-  fscanf(file, "%d", &height);
-  fscanf(file, "%d", &max);
-
-  // Skips a newline.
-  fread(pixel,1, 1, file);
-
-  for(i = 0; i <= 256; i++){
-    pixel[i] = 0x0;
-  }
-
+Matrix build_matrix(double lambda, PGMInfo* pgm_info, LowerBands* lower_bands){
   Matrix matrix;
   LowerBands _lower_bands;
-  for(i = 0; i < height * width; i++){
+  for(int i = 0; i < pgm_info->width * pgm_info->height; i++){
     set<int> rows;
     _lower_bands[i] = rows;
   }
 
-  double color;
   int row_number = 0;
 
-  for(i = 0; i < height; i++){
-    for(j = 0; j < width; j++){
+  for(int i = 0; i < pgm_info->height; i++){
+    for(int j = 0; j < pgm_info->width; j++){
       Row row;
-      fread(pixel, 1, 1, file);
-      color = (double) (unsigned int) pixel[0];
-      row[-1] = color;
+      row[-1] = pgm_info->pixels[i][j];
 
-      if(i == 0 || i == height - 1 || j == 0 || j == width - 1){
+      if(i == 0 || i == pgm_info->height - 1 || j == 0 || j == pgm_info->width - 1){
         row[row_number] = 1;
       }else{
         // Forms the row.
-        row[row_number - width] = -1.0;
-        row[row_number - 1]     = -1.0;
-        row[row_number]         = lambda + 4.0;
-        row[row_number + 1]     = -1.0;
-        row[row_number + width] = -1.0;
+        row[row_number - pgm_info->width] = -1.0;
+        row[row_number - 1]               = -1.0;
+        row[row_number]                   = lambda + 4.0;
+        row[row_number + 1]               = -1.0;
+        row[row_number + pgm_info->width] = -1.0;
 
         // Saves the row number for the column a *width* away from the diagonal.
-        insert_row_number(&_lower_bands, row_number, row_number - width);
+        insert_row_number(&_lower_bands, row_number, row_number - pgm_info->width);
 
         // Saves the row number for the column previous the diagonal.
         insert_row_number(&_lower_bands, row_number, row_number - 1);
@@ -62,7 +39,6 @@ Matrix build_matrix(double lambda, char* picture, LowerBands* lower_bands){
   }
   *lower_bands = _lower_bands;
 
-  fclose(file);
   return matrix;
 }
 

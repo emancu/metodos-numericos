@@ -1,5 +1,47 @@
 #include <tools.h>
 
+PGMInfo parse_pgm(char* picture){
+  FILE* file = fopen(picture, "r+b");
+  unsigned char pixel[256];
+  int i,j;
+  PGMInfo pgm_info;
+
+  for(i = 0; i <= 1 ; i++){
+    fgets((char*) pixel, 256, file);
+  }
+
+  fscanf(file, "%d", &(pgm_info.width));
+  fscanf(file, "%d", &(pgm_info.height));
+  fscanf(file, "%d", &(pgm_info.max));
+
+  // Skips a newline.
+  fread(pixel,1, 1, file);
+
+  for(i = 0; i <= 256; i++){
+    pixel[i] = 0x0;
+  }
+
+  double color;
+  pgm_info.pixels = new double*[pgm_info.height];
+  for(i = 0; i < pgm_info.height; i++){
+    pgm_info.pixels[i] = new double[pgm_info.width];
+    for(j = 0; j < pgm_info.width; j++){
+      fread(pixel, 1, 1, file);
+      color = (double) (unsigned int) pixel[0];
+      pgm_info.pixels[i][j] = color;
+    }
+  }
+
+  fclose(file);
+  return pgm_info;
+}
+
+void free_pixels_memory(PGMInfo* pgm_info){
+  for(int i = 0; i < pgm_info->height; i++)
+    delete [] pgm_info->pixels[i];
+  delete [] pgm_info->pixels;
+}
+
 void print_matrix(Matrix* matrix){
   Matrix::iterator row;
   for(row = matrix->begin(); row != matrix->end(); row++){
@@ -47,9 +89,6 @@ void print_pretty_matrix(Matrix* matrix){
     printf("\n");
   }
 }
-
-
-
 
 void print_lower_bands(LowerBands* lower_bands){
   LowerBands::iterator lower_band;
@@ -115,6 +154,3 @@ void create_new_picture(double* results, char* output, int imageSize){
   }
 
 }
-
-
-
