@@ -28,7 +28,8 @@ int main(int argc, char* argv[]){
   //print_pretty_matrix(matrix, &pgm_info);
   printf("DONE\nSTARTING GAUSS...");
 
-  //gauss(matrix);
+  gauss(matrix, &pgm_info);
+  //print_pretty_matrix(matrix, &pgm_info);
   // printf("DONE\nSOLVING EQUATIONS...");
 
   // double results[matrix.size()];

@@ -3,8 +3,8 @@
 #include <types.h>
 
 Matrix build_matrix(double, PGMInfo*);
-//void gauss(Matrix);
-// void substract_rows(Matrix, int, int);
+void gauss(Matrix, PGMInfo*);
+void substract_rows(Matrix, PGMInfo*, int, int, int);
 // void solve_equations(Matrix, double*);
 
 #endif
