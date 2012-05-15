@@ -11,7 +11,6 @@ int main(int argc, char* argv[]){
   double lambda;
   bool verification = false;
 
-
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
       case 'l': { lambda  = atof(optarg); break; }
@@ -22,23 +21,23 @@ int main(int argc, char* argv[]){
     }
   }
 
-  printf("BUILDING MATRIX...");
+  // printf("BUILDING MATRIX...");
   PGMInfo pgm_info = parse_pgm(picture);
   Matrix matrix = build_matrix(lambda, &pgm_info);
-  //print_pretty_matrix(matrix, &pgm_info);
-  printf("DONE\nSTARTING GAUSS...");
+  // print_pretty_matrix(matrix, &pgm_info);
+  // printf("DONE\nSTARTING GAUSS...");
 
   gauss(matrix, &pgm_info);
-  //print_pretty_matrix(matrix, &pgm_info);
+  // print_pretty_matrix(matrix, &pgm_info);
   // printf("DONE\nSOLVING EQUATIONS...");
 
-  // double results[matrix.size()];
-  // solve_equations(matrix, &pgm_info, results);
+  double results[pgm_info.height * pgm_info.width];
+  solve_equations(matrix, &pgm_info, results);
   // printf("DONE\n");
 
-  // print_pretty_matrix(&matrix);
-  // create_new_picture(results,output, (int) sqrt(matrix.size()));
-  // print_results(results, matrix.size(), verification);
+  // print_pretty_matrix(matrix, &pgm_info);
+  print_results(results, pgm_info.height * pgm_info.width, verification);
+  create_new_picture(results, output, &pgm_info);
 
   free_pixels_memory(&pgm_info);
   return 0;

@@ -42,27 +42,13 @@ void free_pixels_memory(PGMInfo* pgm_info){
   delete [] pgm_info->pixels;
 }
 
-// void print_matrix(Matrix* matrix){
-//   Matrix::iterator row;
-//   for(row = matrix->begin(); row != matrix->end(); row++){
-//     printf("row: %d\n", row->first);
-//     Row::iterator pair;
-//     for(pair = row->second.begin(); pair != row->second.end(); pair++){
-//       printf("  position: %d\n",   pair->first);
-//       printf("  value   : %.5f\n", pair->second);
-//       // printf("%.5f ", pair->second);
-//       // if(pair->first % matrix->size() == matrix->size() - 1) printf("\n");
-//     }
-//     printf("\n");
-//   }
-// }
-
 void print_pretty_matrix(Matrix matrix, PGMInfo* pgm_info){
   for(int i = 0; i < pgm_info->height * pgm_info->height; i++){
+    for(int k = 0; k < i; k++) printf(" ");
     for(int j = 0; j < 2 * pgm_info->width + 2; j++){
       if(matrix[i][j] >= 0.0){
         printf("  %.5f", matrix[i][j]);
-      }else{
+      }else if(matrix[i][j] >= 0.0){
         printf(" %.5f", matrix[i][j]);
       }
     }
@@ -86,18 +72,15 @@ void print_results(double* results, int size, bool verification){
   }
 }
 
-/*
- * Creates a new picture with the results.
- */
 void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
-  FILE* outputFd = fopen (output, "w");
+  FILE* outputFd = fopen(output, "w");
 
   char* name;
   char info[256];
   name = "P5\n";
   fputs(name, outputFd);
 
-  name = "# Created by Paint Shop Pro 5\n";
+  name = "# Created by Mandrula INC\n";
   fputs(name, outputFd);
 
   sprintf(info, "%i %i\n" , pgm_info->width, pgm_info->height);
@@ -106,10 +89,8 @@ void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
   sprintf(info, "%i\n" , 255); //TODO cableado a 255
   fputs(info, outputFd);
 
-  int i;
-  for(i = 0; i < pgm_info->width * pgm_info->height ; i++ ){
-    sprintf(info, "%c" ,(unsigned char) (unsigned int)results[i]);
+  for(int i = 0; i < pgm_info->width * pgm_info->height; i++){
+    sprintf(info, "%c" ,(unsigned char) (unsigned int) results[i]);
     fputs(info, outputFd);
   }
-
 }

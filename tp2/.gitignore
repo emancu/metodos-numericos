@@ -4,3 +4,4 @@ tp
 *.o
 print_matrix*
 pm*
+out.pgm
