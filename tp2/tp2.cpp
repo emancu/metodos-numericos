@@ -36,7 +36,7 @@ int main(int argc, char* argv[]){
   printf("DONE\n");
 
   //print_pretty_matrix(&matrix);
-  create_new_picture(results,output, (int) sqrt(matrix.size()));
+  create_new_picture(results,output, &pgm_info);
   //print_results(results, matrix.size(), verification);
 
   free_pixels_memory(&pgm_info);
