@@ -24,7 +24,7 @@ Matrix build_matrix(double lambda, PGMInfo* pgm_info){
   for(int i = 0; i < pgm_info->height; i++){
     for(int j = 0; j < pgm_info->width; j++){
       // Saves the pixel color in the last element of the column
-      matrix[row_number][matrix_width - 1] = pgm_info->pixels[i][j];
+      matrix[row_number][matrix_width - 1] = pgm_info->pixels[i][j] * lambda;
 
       if(i == 0 || i == pgm_info->height - 1 || j == 0 || j == pgm_info->width - 1){
         matrix[row_number][pgm_info->width] = 1;
