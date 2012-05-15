@@ -14,7 +14,7 @@ Matrix build_matrix(double lambda, PGMInfo* pgm_info, LowerBands* lower_bands){
   for(int i = 0; i < pgm_info->height; i++){
     for(int j = 0; j < pgm_info->width; j++){
       Row row;
-      row[-1] = pgm_info->pixels[i][j];
+      row[-1] = pgm_info->pixels[i][j] * lambda;
 
       if(i == 0 || i == pgm_info->height - 1 || j == 0 || j == pgm_info->width - 1){
         row[row_number] = 1;
