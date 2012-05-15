@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
   // printf("DONE\nSOLVING EQUATIONS...");
 
   // double results[matrix.size()];
-  // solve_equations(&matrix, results);
+  // solve_equations(matrix, &pgm_info, results);
   // printf("DONE\n");
 
   // print_pretty_matrix(&matrix);

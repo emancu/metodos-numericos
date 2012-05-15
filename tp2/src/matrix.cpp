@@ -107,15 +107,16 @@ void substract_rows(Matrix matrix, PGMInfo* pgm_info, int row_number, int column
   }
 
 }
-//
-// void solve_equations(Matrix* matrix, double* results){
-//   Matrix::reverse_iterator row; // first: row number, second: Row
-//   for(row = matrix->rbegin(); row != matrix->rend(); row++){
-//     double sum = row->second[-1]; // Accumulates the numbers from the data and the other values.
-//     Row::iterator pair; // first: column number, second: value
-//     for(pair = row->second.upper_bound(row->first); pair != row->second.end(); pair++){
-//       sum -= pair->second * results[pair->first];
-//     }
-//     results[row->first] = sum / (*matrix)[row->first][row->first];
-//   }
-// }
+
+void solve_equations(Matrix matrix, PGMInfo* pgm_info, double* results){
+  int matrix_width = 2 * pgm_info->width + 2;
+  for(int row = pgm_info->height * pgm_info->width - 1; row >= 0; row--){
+    double sum = matrix[row][matrix_width - 1]; // Starts with the pixel value.
+    for(int column = pgm_info->width + 1; column < matrix_width - 1; column++){
+       // Substract each of the known, previously calculated variables.
+      sum -= matrix[row][column] * results[row];
+    }
+    // Clear the final coefficient.
+    results[row] = sum / matrix[row][pgm_info->width];
+  }
+}
