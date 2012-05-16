@@ -68,10 +68,10 @@ void substract_rows(Matrix matrix, PGMInfo* pgm_info, int row_number, int column
   index ++;
   for(int i = pgm_info->width + 1; i < matrix_width - 1; i++){
     if(row_to_use[i] != 0.0){
-      if(row_to_modify[index] != 0.0)
+      //if(row_to_modify[index] != 0.0)
         row_to_modify[index] -= coefficient * row_to_use[i];
-      else
-        row_to_modify[index] = coefficient * row_to_use[i];
+      //else
+        //row_to_modify[index] = coefficient * row_to_use[i];
     }
 
     index++;
