@@ -24,6 +24,7 @@ Matrix build_matrix(double lambda, PGMInfo* pgm_info){
   for(int i = 0; i < pgm_info->height; i++){
     for(int j = 0; j < pgm_info->width; j++){
       // Saves the pixel color in the last element of the column
+      //TODO preguntar lo de si saturamos a 255
       matrix[row_number][matrix_width - 1] = pgm_info->pixels[i][j] * lambda;
 
       if(i == 0 || i == pgm_info->height - 1 || j == 0 || j == pgm_info->width - 1){
@@ -94,6 +95,7 @@ void solve_equations(Matrix matrix, PGMInfo* pgm_info, double* results){
       i++;
     }
     // Clear the final coefficient.
+    //TODO preguntar lo de si saturamos a 255
     results[row] = sum / matrix[row][pgm_info->width];
   }
 }

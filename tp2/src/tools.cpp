@@ -1,4 +1,7 @@
 #include <tools.h>
+#include <time.h>
+#include <math.h>
+
 
 PGMInfo parse_pgm(char* picture){
   FILE* file = fopen(picture, "r+b");
@@ -72,6 +75,49 @@ void print_results(double* results, int size, bool verification){
   }
 }
 
+void createWithSaltPeperNoise(double * results, double p, double q, char* output, PGMInfo* pgm_info){
+   /* initialize random seed: */
+  double random;
+  srand ( time(NULL) );
+
+  int h = 0;
+  /* generate secret number: */
+  for(int i = 0; i < pgm_info->height; i++){
+    for(int j = 0; j < pgm_info->width; j++){
+      random = (double) rand() / RAND_MAX;
+      if(random < p){
+        results[h++] = 1;//no anda poniendo 0
+      }else if (random > q){
+        results[h++] = 255;
+      }else{
+        results[h++] = pgm_info->pixels[i][j];
+      }
+    }
+  }
+  //print_results(results,pgm_info->height * pgm_info->width, false);
+  create_new_picture(results, output, pgm_info);
+
+}
+
+double psnr(char* original, char* noisy){
+  PGMInfo originalIMageInfo = parse_pgm(original);
+  PGMInfo noisyIMageInfo = parse_pgm(noisy);
+
+  double sum = 0;
+  for(int i = 0; i < originalIMageInfo.height; i++){
+    for(int j = 0; j < originalIMageInfo.width; j++){
+      sum += pow((originalIMageInfo.pixels[i][j] - noisyIMageInfo.pixels[i][j]), 2);
+    }
+  }
+  //printf("sum = %lf \n" , sum );
+  double ecm = sum / ( originalIMageInfo.height * originalIMageInfo.width);
+  //printf("ecm = %lf \n" , ecm);
+  double psnr = 10 * log10((pow(originalIMageInfo.max,2) / ecm));
+
+  return psnr;
+}
+
+
 void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
   FILE* outputFd = fopen(output, "w");
 
@@ -89,6 +135,7 @@ void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
   sprintf(info, "%i\n" , 255); //TODO cableado a 255
   fputs(info, outputFd);
 
+  //TODO habria que ver si el results[i] > 255 => poner 255???? (sino pondria cualquier cosa)
   for(int i = 0; i < pgm_info->width * pgm_info->height; i++){
     sprintf(info, "%c" ,(unsigned char) (unsigned int) results[i]);
     fputs(info, outputFd);

@@ -26,19 +26,24 @@ int main(int argc, char* argv[]){
   Matrix matrix = build_matrix(lambda, &pgm_info);
   // print_pretty_matrix(matrix, &pgm_info);
   // printf("DONE\nSTARTING GAUSS...");
+  double results[pgm_info.height * pgm_info.width];
+  //createWithSaltPeperNoise(results, 0.05, 0.95, output, &pgm_info);
+  //double psnrValue = psnr(picture, output);
+  //printf("el psnr es = %lf \n" , psnrValue);
 
   gauss(matrix, &pgm_info);
   // print_pretty_matrix(matrix, &pgm_info);
   // printf("DONE\nSOLVING EQUATIONS...");
 
-  double results[pgm_info.height * pgm_info.width];
+
   solve_equations(matrix, &pgm_info, results);
   // printf("DONE\n");
 
   // print_pretty_matrix(matrix, &pgm_info);
-  print_results(results, pgm_info.height * pgm_info.width, verification);
+  //print_results(results, pgm_info.height * pgm_info.width, verification);
   create_new_picture(results, output, &pgm_info);
 
   free_pixels_memory(&pgm_info);
+
   return 0;
 }
