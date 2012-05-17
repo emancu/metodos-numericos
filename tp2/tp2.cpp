@@ -42,7 +42,7 @@ int main(int argc, char* argv[]){
 
   // print_pretty_matrix(matrix, &pgm_info);
   //print_results(results, pgm_info.height * pgm_info.width, verification);
-  create_new_picture(results, output, &pgm_info);
+  //create_new_picture(results, output, &pgm_info);
 
   free_pixels_memory(&pgm_info);
 

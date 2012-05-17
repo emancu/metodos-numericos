@@ -16,6 +16,7 @@ typedef struct pgminfo {
   int width;
   int height;
   int max;
+  int factor;
   double** pixels;
 } PGMInfo;
 

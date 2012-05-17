@@ -8,6 +8,7 @@ PGMInfo parse_pgm(char* picture, int factor){
   unsigned char pixel[256];
   int i,j;
   PGMInfo pgm_info;
+  pgm_info.factor = factor;
 
   for(i = 0; i <= 1 ; i++){
     fgets((char*) pixel, 256, file);
