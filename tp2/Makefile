@@ -1,11 +1,12 @@
 CC= g++
 CFLAGS= -Wall -ggdb -I include/
 OBJ= src/tools.o src/matrix.o
-MAINS= tp2.o generateNoise.o
+MAINS= tp2.o generateNoise.o psnr.o
+BIN= tp generateNoise psnr
 
 .PHONY: all clean install
 
-all: clean tp generateNoise
+all: clean tp generateNoise psnr
 
 tp: $(OBJ) tp2.o
 	$(CC) $(CFLAGS) $(OBJ) tp2.o -o tp
@@ -13,16 +14,18 @@ tp: $(OBJ) tp2.o
 generateNoise: $(OBJ) generateNoise.o
 	$(CC) $(CFLAGS) $(OBJ) generateNoise.o -o generateNoise
 
-generateNoise.o: $(OBJ)
-	$(CC) $(CFLAGS) -c -o generateNoise.o generateNoise.cpp
+psnr: $(OBJ) psnr.o
+	$(CC) $(CFLAGS) $(OBJ) psnr.o -o psnr
 
-tp2.o: $(OBJ)
-	$(CC) $(CFLAGS) -c -o tp2.o tp2.cpp
+
 
 src/%.o: src/%.cpp
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 clean:
-	rm -rf $(OBJ) $(MAINS) tp generateNoise
+	rm -rf $(OBJ) $(MAINS) $(BIN)
 
 clear: clean

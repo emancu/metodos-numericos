@@ -144,13 +144,10 @@ double psnr(char* original, char* noisy){
 void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
   FILE* outputFd = fopen(output, "w");
 
-  char* name;
   char info[256];
-  name = "P5\n";
-  fputs(name, outputFd);
+  fputs("P5\n", outputFd);
 
-  name = "# Created by Mandrula INC\n";
-  fputs(name, outputFd);
+  fputs("# Created by Mandrula INC\n", outputFd);
 
   sprintf(info, "%i %i\n" , pgm_info->width, pgm_info->height);
   fputs(info, outputFd);
