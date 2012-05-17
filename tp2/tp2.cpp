@@ -4,12 +4,13 @@
 #include <math.h>
 
 int main(int argc, char* argv[]){
-  static const char *optString = "o:l:f:v";
+  static const char *optString = "o:l:f:v:r:";
   int c;
   char* picture;
   char* output;
   double lambda;
   bool verification = false;
+  int factor;
 
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
@@ -17,17 +18,17 @@ int main(int argc, char* argv[]){
       case 'f': { picture = optarg; break; }
       case 'v': { verification = true; break; }
       case 'o': { output = optarg; break; }
+      case 'r': { factor = atoi(optarg); break; }
       default:  { printf("Cannot parse.\n"); }
     }
   }
 
   // printf("BUILDING MATRIX...");
-  PGMInfo pgm_info = parse_pgm(picture);
+  PGMInfo pgm_info = parse_pgm(picture,factor);
   Matrix matrix = build_matrix(lambda, &pgm_info);
   // print_pretty_matrix(matrix, &pgm_info);
   // printf("DONE\nSTARTING GAUSS...");
   double results[pgm_info.height * pgm_info.width];
-  //createWithSaltPeperNoise(results, 0.05, 0.95, output, &pgm_info);
   //double psnrValue = psnr(picture, output);
   //printf("el psnr es = %lf \n" , psnrValue);
 

@@ -3,7 +3,7 @@
 #include <math.h>
 
 
-PGMInfo parse_pgm(char* picture){
+PGMInfo parse_pgm(char* picture, int factor){
   FILE* file = fopen(picture, "r+b");
   unsigned char pixel[256];
   int i,j;
@@ -24,15 +24,26 @@ PGMInfo parse_pgm(char* picture){
     pixel[i] = 0x0;
   }
 
+
+  int newHeight = ceil(pgm_info.height / factor);
+  //indices para recorrer la matriz submuestreada independientemente de la original
+  int k = 0,l = 0;
   double color;
-  pgm_info.pixels = new double*[pgm_info.height];
-  for(i = 0; i < pgm_info.height; i++){
-    pgm_info.pixels[i] = new double[pgm_info.width];
-    for(j = 0; j < pgm_info.width; j++){
+  pgm_info.pixels = new double*[newHeight];
+  for(i = 0; i < pgm_info.height; i += factor){
+    pgm_info.pixels[k] = new double[newHeight];
+    for(j = 0; j < pgm_info.width; j += factor){
       fread(pixel, 1, 1, file);
+      //salteo los pixels que no utilizo
+      fseek(file,factor - 1, SEEK_CUR);
       color = (double) (unsigned int) pixel[0];
-      pgm_info.pixels[i][j] = color;
+      pgm_info.pixels[k][l] = color;
+      l++;
     }
+    //salteo las lineas de pixels que no utilizo
+    fseek(file,pgm_info.height * (factor -1), SEEK_CUR);
+    k++;
+    l = 0;
   }
 
   fclose(file);
@@ -57,6 +68,17 @@ void print_pretty_matrix(Matrix matrix, PGMInfo* pgm_info){
     }
     printf("\n");
   }
+}
+
+void print_pgm_info(PGMInfo* pgm_info, double factor){
+    int newHeight = ceil(pgm_info->height / factor);
+    printf("height =  %d \n", newHeight);
+    for(int i = 0; i < newHeight; i++){
+      for(int j = 0; j < newHeight; j++){
+        printf("  %.0f", pgm_info->pixels[i][j]);
+      }
+      printf("\n \n");
+    }
 }
 
 void print_results(double* results, int size, bool verification){
@@ -100,8 +122,8 @@ void createWithSaltPeperNoise(double * results, double p, double q, char* output
 }
 
 double psnr(char* original, char* noisy){
-  PGMInfo originalIMageInfo = parse_pgm(original);
-  PGMInfo noisyIMageInfo = parse_pgm(noisy);
+  PGMInfo originalIMageInfo = parse_pgm(original,1);
+  PGMInfo noisyIMageInfo = parse_pgm(noisy,1);
 
   double sum = 0;
   for(int i = 0; i < originalIMageInfo.height; i++){

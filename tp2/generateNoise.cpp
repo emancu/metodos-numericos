@@ -21,7 +21,7 @@ int main(int argc, char* argv[]){
   }
   printf("p = %lf \n" , p );
 
-  PGMInfo pgm_info = parse_pgm(picture);
+  PGMInfo pgm_info = parse_pgm(picture,1);
   double results[pgm_info.height * pgm_info.width];
   createWithSaltPeperNoise(results, p, q, output, &pgm_info);
 
