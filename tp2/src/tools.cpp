@@ -52,7 +52,8 @@ PGMInfo parse_pgm(char* picture, int factor){
 }
 
 void free_pixels_memory(PGMInfo* pgm_info){
-  for(int i = 0; i < pgm_info->height; i++)
+  int newHeight = ceil(pgm_info->height / pgm_info->factor);
+  for(int i = 0; i < newHeight; i++)
     delete [] pgm_info->pixels[i];
   delete [] pgm_info->pixels;
 }
@@ -71,8 +72,8 @@ void print_pretty_matrix(Matrix matrix, PGMInfo* pgm_info){
   }
 }
 
-void print_pgm_info(PGMInfo* pgm_info, double factor){
-    int newHeight = ceil(pgm_info->height / factor);
+void print_pgm_info(PGMInfo* pgm_info){
+    int newHeight = ceil(pgm_info->height / pgm_info->factor);
     printf("height =  %d \n", newHeight);
     for(int i = 0; i < newHeight; i++){
       for(int j = 0; j < newHeight; j++){
@@ -82,7 +83,9 @@ void print_pgm_info(PGMInfo* pgm_info, double factor){
     }
 }
 
-void print_results(double* results, int size, bool verification){
+void print_results(double* results, PGMInfo* pgm_info, bool verification){
+  int newHeight = ceil(pgm_info->height / pgm_info->factor);
+  int size = newHeight * newHeight;
   for(int i = 0; i < size; i++){
     if(verification){
       unsigned int color = (unsigned int) results[i];
@@ -101,12 +104,14 @@ void print_results(double* results, int size, bool verification){
 void createWithSaltPeperNoise(double * results, double p, double q, char* output, PGMInfo* pgm_info){
    /* initialize random seed: */
   double random;
-  srand ( time(NULL) );
+  srand ( 0 );
 
   int h = 0;
   /* generate secret number: */
   for(int i = 0; i < pgm_info->height; i++){
     for(int j = 0; j < pgm_info->width; j++){
+      //GENERAR RUIDO GAUSSIANO : CON EL MISMO RANDOM MULTIPLICARLO POR UNA CONSTANTE - entre 0 y 255 - Y DPS SATURAR LA IMAGEN
+      //FIJARNOS QUE RANDOM QUEDE ENTRE -1 y 1 PARA SUMAR Y RESTAR... O SEA NO SIEMPRE SUMAR
       random = (double) rand() / RAND_MAX;
       if(random < p){
         results[h++] = 1;//no anda poniendo 0

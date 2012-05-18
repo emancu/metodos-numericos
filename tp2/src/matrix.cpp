@@ -27,10 +27,10 @@ Matrix build_matrix(double lambda, PGMInfo* pgm_info){
   for(int i = 0; i < factored_size; i++){
     for(int j = 0; j < factored_size; j++){
       // Saves the pixel color in the last element of the column
-      //TODO preguntar lo de si saturamos a 255
       matrix[row_number][matrix_width - 1] = pgm_info->pixels[i][j] * lambda;
 
       if(i == 0 || i == factored_size - 1 || j == 0 || j == factored_size - 1){
+        matrix[row_number][matrix_width - 1] = pgm_info->pixels[i][j];
         matrix[row_number][factored_size] = 1.0;
       }else{
         matrix[row_number][0]                   = -1.0;
@@ -83,6 +83,9 @@ void substract_rows(Matrix matrix, PGMInfo* pgm_info, int row_number, int column
 
     index++;
   }
+
+
+
 
   // Pixel.
   row_to_modify[matrix_width - 1] -= coefficient * row_to_use[matrix_width - 1];
