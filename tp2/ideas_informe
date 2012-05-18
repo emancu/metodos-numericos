@@ -1,0 +1,14 @@
++ Después de implementar alguno de los algoritmos de ruido, hacer UN gráfico acerca
+  de cómo nuestra nueva estructura mejora la implementación vieja, en cuanto a tiempo.
+
++ Después de implementar dos algoritmos de ruido, hacer UN gráfico comparando el
+  desempeño de nuestro algoritmo (nueva estructura) para ambos casos de prueba.
+
++ Elegir el caso donde peor se comporte el algoritmo y pasearlo por varios valores de lambda.
+
+Si queda tiempo/vale la pena:
+
++ Idem arriba con el ruido que queda.
+
++ Hacer un gráfico para instancias del problema cada vez más grandes, para mostrar complejidad
+
