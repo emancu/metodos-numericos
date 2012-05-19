@@ -27,12 +27,14 @@ PGMInfo parse_pgm(char* picture, int factor){
 
 
   int newHeight = ceil(pgm_info.height / factor);
+  int newWidth  = ceil(pgm_info.width / factor);
   //indices para recorrer la matriz submuestreada independientemente de la original
   int k = 0,l = 0;
   double color;
   pgm_info.pixels = new double*[newHeight];
+
   for(i = 0; i < pgm_info.height; i += factor){
-    pgm_info.pixels[k] = new double[newHeight];
+    pgm_info.pixels[k] = new double[newWidth];
     for(j = 0; j < pgm_info.width; j += factor){
       fread(pixel, 1, 1, file);
       //salteo los pixels que no utilizo
@@ -41,8 +43,8 @@ PGMInfo parse_pgm(char* picture, int factor){
       pgm_info.pixels[k][l] = color;
       l++;
     }
-    //salteo las lineas de pixels que no utilizo
-    fseek(file,pgm_info.height * (factor -1), SEEK_CUR);
+    //salteo las lineas de pixels que no utilizo (Eliminar filas)
+    fseek(file,pgm_info.width * (factor -1), SEEK_CUR);
     k++;
     l = 0;
   }
@@ -59,7 +61,9 @@ void free_pixels_memory(PGMInfo* pgm_info){
 }
 
 void print_pretty_matrix(Matrix matrix, PGMInfo* pgm_info){
-  for(int i = 0; i < pgm_info->height * pgm_info->height; i++){
+  printf("print_pretty_matrix Deprecated");
+  return;
+  for(int i = 0; i < pgm_info->height * pgm_info->width; i++){
     for(int k = 0; k < i; k++) printf(" ");
     for(int j = 0; j < 2 * pgm_info->width + 2; j++){
       if(matrix[i][j] >= 0.0){
@@ -74,9 +78,10 @@ void print_pretty_matrix(Matrix matrix, PGMInfo* pgm_info){
 
 void print_pgm_info(PGMInfo* pgm_info){
     int newHeight = ceil(pgm_info->height / pgm_info->factor);
+    int newWidth  = ceil(pgm_info->width / pgm_info->factor);
     printf("height =  %d \n", newHeight);
     for(int i = 0; i < newHeight; i++){
-      for(int j = 0; j < newHeight; j++){
+      for(int j = 0; j < newWidth; j++){
         printf("  %.0f", pgm_info->pixels[i][j]);
       }
       printf("\n \n");
@@ -85,7 +90,8 @@ void print_pgm_info(PGMInfo* pgm_info){
 
 void print_results(double* results, PGMInfo* pgm_info, bool verification){
   int newHeight = ceil(pgm_info->height / pgm_info->factor);
-  int size = newHeight * newHeight;
+  int newWidth  = ceil(pgm_info->width / pgm_info->factor);
+  int size = newHeight * newWidth;
   for(int i = 0; i < size; i++){
     if(verification){
       unsigned int color = (unsigned int) results[i];
@@ -104,17 +110,10 @@ void print_results(double* results, PGMInfo* pgm_info, bool verification){
 void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
   //Usamos width y height original porque la imagen final tiene que tener las mismas proporciones.
   FILE* outputFd = fopen(output, "w");
-
-  char info[256];
-  fputs("P5\n", outputFd);
-
-  fputs("# Created by Mandrula INC\n", outputFd);
-
-  sprintf(info, "%i %i\n" , pgm_info->width, pgm_info->height);
-  fputs(info, outputFd);
-
-  sprintf(info, "%i\n" , 255); //TODO cableado a 255
-  fputs(info, outputFd);
+  fprintf(outputFd, "P5\n");
+  fprintf(outputFd, "# Created by Mandrula INC\n");
+  fprintf(outputFd, "%i %i\n" , pgm_info->width, pgm_info->height);
+  fprintf(outputFd, "%i\n" , pgm_info->max);
 
   //TODO habria que ver si el results[i] > 255 => poner 255???? (sino pondria cualquier cosa)
   for(int i = 0; i < pgm_info->width * pgm_info->height; i++){
