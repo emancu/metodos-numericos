@@ -101,26 +101,6 @@ void print_results(double* results, PGMInfo* pgm_info, bool verification){
   }
 }
 
-
-double psnr(char* original, char* noisy){
-  PGMInfo originalIMageInfo = parse_pgm(original,1);
-  PGMInfo noisyIMageInfo = parse_pgm(noisy,1);
-
-  double sum = 0;
-  for(int i = 0; i < originalIMageInfo.height; i++){
-    for(int j = 0; j < originalIMageInfo.width; j++){
-      sum += pow((originalIMageInfo.pixels[i][j] - noisyIMageInfo.pixels[i][j]), 2);
-    }
-  }
-  //printf("sum = %lf \n" , sum );
-  double ecm = sum / ( originalIMageInfo.height * originalIMageInfo.width);
-  //printf("ecm = %lf \n" , ecm);
-  double psnr = 10 * log10((pow(originalIMageInfo.max,2) / ecm));
-
-  return psnr;
-}
-
-
 void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
   //Usamos width y height original porque la imagen final tiene que tener las mismas proporciones.
   FILE* outputFd = fopen(output, "w");

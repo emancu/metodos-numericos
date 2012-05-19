@@ -9,7 +9,6 @@ void create_new_picture(double*, char*, PGMInfo*);
 PGMInfo parse_pgm(char*,int);
 void free_pixels_memory(PGMInfo*);
 
-double psnr(char* original, char* noisy);
 void print_pgm_info(PGMInfo* pgm_info);
 
 
