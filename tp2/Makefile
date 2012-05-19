@@ -1,6 +1,6 @@
 CC= g++
 CFLAGS= -Wall -ggdb -I include/
-OBJ= src/tools.o src/matrix.o
+OBJ= src/tools.o src/matrix.o src/noiseGenerator.o
 MAINS= tp2.o generateNoise.o psnr.o
 BIN= tp generateNoise psnr
 

@@ -105,7 +105,7 @@ void solve_equations(Matrix matrix, PGMInfo* pgm_info, double* results){
       i++;
     }
     // Clear the final coefficient.
-    //TODO preguntar lo de si saturamos a 255
+    //TODO HACER LO QUE DIJO EMI HOSS: RECORRER LA MATRIZ, OBTENER MAYOR Y MENOR Y LLEVAR A VALORES COHERENTES
     results[row] = sum / matrix[row][factored_size];
   }
 }

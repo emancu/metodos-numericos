@@ -37,7 +37,7 @@ PGMInfo parse_pgm(char* picture, int factor){
       fread(pixel, 1, 1, file);
       //salteo los pixels que no utilizo
       fseek(file,factor - 1, SEEK_CUR);
-      color = (double) (unsigned int) pixel[0];
+      color = (double) (unsigned char) pixel[0];
       pgm_info.pixels[k][l] = color;
       l++;
     }
@@ -101,31 +101,6 @@ void print_results(double* results, PGMInfo* pgm_info, bool verification){
   }
 }
 
-void createWithSaltPeperNoise(double * results, double p, double q, char* output, PGMInfo* pgm_info){
-   /* initialize random seed: */
-  double random;
-  srand ( 0 );
-
-  int h = 0;
-  /* generate secret number: */
-  for(int i = 0; i < pgm_info->height; i++){
-    for(int j = 0; j < pgm_info->width; j++){
-      //GENERAR RUIDO GAUSSIANO : CON EL MISMO RANDOM MULTIPLICARLO POR UNA CONSTANTE - entre 0 y 255 - Y DPS SATURAR LA IMAGEN
-      //FIJARNOS QUE RANDOM QUEDE ENTRE -1 y 1 PARA SUMAR Y RESTAR... O SEA NO SIEMPRE SUMAR
-      random = (double) rand() / RAND_MAX;
-      if(random < p){
-        results[h++] = 1;//no anda poniendo 0
-      }else if (random > q){
-        results[h++] = 255;
-      }else{
-        results[h++] = pgm_info->pixels[i][j];
-      }
-    }
-  }
-  //print_results(results,pgm_info->height * pgm_info->width, false);
-  create_new_picture(results, output, pgm_info);
-
-}
 
 double psnr(char* original, char* noisy){
   PGMInfo originalIMageInfo = parse_pgm(original,1);
@@ -147,6 +122,7 @@ double psnr(char* original, char* noisy){
 
 
 void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
+  //Usamos width y height original porque la imagen final tiene que tener las mismas proporciones.
   FILE* outputFd = fopen(output, "w");
 
   char info[256];
@@ -162,7 +138,6 @@ void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
 
   //TODO habria que ver si el results[i] > 255 => poner 255???? (sino pondria cualquier cosa)
   for(int i = 0; i < pgm_info->width * pgm_info->height; i++){
-    sprintf(info, "%c" ,(unsigned char) (unsigned int) results[i]);
-    fputs(info, outputFd);
+    fprintf(outputFd, "%c" ,(unsigned char)results[i]);
   }
 }
