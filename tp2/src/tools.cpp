@@ -25,6 +25,7 @@ PGMInfo parse_pgm(char* picture, int factor){
     pixel[i] = 0x0;
   }
 
+  //TODO: Extract to a new function. Submuestrear
 
   int newHeight = ceil(pgm_info.height / factor);
   int newWidth  = ceil(pgm_info.width / factor);
@@ -108,15 +109,31 @@ void print_results(double* results, PGMInfo* pgm_info, bool verification){
 }
 
 void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
-  //Usamos width y height original porque la imagen final tiene que tener las mismas proporciones.
   FILE* outputFd = fopen(output, "w");
   fprintf(outputFd, "P5\n");
   fprintf(outputFd, "# Created by Mandrula INC\n");
   fprintf(outputFd, "%i %i\n" , pgm_info->width, pgm_info->height);
   fprintf(outputFd, "%i\n" , pgm_info->max);
 
+  //Usamos width y height original porque la imagen final tiene que tener las mismas proporciones.
   //TODO habria que ver si el results[i] > 255 => poner 255???? (sino pondria cualquier cosa)
-  for(int i = 0; i < pgm_info->width * pgm_info->height; i++){
-    fprintf(outputFd, "%c" ,(unsigned char)results[i]);
+
+  int factor = pgm_info->factor;
+  int newHeight = ceil(pgm_info->height / factor);
+  int newWidth  = ceil(pgm_info->width / factor);
+  double aux[pgm_info->width];
+
+  for(int i = 0; i < newHeight; i++){
+    for(int j = 0; j < newWidth; j++){
+      for(int k=0; k < factor; k++){ // Repetimos el pixel _factor_ veces
+        aux[j*factor + k] = results[i*newWidth + j];
+      }
+    }
+    // Fila completa, tenemos que escribirla *factor* veces en el archivo
+
+    //FIXME: USAR COUT PARA ESCRIBIR MAS RAPIDO
+    for(int k=0; k < factor; k++)
+      for(int l=0; l < pgm_info->width; l++)
+        fprintf(outputFd, "%c", (unsigned char) aux[l]);
   }
 }
