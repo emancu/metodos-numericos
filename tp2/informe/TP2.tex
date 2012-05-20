@@ -1,0 +1,216 @@
+\documentclass[a4paper]{article}
+\usepackage[spanish]{babel}
+\title{Trabajo Práctico 2}
+
+\usepackage[utf8]{inputenc}
+\usepackage{caratula}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{float}
+
+\setlength{\leftmargin}{2cm}
+\setlength{\rightmargin}{2cm}
+\setlength{\oddsidemargin}{-1cm}
+\setlength{\evensidemargin}{-1cm}
+\setlength{\topmargin}{-1cm}
+\setlength{\textwidth}{18cm}
+\setlength{\textheight}{25cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead [LO,LE]{\scriptsize Trabajo Práctico N$^{\circ}$2}
+\fancyhead [RO,RE]{\scriptsize Mancuso, Mataloni, Tolchinsky}
+\fancyfoot[CE,CO]{\thepage}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage[pdftex, bookmarks=true, colorlinks, citecolor=black, linkcolor=black]{hyperref}
+\usepackage{multirow}
+
+\begin{document}
+
+\materia{Métodos Numéricos}
+\submateria{Primer Cuatrimestre de 2012}
+\titulo{Filtrado de imágenes resueltas con ecuaciones lineales. }
+\subtitulo{ Ecuaciones Lineales, Filtro de imagen }
+\grupo{Trabajo Práctico N$^{\circ}$2}
+
+\integrante{Mancuso, Emiliano}{597/07}{emiliano.mancuso@gmail.com}
+\integrante{Mataloni, Alejandro}{706/07}{amataloni@gmail.com}
+\integrante{Tolchinsky, Lucas}{591/07}{lucas.tolchinsky@gmail.com}
+
+\maketitle
+
+\begin{verse}
+\abstract{
+%El resumen, de no más de 200 palabras, debería explicar brevemente el trabajo realizado y las conclusiones de los autores de manera que pueda ser u ́til por s ́ı solo para dar una idea del contenido del trabajo. Las palabras clave, no m ́as de cuatro, deben ser t ́erminos t ́ecnicos que den una idea del contenido del trabajo para facilitar su bu ́squeda en una base de datos tem ́atica.
+
+Un problema típico al trabajar con imágenes digitales es la existencia de \textit{ruido} en las mismas. En este trabajo desarrollamos un filtro para reducir el \textit{ruido} en las imágenes, por el método de diferencias finitas.
+% completar con las conclusiones 
+}
+\end{verse}
+
+\newpage
+
+\addcontentsline{toc}{section}{Índice}
+\tableofcontents
+
+% Main document
+
+\newpage
+
+\section{Introducción Teórica}
+%Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
+
+
+\newpage
+
+\section{Desarrollo}
+%Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
+
+\end{description} 
+
+\section{Discusión y Resultados}
+%Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
+
+\begin{figure}[H]
+  \centering
+  %\includegraphics[scale=0.80]{graficos/1-Biseccion_vs_BiseccionNewton.png}
+  \caption{Cantidad de Iteraciones. Bisección vs Newton (con aproximación de Bisección) }
+\end{figure}
+
+
+%Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
+
+\newpage
+
+\section{Conclusiones}
+%Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
+
+\newpage
+
+\section{Apéndices}
+\subsection{A - Enunciado}
+Un problema t\'ipico que se encuentra al trabajar con im\'agenes digitales es la existencia de ``ruido'' en las mismas. En pocas palabras, podemos decir que el ruido ocurre cuando el valor de uno o m\'as p\'ixeles de la imagen, no se corresponden con la realidad. La mayor\'ia de las veces, esto se debe a la calidad del equipo electr\'onico utilizado para tomar las fotograf\'ias, o bien a posibles perturbaciones introducidas al momento de transmitir la informaci\'on. Un caso muy com\'un de im\'agenes con ruido son las fotograf\'ias satelitales.
+
+%Una forma de corregir (o reducir) este fen\'omeno en las im\'agenes es mediante la aplicaci\'on de filtros, con el objetivo de suavizar las mismas para obtener resultados m\'as cercanos a la realidad. Hoy en d\'ia, existen muchas t\'ecnicas de filtrado de im\'agenes,  muchas de ellas est\'an basadas en modelos matem\'aticos que en general se resuelven mediante m\'etodos num\'ericos.
+
+Se puede pensar el problema de filtrar una imagen con ruido como la minimizaci\'on del siguiente funcional:
+\begin{equation}
+ \Pi = \int_\Omega {\frac{\lambda}{2} \left| u - \tilde{u} \right|^2 + \frac{1}{2} \lVert \nabla u \rVert^2 } d\Omega,
+\label{funcional}
+\end{equation}
+donde $u : \Omega \subset \mathbb{R}^2 \to \mathbb{R}$ describe la imagen filtrada y
+$\tilde{u} : \Omega \subset \mathbb{R}^2 \to \mathbb{R}$ la imagen a filtrar (con ruido).
+De esta manera, el primer t\'ermino \emph{pesa} cuanto ruido tiene $\tilde{u}$ y el segundo \emph{pesa} la suavidad de la imagen obtenida. La constante $\lambda$ controla la importancia relativa de los dos t\'erminos.
+
+La minimizaci\'on del funcional de la ecuaci\'on~(\ref{funcional}) da lugar a la siguiente ecuaci\'on diferencial:
+% \begin{equation}
+%  \lambda \left( u - \tilde{u} \right) - \nabla^2 u = 0.
+% \label{ecdif}
+% \end{equation}
+\begin{equation}
+ \lambda \left( u - \tilde{u} \right) - \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) = 0.
+\label{ecdif}
+\end{equation}
+
+La soluci\'on de la ecuaci\'on~(\ref{ecdif}) que representa la imagen filtrada se puede aproximar de manera discreta utilizando el m\'etodo de diferencias finitas, lo cual conduce al siguiente sistema de ecuaciones:
+\begin{equation}
+ \lambda u_{i,j} - \left( u_{i-1,j} + u_{i+1,j} + u_{i,j-1} + u_{i,j+1} - 4 u_{i,j} \right) = \lambda \tilde{u_{i,j}}
+ \label{eqlin}
+\end{equation}
+donde ahora $u,\tilde{u} : \Omega \subset \mathbb{Z}^2 \to [0 \dots 255]$ son la versiones discretas de la imagen filtrada y la imagen original, respectivamente. Viendo la imagen $u$ como una matriz, $i,j$ son los \'indices de fila y columna de cada elemento (p\'ixel)  de la matriz, donde el 0 es representado por el color negro y el 255 por el blanco\footnote{Este modelo de filtrado de im\'agenes se puede extender a im\'agenes color RGB, repitiendo el proceso descripto para cada componente de color.}.
+
+{\bf Enunciado}
+
+El objetivo principal de este trabajo pr\'actico es implementar un programa para eliminar (o reducir) el ruido en im\'agenes digitales. Para ello, el programa deber\'a tomar como entrada una imagen (supuestamente con ruido) y resolver la ecuaci\'on~(\ref{ecdif}) por el m\'etodo de diferencias finitas (resolviendo el sistema de ecuaciones dado por las ecuaciones~(\ref{eqlin})). Finalmente, el programa deber\'a devolver la versi\'on filtrada de la im\'agen. La constante $\lambda$ involucrada en las ecuaciones debe ser un par\'ametro del programa de manera tal que se pueda luego experimentar con ella.
+
+Adicionalmente, el programa implementado deber\'a ser capaz de procesar im\'agenes de gran tama\~no. Para ello, se pide implementar una funcionalidad extra que permita reducir las im\'agenes antes de ser procesadas y que, luego del proceso, revierta esta reducci\'on para lograr as\'i una imagen de las dimensiones originales. El {\em factor de reducci\'on} a utilizar debe ser un par\'ametro del programa. Por ejemplo, si se desea procesar una imagen de 5 {\em megap\'ixeles}\footnote{Un megap\'ixel equivale a un mill\'on de p\'ixeles.}, puede ocurrir que el tiempo de proceso necesario exceda lo que uno est\'a dispuesto a esperar, con lo cual ser\'ia posible reducir la imagen con un cierto factor de reducci\'on y aplicar el proceso de filtrado a una imagen de menores dimensiones. Obviamente, la salida del programa deber\'a invertir este proceso para retornar una imagen de dimensiones id\'enticas a la imagen original. Estos procesos llevan el nombre de {\em submuestreo} (la reducci\'on) y {\em sobremuestreo} (la ampliaci\'on) y existen muchas formas de realizarlos. La manera de realizarlos para este trabajo queda a criterio del grupo.
+
+% El proceso de filtrado descripto puede aplicarse tambi\'en en forma iterativa. Es decir, luego de la primer pasada de filtrado, es posible repetir el procedimiento sobre la imagen obtenida con el objetivo de seguir reduciendo el ruido en la misma. El programa implementado deber\'a permitir realizar este proceso iterativo y la cantidad de iteraciones deber\'a ser un par\'ametro del programa, sobre el cual sea posible experimentar.
+
+Tanto el valor de la constante $\lambda$ como el factor de reducci\'on
+%  y la cantidad de iteraciones de filtrado 
+tendr\'an un fuerte impacto en la calidad de las im\'agenes obtenidas. 
+% Los dos \'ultimos impactar\'an 
+El factor de reducci\'on impactar\'a
+tambi\'en en los tiempos de ejecuci\'on. Para medir estos impactos, se deber\'a realizar una experimentaci\'on computacional cuyos resultados deber\'an ser plasmados en el informe del trabajo.
+
+{\bf Experimentaci\'on}
+
+Una forma de medir la calidad visual de las im\'agenes filtradas, es a trav\'es del PSNR ({\em Peak Signal-to-Noise Ratio}).
+EL PSNR es una m\'etrica ``perceptual'' (acorde a lo que perciben los humanos) y nos da una forma de medir la calidad de una imagen perturbada, siempre y cuando se cuente con la imagen original. 
+Cuanto mayor es el PSNR mayor es la calidad de la imagen. La unidad de medida es el decibel (db) y se considera que una diferencia de 0.5 db ya es notada por la vista humana. El PSNR se define como:
+$$
+\mathit{PSNR} = 10 \cdot \log_{10} \left( \frac{\mathit{MAX}^2_u}{\mathit{ECM}} \right)
+$$
+donde $MAX_u$ define el rango m\'aximo de la imagen (para nuestro caso ser\'ia 255) y ECM es el {\em error cuadr\'atico medio}, definido como:
+$$
+\frac{1}{N} \sum_{i,j}{(u^0_{i,j} - u_{i,j})^2} 
+$$
+donde $N$ es la cantidad de p\'ixeles de la imagen, $u^0$ es la imagen original y $u$ es la imagen perturbada (o en nuestro caso, la imagen recuperada).
+
+La experimentaci\'on propuesta para el presente trabajo pr\'actico consiste en analizar la calidad de las im\'agenes reconstru\'idas y los tiempos de ejecuci\'on en funci\'on de: \\[-8mm]
+	\begin{itemize}
+		\item el nivel de ruido en la imagen, \\[-6mm]
+		\item la constante $\lambda$ y\\[-6mm]
+		\item el factor de reducci\'on. \\[-6mm]
+% 		\item la cantidad de iteraciones de filtrado. \\[-8mm]
+	\end{itemize}	
+	
+Dado que para medir la calidad se requiere contar con la imagen original, se deber\'an utilizar im\'agenes \emph{ruidosas} generadas artificialmente (por ejemplo, sumando o restando a los p\'ixeles de la imagen original valores generados aleatoriamente con distribuci\'on uniforme).
+	
+{\bf Formatos de archivos de entrada}
+
+Para leer y escribir im\'agenes sugerimos utilizar el formato {\em raw} binario \texttt{.pgm}\footnote{\url{http://netpbm.sourceforge.net/doc/pgm.html}}. 
+El mismo es muy sencillo de implementar y compatible con muchos gestores de fotos\footnote{XnView \url{http://www.xnview.com/}} y Matlab.
+
+\newpage
+
+\subsection{B - Códigos Fuente}
+
+
+\subsection{C - Cómo compilar y usar el TP}
+El directorio del TP contiene un Makefile, con lo cual para compilarlo basta sólamente con ejecutar \textbf{make}. Los binarios generados son: 
+
+\begin{itemize}
+  \item \textbf{tp} Lee la imagen, plantea el sistema de equaciones, aplica el algoritmo de Gauss y resuelve el sistema. Luego graba la nueva imagen
+  \begin{description}
+	\item[-l] Lambda.
+	\item[-f] Ruta de la foto con ruido.
+	\item[-o] Ruta de la foto filtrada.
+	\item[-r] Factor de reducción [Entero].
+  \end{description}
+
+
+  \item \textbf{psnr} Calcula el PSNR de las fotos pasadas como parámetro.
+  \begin{description}
+	\item[-c] Ruta de la foto sin ruido.
+	\item[-n] Ruta de la foto con ruido.
+  \end{description}
+
+  \item \textbf{generateNoise} Agrega ruido a la foto
+  \begin{description}
+	\item[-M] es el método a ejecutar y se mapean del siguiente modo:
+	\begin{itemize}
+	   \item 0 para Salt & Pepper
+	   \item 1 para Gaussian
+         \end{itemize}
+
+	\item[-f] Ruta de la foto a agregar ruido.
+	\item[-o] Ruta de la foto con ruido.
+	\item[-p] Parámetro P para \textbf{Salt \& Pepper}
+	\item[-q] Parámetro Q para \textbf{Salt \& Pepper}
+	\item[-r] Factor para \textbf{Gaussian}
+  \end{description}
+
+\end{itemize}
+
+\newpage
+
+%\section{Referencias TODO}
+%Es importante incluir referencias a libros, art ́ıculos y p ́aginas de Internet consultados durante el desarrollo del trabajo, haciendo referencia a estos materiales a lo largo del informe. Se deben citar tambi ́en las comunicaciones personales con otros grupos.
+
+
+\end{document}
