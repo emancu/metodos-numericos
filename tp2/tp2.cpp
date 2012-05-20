@@ -29,9 +29,7 @@ int main(int argc, char* argv[]){
   // print_pretty_matrix(matrix, &pgm_info);
   // printf("DONE\nSTARTING GAUSS...");
   //print_pgm_info(&pgm_info);
-  int newHeight = ceil(pgm_info.height / pgm_info.factor);
-  int newWidth  = ceil(pgm_info.width / pgm_info.factor);
-  double results[newHeight * newWidth];
+  double results[pgm_info.fHeight * pgm_info.fWidth];
 
   //create_new_picture(results, output, &pgm_info);
 
