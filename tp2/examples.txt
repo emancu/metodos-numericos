@@ -1,0 +1,1 @@
+./tp -f imagenes/64x64/blond.pgm -l 1 -o tmp/blond_last.pgm -r 1
