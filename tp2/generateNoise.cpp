@@ -29,7 +29,8 @@ int main(int argc, char* argv[]){
   //print_pgm_info(&pgm_info);
   double results[pgm_info.height * pgm_info.width];
 
-   switch(method) {
+
+  switch(method) {
     case 0:  { printf("Salt: \n");      createWithSaltPeperNoise(results, p, q, output, &pgm_info);   break; }
     case 1:  { printf("gaussian:\n");   createGaussianNoise(results, factor, output, &pgm_info); break; }
     default: { printf("Metodo no valido.\n"); }
