@@ -6,7 +6,7 @@
 double psnr(char* original, char* noisy);
 
 int main(int argc, char* argv[]){
-  static const char *optString = "o:f:p:q:";
+  static const char *optString = "n:c:";
   int c;
   char *with_noise, *without_noise;
 
