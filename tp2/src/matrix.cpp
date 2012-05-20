@@ -88,7 +88,7 @@ void solve_equations(Matrix matrix, PGMInfo* pgm_info, double* results){
     // Starts with the pixel value.
     double sum = matrix[row][matrix_width - 1];
     int i = 1;
-    for(int column = pgm_info->fWidth + 1; column < pgm_info->fWidth - 1; column++){
+    for(int column = pgm_info->fWidth + 1; column < matrix_width - 1; column++){
        // Substract each of the known, previously calculated variables.
       if(matrix[row][column] != 0.0)
         sum -= matrix[row][column] * results[row + i];
