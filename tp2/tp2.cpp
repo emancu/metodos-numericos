@@ -4,19 +4,17 @@
 #include <math.h>
 
 int main(int argc, char* argv[]){
-  static const char *optString = "o:l:f:v:r:";
+  static const char *optString = "o:l:f:r:";
   int c;
   char* picture;
   char* output;
   double lambda;
-  bool verification = false;
   int factor;
 
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
       case 'l': { lambda  = atof(optarg); break; }
       case 'f': { picture = optarg; break; }
-      case 'v': { verification = true; break; }
       case 'o': { output = optarg; break; }
       case 'r': { factor = atoi(optarg); break; }
       default:  { printf("Cannot parse.\n"); }
