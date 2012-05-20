@@ -27,7 +27,10 @@ int main(int argc, char* argv[]){
 
   PGMInfo pgm_info = parse_pgm(picture,1);
   double results[pgm_info.height * pgm_info.width];
-
+  if(method==0)
+    sprintf(output, "%s_salt_p%f_q%f.pgm", output, p, q);
+  else
+    sprintf(output, "%s_gauss_f%d.pgm", output, factor);
 
   switch(method) {
     case 0:  { printf("Salt: \n");      createWithSaltPeperNoise(results, p, q, output, &pgm_info);   break; }
