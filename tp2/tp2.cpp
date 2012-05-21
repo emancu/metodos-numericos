@@ -3,6 +3,9 @@
 #include <matrix.h>
 #include <math.h>
 
+#include <string.h>
+using namespace std;
+
 int main(int argc, char* argv[]){
   static const char *optString = "o:l:f:r:";
   int c;
@@ -20,6 +23,10 @@ int main(int argc, char* argv[]){
       default:  { printf("Cannot parse.\n"); }
     }
   }
+
+  string pict = (string) picture;
+  string name = pict.substr(pict.find_last_of('/')+1);
+  sprintf(output, "%s%s__l%.1f_f%d__.pgm", output, name.c_str(), lambda, factor);
 
   PGMInfo pgm_info = parse_pgm(picture,factor);
   Matrix matrix = build_matrix(lambda, &pgm_info);
