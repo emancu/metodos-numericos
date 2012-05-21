@@ -10,3 +10,14 @@ pm*
 out*.pgm
 pruebas
 manual_octave.pdf
+informe/*.aux
+informe/*.log
+informe/*.synctex
+informe/*.toc
+informe/*.out
+informe/TSWLatexianTemp*
+informe/*.bbl
+informe/*.blg
+informe/*.pdf
+informe/*.synctex.gz
+
