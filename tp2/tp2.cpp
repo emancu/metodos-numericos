@@ -26,7 +26,8 @@ int main(int argc, char* argv[]){
 
   string pict = (string) picture;
   string name = pict.substr(pict.find_last_of('/')+1);
-  sprintf(output, "%s%s__l%.1f_f%d__.pgm", output, name.c_str(), lambda, factor);
+  string nameWithoutExtension = name.substr(0,name.find_last_of('.'));
+  sprintf(output, "%s%s_l%.1f_f%d.pgm", output, nameWithoutExtension.c_str(), lambda, factor);
 
   PGMInfo pgm_info = parse_pgm(picture,factor);
   Matrix matrix = build_matrix(lambda, &pgm_info);
