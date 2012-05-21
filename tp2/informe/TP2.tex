@@ -74,19 +74,19 @@ Un problema típico al trabajar con imágenes digitales es la existencia de \tex
 \section{Desarrollo}
 
 Para llevar adelante el filtrado de las imágenes implementamos el método de diferencias finitas.
-En este problema, cada pixel de la imagen filtrada y sus cuatro pixeles adyacentes, guardan una relación con el pixel correspondiente en la imagen original.
+En este problema, cada pixel de la imagen filtrada y sus cuatro pixeles adyacentes (llamados \textit{u}), guardan una relación con el pixel correspondiente en la imagen original (llamado $\tilde{u}$).
 
 \begin{equation}
  -u_{i - 1, j} - u_{i, j - 1} + (4 + \lambda ) u_{i,j} - u_{i, j + 1} - u_{i + 1, j} = \lambda \tilde{u}_{i,j}
- \label{eqlin}
+ \label{eqs}
 \end{equation}
 
 Esto significa que por cada pixel de la imagen filtrada, tenemos una ecuación que involucra cinco variables.
 
-En el caso de los bordes, lo que decidimos fue que dichas ecuaciones sólo involucren una variable, la del pixel correspondiente. De este modo, al filtrarse, sólo varía según el lambda.
+En el caso de los bordes, lo que decidimos fue que dichas ecuaciones sólo involucren la variable del pixel correspondiente. De este modo al filtrarse, no cambia.
 
 \begin{equation}
-u_{i,j} = \lambda \tilde{u}_{i,j}
+u_{i,j} = \tilde{u}_{i,j}
 \end{equation}
 
 \subsection{Estructura de representación}
@@ -104,7 +104,7 @@ Luego de implementar la solución al sistema de ecuaciones (discutido más adela
 Analizamos primero el hecho de que la matriz asociada es 5 bandas: la diagonal principal correspondiente al iésimo pixel de la imagen filtrada, y una banda por cada pixel adyacente.
 Aprovechando esto, notamos que los ceros por encima de la banda superior y debajo de la banda inferior nunca cambian, de modo que no es necesario guardarlos. **TODO: EXPLICAR ESTO EN MAS PROFUNDIDAD?**
 
-Por lo tanto, si bien la matriz asociada es de $N \times N$, alcanza con guardar una matriz de $N \times 2n + 2$, donde \textit{n} es el ancho de la imagen. Este último cálculo surge de que necesitamos guardar los coeficientes entre la banda inferior y la diagonal principal (n valores más uno de la diagonal), la diagonal principal y la banda superior (n valores más), y el dato correspondiente a cada fila.
+Por lo tanto, si bien la matriz asociada es de $N \times N$, alcanza con guardar una matriz de $N \times (2n + 2)$, donde \textit{n} es el ancho de la imagen. Este último cálculo surge de que necesitamos guardar los coeficientes entre la banda inferior y la diagonal principal (n valores más uno de la diagonal), la diagonal principal y la banda superior (n valores más), y el dato correspondiente a cada fila.
 
 Finalmente, logramos mejorar la complejidad del algoritmo a la vez que optimizamos la memoria utilizada para la representación.
 
