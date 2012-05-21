@@ -18,7 +18,7 @@ int main(int argc, char* argv[]){
     }
   }
 
-  printf(" PSNR: %.6lf ", psnr(without_noise, with_noise));
+  printf(" PSNR: %.6lf \n", psnr(without_noise, with_noise));
 
   return 0;
 }
