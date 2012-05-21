@@ -76,19 +76,25 @@ Un problema típico al trabajar con imágenes digitales es la existencia de \tex
 Para llevar adelante el filtrado de las imágenes implementamos el método de diferencias finitas.
 En este problema, cada pixel de la imagen filtrada y sus cuatro pixeles adyacentes, guardan una relación con el pixel correspondiente en la imagen original.
 
-$$ -u_{i - 1, j} - u_{i, j - 1} + (4 + \lambda ) u_{i,j} - u_{i, j + 1} - u_{i + 1, j} = \lambda \tilde{u}_{i,j} $$
+\begin{equation}
+ -u_{i - 1, j} - u_{i, j - 1} + (4 + \lambda ) u_{i,j} - u_{i, j + 1} - u_{i + 1, j} = \lambda \tilde{u}_{i,j}
+ \label{eqlin}
+\end{equation}
 
 Esto significa que por cada pixel de la imagen filtrada, tenemos una ecuación que involucra cinco variables.
 
 En el caso de los bordes, lo que decidimos fue que dichas ecuaciones sólo involucren una variable, la del pixel correspondiente. De este modo, al filtrarse, sólo varía según el lambda.
 
-$$ u_{i,j} = \lambda \tilde{u}_{i,j} $$
+\begin{equation}
+u_{i,j} = \lambda \tilde{u}_{i,j}
+\end{equation}
 
 \subsection{Estructura de representación}
 
 Teniendo dichas ecuaciones, el próximo paso consiste en obtener y guardar la matriz asociada al sistema.
 
 Como se ve en (1) y (2), los coeficientes que acompañan las variables son, al principio, fijos.
+
 De esta manera es sencillo representar cada fila de la matriz. El inconveniente es que dicha matriz tiene tamaño $N \times N$, donde \textit{N} es la cantidad de pixeles, y en su mayoría contiene ceros.
 
 Con la idea de optimizar la memoria, el primer acercamiento que tuvimos fue no guardar los ceros de la matriz, sino solamente los valores. Lo que hicimos fue utilizar un Diccionario (stl::map) de dos dimensiones: (\textit{fila}, \textit{columna}, \textit{valor}), y de esta manera no necesitamos guardar valores nulos.
