@@ -8,6 +8,10 @@
 \usepackage{color}
 \usepackage{listings}
 \usepackage{float}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
 
 \setlength{\leftmargin}{2cm}
 \setlength{\rightmargin}{2cm}
@@ -61,6 +65,7 @@ Un problema típico al trabajar con imágenes digitales es la existencia de \tex
 \newpage
 
 \section{Introducción Teórica}
+
 %Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
 
 
@@ -70,13 +75,17 @@ Un problema típico al trabajar con imágenes digitales es la existencia de \tex
 
 Para llevar adelante el filtrado de las imágenes implementamos el método de diferencias finitas.
 En este problema, cada pixel de la imagen filtrada y sus cuatro pixeles adyacentes, guardan una relación con el pixel correspondiente en la imagen original.
-%Poner acá la ecuación iésima (1)
+
+$$ -u_{i - 1, j} - u_{i, j - 1} + (4 + \lambda ) u_{i,j} - u_{i, j + 1} - u_{i + 1, j} = \lambda \tilde{u}_{i,j} $$
+
 Esto significa que por cada pixel de la imagen filtrada, tenemos una ecuación que involucra cinco variables.
 
 En el caso de los bordes, lo que decidimos fue que dichas ecuaciones sólo involucren una variable, la del pixel correspondiente. De este modo, al filtrarse, sólo varía según el lambda.
-%Poner acá la ecuación iésima de un pixel borde. (2)
+
+$$ u_{i,j} = \lambda \tilde{u}_{i,j} $$
 
 \subsection{Estructura de representación}
+
 Teniendo dichas ecuaciones, el próximo paso consiste en obtener y guardar la matriz asociada al sistema.
 
 Como se ve en (1) y (2), los coeficientes que acompañan las variables son, al principio, fijos.
@@ -87,14 +96,15 @@ Con la idea de optimizar la memoria, el primer acercamiento que tuvimos fue no g
 Luego de implementar la solución al sistema de ecuaciones (discutido más adelante), notamos que el hecho de utilizar la biblioteca stl::map hacía que la complejidad del algoritmo fuese demasiado alta, teniendo por ejemplo imágenes de $64 \times 64$ que demoraban cerca de medio minuto en ser filtradas. Entendiendo que si bien la complejidad no es parte del espectro del trabajo práctico, el hecho de que el algoritmo sea lento es un obstáculo a la hora de realizar pruebas, y por este motivo decidimos pensar nuevamente la estructura.
 
 Analizamos primero el hecho de que la matriz asociada es 5 bandas: la diagonal principal correspondiente al iésimo pixel de la imagen filtrada, y una banda por cada pixel adyacente.
-Aprovechando esto, notamos que los ceros por encima de la banda superior y debajo de la banda inferior nunca cambian, de modo que no es necesario guardarlos. **EXPLICAR ESTO EN MAS PROFUNDIDAD?**
+Aprovechando esto, notamos que los ceros por encima de la banda superior y debajo de la banda inferior nunca cambian, de modo que no es necesario guardarlos. **TODO: EXPLICAR ESTO EN MAS PROFUNDIDAD?**
 
 Por lo tanto, si bien la matriz asociada es de $N \times N$, alcanza con guardar una matriz de $N \times 2n + 2$, donde \textit{n} es el ancho de la imagen. Este último cálculo surge de que necesitamos guardar los coeficientes entre la banda inferior y la diagonal principal (n valores más uno de la diagonal), la diagonal principal y la banda superior (n valores más), y el dato correspondiente a cada fila.
 
 Finalmente, logramos mejorar la complejidad del algoritmo a la vez que optimizamos la memoria utilizada para la representación.
 
 \subsection{Solución del sistema}
-A la hora de resolver el sistema de ecuaciones analizamos dos alternativas: la eliminación gaussiana y la factorización QR. **AGREGAR ACA POR QUE NO PINTO USAR QR**. Dado que la matriz asociada es rala, y que debajo de la diagonal principal hay solamente dos bandas, nos inclinamos por implementar la eliminación gaussiana.
+
+A la hora de resolver el sistema de ecuaciones analizamos dos alternativas: la eliminación gaussiana y la factorización QR. **TODO: AGREGAR ACA POR QUE NO PINTO USAR QR**. Dado que la matriz asociada es rala, y que debajo de la diagonal principal hay solamente dos bandas, nos inclinamos por implementar la eliminación gaussiana.
 
 En un principio, cuando contábamos con la estructura basada en Diccionarios, encontramos que recorrer cada fila de la columna a triangular en busca de los valores a eliminar resultaba lento, en especial al principio, cuando solamente contamos con a lo sumo dos valores bajo la diagonal principal. Esto nos llevó a implementar una estructura auxiliar para registrar en qué filas se encuentran los coeficientes de una columna dada.
 
@@ -106,6 +116,7 @@ Por último, una vez que analizamos la anatomia de la matriz 5 bandas y dimos co
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
 
 \section{Discusión y Resultados}
+
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 
 \begin{figure}[H]
@@ -120,19 +131,22 @@ Por último, una vez que analizamos la anatomia de la matriz 5 bandas y dimos co
 \newpage
 
 \section{Conclusiones}
+
 %Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
 
 \newpage
 
 \section{Apéndices}
+
 \subsection{A - Enunciado}
+
 Un problema t\'ipico que se encuentra al trabajar con im\'agenes digitales es la existencia de ``ruido'' en las mismas. En pocas palabras, podemos decir que el ruido ocurre cuando el valor de uno o m\'as p\'ixeles de la imagen, no se corresponden con la realidad. La mayor\'ia de las veces, esto se debe a la calidad del equipo electr\'onico utilizado para tomar las fotograf\'ias, o bien a posibles perturbaciones introducidas al momento de transmitir la informaci\'on. Un caso muy com\'un de im\'agenes con ruido son las fotograf\'ias satelitales.
 
 %Una forma de corregir (o reducir) este fen\'omeno en las im\'agenes es mediante la aplicaci\'on de filtros, con el objetivo de suavizar las mismas para obtener resultados m\'as cercanos a la realidad. Hoy en d\'ia, existen muchas t\'ecnicas de filtrado de im\'agenes,  muchas de ellas est\'an basadas en modelos matem\'aticos que en general se resuelven mediante m\'etodos num\'ericos.
 
 Se puede pensar el problema de filtrar una imagen con ruido como la minimizaci\'on del siguiente funcional:
 \begin{equation}
-% \Pi = \int_\Omega {\frac{\lambda}{2} \left| u - \tilde{u} \right|^2 + \frac{1}{2} \lVert \nabla u \rVert^2 } d\Omega,
+  \Pi = \int_\Omega {\frac{\lambda}{2} \left| u - \tilde{u} \right|^2 + \frac{1}{2} \lVert \nabla u \rVert^2 } d\Omega,
 \label{funcional}
 \end{equation}
 donde $u : \Omega \subset \mathbb{R}^2 \to \mathbb{R}$ describe la imagen filtrada y
