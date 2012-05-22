@@ -126,6 +126,9 @@ Aprendimos luego que a medida que se triangula la matriz, la misma se va llenand
 
 Por último, una vez que analizamos la anatomía de la matriz 5 bandas y dimos con la estructura óptima explicada anteriormente, para triangular sólo se requiere que en cada columna se recorra hasta la banda inferior, que se encuentra a \textit{n} valores de distancia. De esta manera no es necesaria otra estructura auxiliar.  
 
+\subsection{Saturación}
+
+Todas las imágenes con las que trabajamos, son en escala de grises reducida y por lo tanto es importante mantener la misma y ser cuidadosos a la hora de volcar los resultados en una imágen. Para que la escala de grises sea proporcional, seleccionamos el valor mínimo (el más oscuro), el máximo (el más claro) y a través de una regla de tres simple, transformamos todos los pixeles en valores que van de 0 a 255.
 
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
 
@@ -154,7 +157,7 @@ Por último, una vez que analizamos la anatomía de la matriz 5 bandas y dimos c
 
 \subsection{A - Enunciado}
 
-Un problema t\'ipico que se encuentra al trabajar con im\'agenes digitales es la existencia de ``ruido'' en las mismas. En pocas palabras, podemos decir que el ruido ocurre cuando el valor de uno o m\'as p\'ixeles de la imagen, no se corresponden con la realidad. La mayor\'ia de las veces, esto se debe a la calidad del equipo electr\'onico utilizado para tomar las fotograf\'ias, o bien a posibles perturbaciones introducidas al momento de transmitir la informaci\'on. Un caso muy com\'un de im\'agenes con ruido son las fotograf\'ias satelitales.
+Un problema típico que se encuentra al trabajar con imágenes digitales es la existencia de ``ruido'' en las mismas. En pocas palabras, podemos decir que el ruido ocurre cuando el valor de uno o más píxeles de la imagen, no se corresponden con la realidad. La mayor\'ia de las veces, esto se debe a la calidad del equipo electr\'onico utilizado para tomar las fotograf\'ias, o bien a posibles perturbaciones introducidas al momento de transmitir la informaci\'on. Un caso muy com\'un de im\'agenes con ruido son las fotograf\'ias satelitales.
 
 %Una forma de corregir (o reducir) este fen\'omeno en las im\'agenes es mediante la aplicaci\'on de filtros, con el objetivo de suavizar las mismas para obtener resultados m\'as cercanos a la realidad. Hoy en d\'ia, existen muchas t\'ecnicas de filtrado de im\'agenes,  muchas de ellas est\'an basadas en modelos matem\'aticos que en general se resuelven mediante m\'etodos num\'ericos.
 
