@@ -8,7 +8,6 @@ tmp
 print_matrix*
 pm*
 out*.pgm
-pruebas
 manual_octave.pdf
 informe/*.aux
 informe/*.log
@@ -19,5 +18,3 @@ informe/TSWLatexianTemp*
 informe/*.bbl
 informe/*.blg
 informe/*.pdf
-informe/*.synctex.gz
-

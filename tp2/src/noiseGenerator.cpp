@@ -19,7 +19,7 @@ void createWithSaltPeperNoise(double * results, double p, double q, char* output
       //FIJARNOS QUE RANDOM QUEDE ENTRE -1 y 1 PARA SUMAR Y RESTAR... O SEA NO SIEMPRE SUMAR
       random = (double) rand() / RAND_MAX;
       if(random < p){
-        results[h++] = 1;//no anda poniendo 0
+        results[h++] = 0;//no anda poniendo 0
       }else if (random > q){
         results[h++] = 255;
       }else{

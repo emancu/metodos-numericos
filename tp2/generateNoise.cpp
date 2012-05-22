@@ -23,14 +23,16 @@ int main(int argc, char* argv[]){
       default:  { printf("Cannot parse.\n"); }
     }
   }
-  printf("p = %lf \n" , p );
 
   PGMInfo pgm_info = parse_pgm(picture,1);
   double results[pgm_info.height * pgm_info.width];
+  string pict = (string) picture;
+  string name = pict.substr(pict.find_last_of('/')+1);
+  string nameWithoutExtension = name.substr(0,name.find_last_of('.'));
   if(method==0)
-    sprintf(output, "%s_salt_p%f_q%f.pgm", output, p, q);
+    sprintf(output, "%s%s_salt_p%.4lf_q%.4lf.pgm", output, nameWithoutExtension.c_str(), p, q);
   else
-    sprintf(output, "%s_gauss_f%d.pgm", output, factor);
+    sprintf(output, "%s%s_gauss_f%d.pgm", output, nameWithoutExtension.c_str(),factor);
 
   switch(method) {
     case 0:  { printf("Salt: \n");      createWithSaltPeperNoise(results, p, q, output, &pgm_info);   break; }
