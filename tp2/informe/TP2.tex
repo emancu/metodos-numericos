@@ -98,7 +98,7 @@ Con la idea de optimizar la memoria, el primer acercamiento que tuvimos fue no g
 Luego de implementar la solución al sistema de ecuaciones (discutido más adelante), notamos que el hecho de utilizar la biblioteca stl::map hacía que la complejidad del algoritmo fuese demasiado alta, teniendo por ejemplo imágenes de $64 \times 64$ que demoraban cerca de medio minuto en ser filtradas. Entendiendo que si bien la complejidad no es parte del espectro del trabajo práctico, el hecho de que el algoritmo sea lento es un obstáculo a la hora de realizar pruebas, y por este motivo decidimos pensar nuevamente la estructura. \vspace{1em}
 
 Analizamos primero el hecho de que la matriz asociada es 5 bandas: la diagonal principal correspondiente al iésimo pixel de la imagen filtrada, y una banda por cada pixel adyacente (figura 1).
-Las primeras \textit{n + 1} filas son filas de la matriz identidad, ya que corresponde con pixeles del borde superior y lo mismo sucede con las últimas \textit{n + 1}, del borde inferior. Luego, cada vez que el pixel sea de un borde lateral, la matriz tendrá una fila identidad.
+Las primeras \textit{n + 1} (con \textit{n} el ancho de la imagen) filas son filas de la matriz identidad, ya que corresponde con pixeles del borde superior y lo mismo sucede con las últimas \textit{n + 1}, del borde inferior. Luego, cada vez que el pixel sea de un borde lateral, la matriz tendrá una fila identidad.
 
 \begin{figure}[H]
 $$
