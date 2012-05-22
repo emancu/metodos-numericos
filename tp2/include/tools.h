@@ -2,7 +2,6 @@
 #define __TOOLS__
 #include <types.h>
 
-void print_pretty_matrix(Matrix, PGMInfo*);
 void print_results(double*, PGMInfo*, bool);
 
 void create_new_picture(double*, char*, PGMInfo*);

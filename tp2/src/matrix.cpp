@@ -46,7 +46,6 @@ Matrix build_matrix(double lambda, PGMInfo* pgm_info){
 }
 
 void gauss(Matrix matrix, PGMInfo* pgm_info){
-  //ver el tema de hasta donde hacerlo...
   // cn = Column number | rn = Row number
   for(int cn = 1; cn < pgm_info->fHeight * pgm_info->fWidth; cn++){
     for(int rn = cn + 1; rn <= cn + pgm_info->fWidth && rn < pgm_info->fHeight * pgm_info->fWidth; rn++){

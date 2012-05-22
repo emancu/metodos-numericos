@@ -25,9 +25,7 @@ PGMInfo parse_pgm(char* picture, int factor){
   fread(pixel,1, 1, file);
 
   for(i = 0; i < 256; i++)
-    pixel[i] = 0x0; //XXX: Para que esta esto ?
-
-  //TODO: Extract to a new function. Submuestrear
+    pixel[i] = 0x0;
 
   //indices para recorrer la matriz submuestreada independientemente de la original
   pgm_info.pixels = new double*[pgm_info.fHeight];
@@ -56,22 +54,6 @@ void free_pixels_memory(PGMInfo* pgm_info){
   for(int i = 0; i < pgm_info->fHeight; i++)
     delete [] pgm_info->pixels[i];
   delete [] pgm_info->pixels;
-}
-
-void print_pretty_matrix(Matrix matrix, PGMInfo* pgm_info){
-  printf("print_pretty_matrix Deprecated");
-  return; // Habria que reveerlo
-  for(int i = 0; i < pgm_info->height * pgm_info->width; i++){
-    for(int k = 0; k < i; k++) printf(" ");
-    for(int j = 0; j < 2 * pgm_info->width + 2; j++){
-      if(matrix[i][j] >= 0.0){
-        printf("  %.5f", matrix[i][j]);
-      }else if(matrix[i][j] >= 0.0){
-        printf(" %.5f", matrix[i][j]);
-      }
-    }
-    printf("\n");
-  }
 }
 
 void print_pgm_info(PGMInfo* pgm_info){
@@ -109,8 +91,6 @@ void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
   fprintf(outputFd, "%i\n" , pgm_info->max);
 
   //Usamos width y height original porque la imagen final tiene que tener las mismas proporciones.
-  //TODO habria que ver si el results[i] > 255 => poner 255???? (sino pondria cualquier cosa)
-
   int factor = pgm_info->factor;
   double aux[pgm_info->width];
 
@@ -131,7 +111,6 @@ void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
 /*
  * Restamos el minimo a todos y sacamos proporcionalmente el valor correspondiente.
  * Usando regla de tres simple. De esta manera el valor minimo, va a ser el cero.
- * ¿Realmente queremos que el minimo sea cero?
  */
 void saturate(double* results, int size, double min, double max){
   double constant = 255/(max-min);

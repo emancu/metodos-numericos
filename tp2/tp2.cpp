@@ -21,26 +21,12 @@ int main(int argc, char* argv[]){
     }
   }
 
-  // printf("BUILDING MATRIX...");
   PGMInfo pgm_info = parse_pgm(picture,factor);
   Matrix matrix = build_matrix(lambda, &pgm_info);
-  // print_pretty_matrix(matrix, &pgm_info);
-  // printf("DONE\nSTARTING GAUSS...");
-  //print_pgm_info(&pgm_info);
   double results[pgm_info.fHeight * pgm_info.fWidth];
 
-  //create_new_picture(results, output, &pgm_info);
-
   gauss(matrix, &pgm_info);
-  // print_pretty_matrix(matrix, &pgm_info);
-  // printf("DONE\nSOLVING EQUATIONS...");
-
-
   solve_equations(matrix, &pgm_info, results);
-  // printf("DONE\n");
-
-  // print_pretty_matrix(matrix, &pgm_info);
-  //print_results(results, &pgm_info, false);
   create_new_picture(results, output, &pgm_info);
 
   free_pixels_memory(&pgm_info);

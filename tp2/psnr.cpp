@@ -33,9 +33,8 @@ double psnr(char* original, char* noisy){
       sum += pow((originalIMageInfo.pixels[i][j] - noisyIMageInfo.pixels[i][j]), 2);
     }
   }
-  //printf("sum = %lf \n" , sum );
+
   double ecm = sum / ( originalIMageInfo.height * originalIMageInfo.width);
-  //printf("ecm = %lf \n" , ecm);
   double psnr = 10 * log10((pow(originalIMageInfo.max,2) / ecm));
 
   return psnr;

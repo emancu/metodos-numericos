@@ -26,7 +26,6 @@ int main(int argc, char* argv[]){
   printf("p = %lf \n" , p );
 
   PGMInfo pgm_info = parse_pgm(picture,1);
-  //print_pgm_info(&pgm_info);
   double results[pgm_info.height * pgm_info.width];
 
 
