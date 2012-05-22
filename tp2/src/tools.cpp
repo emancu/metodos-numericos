@@ -18,8 +18,8 @@ PGMInfo parse_pgm(char* picture, int factor){
   fscanf(file, "%d", &(pgm_info.max));
 
   pgm_info.factor = factor;
-  pgm_info.fHeight = ceil(pgm_info.height / factor);
-  pgm_info.fWidth  = ceil(pgm_info.width  / factor);
+  pgm_info.fHeight = ceil(pgm_info.height * 1.0 / factor);
+  pgm_info.fWidth  = ceil(pgm_info.width * 1.0 / factor);
 
   // Skips a newline.
   fread(pixel,1, 1, file);
@@ -27,25 +27,31 @@ PGMInfo parse_pgm(char* picture, int factor){
   for(i = 0; i < 256; i++)
     pixel[i] = 0x0;
 
-  //indices para recorrer la matriz submuestreada independientemente de la original
   pgm_info.pixels = new double*[pgm_info.fHeight];
+  for(i = 0; i < pgm_info.fHeight; i++)
+    pgm_info.pixels[i] = new double[pgm_info.fWidth];
+
 
   for(i = 0; i < pgm_info.height; i += factor){
-    pgm_info.pixels[k] = new double[pgm_info.fWidth];
-
     l = 0;
     for(int j = 0; j < pgm_info.width; j += factor){
       fread(pixel, 1, 1, file);
-      //salteo los pixels que no utilizo
-      fseek(file,factor - 1, SEEK_CUR);
       color = (double) (unsigned char) pixel[0];
       pgm_info.pixels[k][l++] = color;
+
+      //salteo los pixels que no utilizo
+      if(j+factor >= pgm_info.width)
+        fseek(file,pgm_info.width -j -1, SEEK_CUR);
+      else
+        fseek(file,factor - 1, SEEK_CUR);
+
     }
     //salteo las lineas de pixels que no utilizo (Eliminar filas)
     fseek(file,pgm_info.width * (factor -1), SEEK_CUR);
     k++;
   }
 
+  fflush(file);
   fclose(file);
   return pgm_info;
 }
@@ -96,16 +102,19 @@ void create_new_picture(double* results, char* output, PGMInfo* pgm_info){
 
   for(int i = 0; i < pgm_info->fHeight; i++){
     for(int j = 0; j < pgm_info->fWidth; j++){
-      for(int k=0; k < factor; k++){ // Repetimos el pixel _factor_ veces
+      for(int k=0; k < factor && (j*factor + k) < pgm_info->width; k++){ // Repetimos el pixel _factor_ veces
         aux[j*factor + k] = results[i * pgm_info->fWidth + j];
       }
     }
 
     // Fila completa, tenemos que escribirla *factor* veces en el archivo
-    for(int k=0; k < factor; k++)
-      for(int l=0; l < pgm_info->width; l++)
-        fprintf(outputFd, "%c", (unsigned char) aux[l]);
+    for(int j=0; j < min(factor, pgm_info->height - i*factor); j++)
+      for(int k=0; k < pgm_info->width; k++)
+        fprintf(outputFd, "%c", (unsigned char) aux[k]);
   }
+
+  fflush(outputFd);
+  fclose(outputFd);
 }
 
 /*
