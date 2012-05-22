@@ -66,7 +66,11 @@ Un problema típico al trabajar con imágenes digitales es la existencia de \tex
 
 \section{Introducción Teórica}
 
-El objetivo de este trabajo práctico es reducir el ruido de una imagen. Para lograr esto se plantea minimizar una función que relaciona el \textit{ruido} de la imagen original con la \textit{suavidad} de la obtenida. Al derivar e igualar a cero esa función se obtiene una ecuación, que al discretizarse pixel por pixel, nos da una relación entre un pixel y sus cuatro adyacentes. A esto se lo conoce como \textit{método de diferencias finitas}, que plantea un sistema de ecuaciones a resolver
+El objetivo de este trabajo práctico es reducir el ruido de una imagen. Para lograr esto se plantea minimizar una función que relaciona el \textit{ruido} de la imagen original con la \textit{suavidad} de la obtenida. Al derivar e igualar a cero esa función se obtiene una ecuación, que al discretizarse pixel por pixel, nos da una relación entre un pixel y sus cuatro adyacentes. A esto se lo conoce como \textit{método de diferencias finitas}, que plantea un sistema de ecuaciones a resolver.
+
+En este sistema, lidiamos con una ecuación por pixel, por lo tanto, si tenemos \textit{N} pixeles, tenemos una matriz de $N \times N$. De todas maneras, en cada ecuación sólo se trabaja con cinco variables: un pixel y sus adyacentes (salvo para los bordes, que más adelante explicamos su tratamiento). Por esta razón, cada fila de la matriz tiene cinco coeficientes, y el resto se completa con ceros. El resultado de esto es que la matriz resulta tener 5 bandas: la diagonal principal, dos bandas por debajo y dos bandas por arriba, donde cada banda representa un pixel adyacente al correspondiente en la diagonal principal.
+
+La anatomía de esta matriz es importante ya que a la hora de operar con ella en nuestro trabajo, podemos asegurar que sólamente se ven afectados los valores que están entre la banda inferior y la banda superior. Este resultado será importante a la hora de guardar la matriz.
 
 %Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
 
