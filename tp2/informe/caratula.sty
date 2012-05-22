@@ -27,7 +27,7 @@
 \let\Titulo\relax
 \let\Subtitulo\relax
 \let\Grupo\relax
-
+\let\Resumen\relax
 
 % ----- Comandos para que el usuario defina las variables ------------------
 
@@ -36,7 +36,7 @@
 \def\titulo#1{\def\Titulo{#1}}
 \def\subtitulo#1{\def\Subtitulo{#1}}
 \def\grupo#1{\def\Grupo{#1}}
-
+\def\resumen#1{\def\Resumen{\begin{center}\textbf{#1}\end{center}}}
 
 % ----- Token list para los integrantes ------------------------------------
 
@@ -87,6 +87,7 @@
     \expandafter\ifsetuperror}
 
 
+
 % ----- Reemplazamos el comando \maketitle de LaTeX con el nuestro ---------
 
 \def\maketitle{%
@@ -110,6 +111,8 @@
     \medskip
     \tablacatedra
     \end{center}
+    \vspace*{\stretch{3}}
+    {\large \Resumen}
     \vspace*{\stretch{3}}
     \newpage
     }
