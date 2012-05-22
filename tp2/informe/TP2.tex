@@ -70,9 +70,6 @@ El objetivo de este trabajo práctico es reducir el ruido de una imagen. Para lo
 
 %Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
 
-
-\newpage
-
 \section{Desarrollo}
 
 Para llevar adelante el filtrado de las imágenes implementamos el método de diferencias finitas.
@@ -99,12 +96,12 @@ Como se ve en (1) y (2), los coeficientes que acompañan las variables son, al p
 
 De esta manera es sencillo representar cada fila de la matriz. El inconveniente es que dicha matriz tiene tamaño $N \times N$, donde \textit{N} es la cantidad de pixeles, y en su mayoría contiene ceros.
 
-Con la idea de optimizar la memoria, el primer acercamiento que tuvimos fue no guardar los ceros de la matriz, sino solamente los valores. Lo que hicimos fue utilizar un Diccionario (stl::map) de dos dimensiones: (\textit{fila}, \textit{columna}, \textit{valor}), y de esta manera no necesitamos guardar valores nulos.
+Con la idea de optimizar la memoria, el primer acercamiento que tuvimos fue no guardar los ceros de la matriz, sino solamente los valores. Lo que hicimos fue utilizar un Diccionario (stl::map) de dos dimensiones: (\textit{fila}, \textit{columna}, \textit{valor}), y de esta manera no necesitamos guardar valores nulos. \vspace{1em}
 
-Luego de implementar la solución al sistema de ecuaciones (discutido más adelante), notamos que el hecho de utilizar la biblioteca stl::map hacía que la complejidad del algoritmo fuese demasiado alta, teniendo por ejemplo imágenes de $64 \times 64$ que demoraban cerca de medio minuto en ser filtradas. Entendiendo que si bien la complejidad no es parte del espectro del trabajo práctico, el hecho de que el algoritmo sea lento es un obstáculo a la hora de realizar pruebas, y por este motivo decidimos pensar nuevamente la estructura.
+Luego de implementar la solución al sistema de ecuaciones (discutido más adelante), notamos que el hecho de utilizar la biblioteca stl::map hacía que la complejidad del algoritmo fuese demasiado alta, teniendo por ejemplo imágenes de $64 \times 64$ que demoraban cerca de medio minuto en ser filtradas. Entendiendo que si bien la complejidad no es parte del espectro del trabajo práctico, el hecho de que el algoritmo sea lento es un obstáculo a la hora de realizar pruebas, y por este motivo decidimos pensar nuevamente la estructura. \vspace{1em}
 
 Analizamos primero el hecho de que la matriz asociada es 5 bandas: la diagonal principal correspondiente al iésimo pixel de la imagen filtrada, y una banda por cada pixel adyacente.
-Aprovechando esto, notamos que los ceros por encima de la banda superior y debajo de la banda inferior nunca cambian, de modo que no es necesario guardarlos.
+Aprovechando esto, notamos que los ceros por encima de la banda superior y debajo de la banda inferior nunca cambian, de modo que no es necesario guardarlos. \vspace{1em}
 
 Por lo tanto, si bien la matriz asociada es de $N \times N$, alcanza con guardar una matriz de $N \times (2n + 2)$, donde \textit{n} es el ancho de la imagen. Este último cálculo surge de que necesitamos guardar los coeficientes entre la banda inferior y la diagonal principal (n valores más uno de la diagonal), la diagonal principal y la banda superior (n valores más), y el dato correspondiente a cada fila.
 
@@ -118,9 +115,10 @@ A la hora de resolver el sistema de ecuaciones analizamos dos alternativas:
 	\item Factorización QR
 \end{itemize}
 
-
+\vspace{2em}
 Como la complejidad de los algoritmos es la misma, elegimos \textit{eliminación Gaussiana} por que era un algoritmo ya conocido por nosotros y para el objetivo del TP las ventajas de la Factorización QR no harían diferencia. 
 De hecho, dado que la matriz asociada es rala, y que debajo de la diagonal principal hay solamente dos bandas, la \textit{eliminación Gaussiana} es conveniente porque solo tenemos 2 elementos a eliminar bajo cada diagonal.
+
 
 En un principio, cuando contábamos con la estructura basada en Diccionarios, encontramos que recorrer cada fila de la columna a triangular en busca de los valores a eliminar resultaba lento, en especial al principio, cuando solamente contamos con a lo sumo dos valores bajo la diagonal principal. Esto nos llevó a implementar una estructura auxiliar para registrar en qué filas se encuentran los coeficientes de una columna dada.
 
@@ -130,52 +128,89 @@ Por último, una vez que analizamos la anatomía de la matriz 5 bandas y dimos c
 
 \subsection{Submuestreo y Sobremuestreo}
 
+Más allá de las optimizaciones que realicemos, la calidad de las fotografías supera ampliamente la capacidad de procesamiento y almacenamiento de nuestras computadoras, y por lo tanto necesitamos una estrategia para poder filtrar imágenes de estas dimensiones.
+
+La técnica del \textbf{submuestreo} consiste en reducir la imagen dependiendo de un \texttt{factor de reducción}, aplicar el proceso de filtrado a la imagen de menor dimensión y luego restablecer la imagen a las dimensiones originales. Esto último se lo conoce como \textbf{sobremuestreo}.
+
+
+Existiendo varias implementaciones para los algoritmos de \textbf{submuestreo}, por su simplicidad decidimos optar por eliminar filas y columnas correspondientes al parámetro recibido. Quiere decir, que nos quedamos con un pixel por cada \textbf{r} pixeles (siendo \textbf{r} el factor de reducción pasado por parámetro).
+
+Entonces, si el $r=1$ nos queda la imagen sin reducir. Si $r=2$ filtramos una imagen que contiene los pixeles en filas o columnas pares (es decir ese pixel representa $r$ que es 2). Y así sucesivamente.
+
+En las siguientes imágenes, marcamos en verde los pixeles que seleccionamos para trabajar, dependiendo el \textbf{r}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.65]{graficos/Submuestreo-2.png}
+  \caption{ $r=2$. Un pixel representa a 4}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.65]{graficos/Submuestreo-3.png}
+  \caption{ $r=3$. Un pixel representa a 9}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.65]{graficos/Submuestreo-4.png}
+  \caption{ $r=4$. Un pixel representa a 16}
+\end{figure}
+
+Elegimos mantener el parámetro como un número entero que representa la cantidad de filas y columnas que se van a eliminar en lugar de utilizar porcentajes pues al utilizar porcentajes, el algoritmo de reducción no sería tan sencillo.
+
+Por ejemplo, si queremos trabajar con el 50\% de la foto, solo deberíamos eliminar 1 por cada 2 filas, pero sin eliminar columnas. En otros casos, como por ejemplo el 25\% deberíamos eliminar una fila y una columna.
+
+Como esta parte del Trabajo Práctico era un adicional y no el objetivo principal, decidimos mantener la implementación sencilla.
+
 \subsection{Saturación}
 
-Todas las imágenes con las que trabajamos, son en escala de grises reducida y por lo tanto es importante mantener la misma y ser cuidadosos a la hora de volcar los resultados en una imágen. Para que la escala de grises sea proporcional, seleccionamos el valor mínimo (el más oscuro), el máximo (el más claro) y a través de una regla de tres simple, transformamos todos los pixeles en valores que van de 0 a 255.
+Todas las imágenes con las que trabajamos, son en escala de grises reducida y por lo tanto es importante mantener la misma y ser cuidadosos a la hora de volcar los resultados en una imagen. Para que la escala de grises sea proporcional, seleccionamos el valor mínimo (el más oscuro), el máximo (el más claro) y a través de una regla de tres simple, transformamos todos los pixeles en valores que van de 0 a 255.
 
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
+
+\newpage
 
 \section{Discusión y Resultados}
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 
-Una vez desarrollados los algoritmos, comenzamos a generar ruido a las imágenes entregadas por la cátedra para luego aplicar el filtro y comparar los resultados. Como el algoritmo demora bastante con imágenes grandes, iniciamos las pruebas fundamentales con imágenes de 128x128.
+Una vez desarrollados los algoritmos, comenzamos a generar ruido a las imágenes entregadas por la cátedra para luego aplicar el filtro y comparar los resultados. Como el algoritmo demora bastante con imágenes grandes, iniciamos las pruebas fundamentales con imágenes de 128x128. \vspace{1em}
 
 Para empezar, comprobamos que nuestro algoritmo para generar ruido en imágenes no beneficiaba ni perjudicaba el filtro que luego aplicaríamos, para esto utilizamos una herramienta, \textbf{GIMP}, para introducir el ruido, aplicar el filtro y compararlo con el nuestro.
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.75]{graficos/PSNR_Einstein-GIMP.png}
-  \caption{ Imágen de prueba: Einsten. Valores del PSNR cuando filtramos la imágen con ruido, variando el factor de ruido introducido con el GIMP.}
+  \caption{ Imagen de prueba: Einsten. Valores del PSNR cuando filtramos la imagen con ruido, variando el factor de ruido introducido con el GIMP.}
 \end{figure}
 
-En la \texttt{figura 1}  vemos la mejora que produce el filtro con respecto a la imágen con ruido para un $\lambda$ determinado. \\ 
+En la \texttt{figura 1}  vemos la mejora que produce el filtro con respecto a la imagen con ruido para un $\lambda$ determinado. \\ 
 El $\ \lambda = 5$, nos resulto muy conveniente para nuestro algoritmo dado que la mayoría de veces nos da una amplia mejora. 
 
-Ahora que sabemos como se comporta con una imágen con ruido generado por una herramienta como el GIMP, nos enfocamos a comparar con nuestra propia implementación de inserción de ruido.
+Ahora que sabemos como se comporta con una imagen con ruido generado por una herramienta como el GIMP, nos enfocamos a comparar con nuestra propia implementación de inserción de ruido.
 En la \texttt{figura 2} vamos a ver que tiene un comportamiento similar, y de hecho utilizamos otros $\lambda$ para mostrar que no es un caso particular. 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.65]{graficos/PSNR_Einstein.png}
-  \caption{ Imágen de prueba: Einsten. Valores del PSNR cuando filtramos la imágen con ruido introducido con nuestro algoritmo. }
+  \caption{ Imagen de prueba: Einsten. Valores del PSNR cuando filtramos la imagen con ruido introducido con nuestro algoritmo. }
 \end{figure}
 
 Mientras observamos el comportamiento partiendo de diferentes ruidos, notamos cierta relación entre el ruido y el $\lambda$.
-Tomamos otra imágen y rehicimos todas las pruebas, y volcamos los resultados en el gráfico de la \texttt{figura 3}. 
+Tomamos otra imagen y rehicimos todas las pruebas, y volcamos los resultados en el gráfico de la \texttt{figura 3}. 
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.65]{graficos/PSNR_Blond.png}
-  \caption{ Imágen de prueba: Blond. Valores del PSNR cuando filtramos la imágen con ruido, variando $\lambda$}
+  \caption{ Imagen de prueba: Blond. Valores del PSNR cuando filtramos la imagen con ruido, variando $\lambda$}
 \end{figure}
 
 Una vez más, encontramos la relación entre los parámetros. Para imágenes con poco ruido, nuestro filtro genera imágenes de mejor calidad con $\lambda$ más grandes. Y cuando el factor de \textit{ruido} es mayor, conviene seleccionar un $\lambda$ más chico.
 
-Sin embargo, continuamos con las pruebas con otra imágen, y esta vez variando progresivamente el $\lambda$. Los resultados que obtuvimos fueron los siguientes: 
+Sin embargo, continuamos con las pruebas con otra imagen, y esta vez variando progresivamente el $\lambda$. Los resultados que obtuvimos fueron los siguientes: 
 
 \vspace{2em}
-\centering 
+\begin{center}
 \begin{tabular}{|l|l|l|l|}
   \hline
   \multirow{2}{*}{$\lambda$} & \multicolumn{3}{|c|}{PSNR} \\
@@ -205,6 +240,9 @@ Sin embargo, continuamos con las pruebas con otra imágen, y esta vez variando p
   20	 & 	23.16	 & 	19.58	 & 	13.21 \\
   \hline
 \end{tabular}
+\end{center}
+
+Como podemos ver, acertamos con la suposición que para imágenes con poco ruido, nuestro filtro genera imágenes de mejor calidad con $\lambda$ más grandes. Y cuando el factor de \textit{ruido} es mayor, conviene seleccionar un $\lambda$ más chico.
 
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
