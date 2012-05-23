@@ -32,6 +32,7 @@
 
 \usepackage[pdftex, bookmarks=true, colorlinks, citecolor=black, linkcolor=black]{hyperref}
 \usepackage{multirow}
+\usepackage{multicol}
 
 \begin{document}
 
@@ -157,6 +158,7 @@ Entonces, si el $r=1$ nos queda la imagen sin reducir. Si $r=2$ filtramos una im
 
 En las siguientes imágenes, marcamos en verde los pixeles que seleccionamos para trabajar, dependiendo el \textbf{r}.
 
+\begin{multicols}{2}
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.65]{graficos/Submuestreo-2.png}
@@ -174,6 +176,7 @@ En las siguientes imágenes, marcamos en verde los pixeles que seleccionamos par
   \includegraphics[scale=0.65]{graficos/Submuestreo-4.png}
   \caption{ $r=4$. Un pixel representa a 16}
 \end{figure}
+\end{multicols}
 
 Elegimos mantener el parámetro como un número entero que representa la cantidad de filas y columnas que se van a eliminar en lugar de utilizar porcentajes pues al utilizar porcentajes, el algoritmo de reducción no sería tan sencillo.
 
@@ -339,6 +342,18 @@ La imagen que filtramos le agregamos ruido con el \textbf{GIMP}, porque tuvimos 
 \newpage
 
 \section{Conclusiones}
+Nuestra primera impresión fue que el sistema de ecuaciones era muy grande y requeriría mucho memoria si volcábamos el problema exactamente en la computadora.
+
+Lo que nos motivo es tener que pensar una estructura especial para resolver el problema, dadas las características del mismo. Y no solo fue una estructura sino un debate entre 2 estructuras a las cuales después estuvimos agregando pequeñas optimizaciones para mejorar el algoritmo aún más. \\ 
+
+La técnica de \textbf{submuestreo} la encontramos fascinante, ya que gracias a ella podemos filtrar imágenes de tamaños muy grandes que de otra manera tardarían años en terminar. Es como una especie de heurística aplicada a imágenes y sistemas lineales de ecuaciones.
+
+Nos sorprendimos al encontrar que la resolución de sistemas lineales de ecuaciones tenían una aplicación real y útil no sólo en el campo académico. 
+
+\subsection{Pendientes}
+Nos quedo pendiente realizar pruebas con imágenes con otro tipo de ruido, ya sea Multiplicativo, Salt \& Pepper, u otro.
+
+Con respecto a \textbf{Salt \& Pepper} hicimos unas pruebas básicas para demostrar que nuestro filtro no producía mejoras tan importantes como las de ruido \textbf{Gaussiano}. Por el contrario a lo que esperábamos, las imágenes filtradas tenían una calidad muy parecida a las provenientes de ruido Gaussiano. Suponemos que esto se debe a nuestra función de saturación que interviene en el filtrado.
 
 %Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
 
