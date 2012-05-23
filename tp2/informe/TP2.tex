@@ -303,9 +303,35 @@ Pero como los tiempos de las pruebas los habíamos tomado, los mostramos en esta
 \hline
 \end{tabular}
 \end{center} 
+\vspace{1em}
 
+Sin embargo, sacamos provecho de la técnica de reducción y decidimos probar nuestra implementación en una imagen de 2500x2500, anticipándonos del tiempo que iba a demorar utilizamos distintos factores de reducción (6, 8, 10, 16). 
+En este caso tuvimos que sacrificar calidad ya que con una imagen tan grande no nos alcanzaba la memoria.
 
-Sin embargo, sacamos provecho de la técnica de reducción y ... (imagen grande)
+Por las pruebas anteriores, sabíamos que una imagen de 500x500 tardaba por lo menos 20 minutos, entonces calculamos el factor mínimo de la siguiente manera
+
+\begin{equation} \frac{2500}{500} < r\end{equation}
+
+A partir de los factores encontrados, analizamos los tiempos y la calidad de los resultados.
+
+\vspace{2em}
+\textit{Tiempo (segundos) para la imagen de 2500x2500 con ruido}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+  \hline
+  Factor & PSNR & Tiempo (segundos) \\
+  \hline
+6  & 20.89 & 519 \\
+8  & 19.99 & 83 \\
+10 & 19.27 & 33 \\
+16 & 17.94 & 5.46 \\
+\hline
+\end{tabular}
+\end{center} 
+\vspace{1em}
+
+La imagen que filtramos le agregamos ruido con el \textbf{GIMP}, porque tuvimos un problema con nuestro generador para esta imagen que no pudimos resolver. El PSNR de esta imagen con ruido es de $15.05$.
+
 
 
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
