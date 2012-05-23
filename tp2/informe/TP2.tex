@@ -136,7 +136,7 @@ A la hora de resolver el sistema de ecuaciones analizamos dos alternativas:
 
 \vspace{2em}
 Como la complejidad de los algoritmos es la misma, elegimos \textit{eliminación Gaussiana} por que era un algoritmo ya conocido por nosotros y para el objetivo del TP las ventajas de la Factorización QR no harían diferencia. 
-De hecho, dado que la matriz asociada es rala, y que debajo de la diagonal principal hay solamente dos bandas, la \textit{eliminación Gaussiana} es conveniente porque solo tenemos 2 elementos a eliminar bajo cada diagonal.
+De hecho, dado que la matriz asociada es rala, y que debajo de la diagonal principal hay solamente dos bandas, la \textit{eliminación Gaussiana} es conveniente porque solo tenemos 2 elementos a eliminar bajo cada diagonal. \\ 
 
 
 En un principio, cuando contábamos con la estructura basada en Diccionarios, encontramos que recorrer cada fila de la columna a triangular en busca de los valores a eliminar resultaba lento, en especial al principio, cuando solamente contamos con a lo sumo dos valores bajo la diagonal principal. Esto nos llevó a implementar una estructura auxiliar para registrar en qué filas se encuentran los coeficientes de una columna dada.
@@ -145,12 +145,13 @@ Aprendimos luego que a medida que se triangula la matriz, la misma se va llenand
 
 Por último, una vez que analizamos la anatomía de la matriz 5 bandas y dimos con la estructura óptima explicada anteriormente, para triangular sólo se requiere que en cada columna se recorra hasta la banda inferior, que se encuentra a \textit{n} valores de distancia. De esta manera no es necesaria otra estructura auxiliar.  
 
+\newpage
+
 \subsection{Submuestreo y Sobremuestreo}
 
-Más allá de las optimizaciones que realicemos, la calidad de las fotografías supera ampliamente la capacidad de procesamiento y almacenamiento de nuestras computadoras, y por lo tanto necesitamos una estrategia para poder filtrar imágenes de estas dimensiones.
+Más allá de las optimizaciones que realicemos, la calidad de las fotografías supera ampliamente la capacidad de procesamiento y almacenamiento de nuestras computadoras, y por lo tanto necesitamos una estrategia para poder filtrar imágenes de estas dimensiones. \\
 
 La técnica del \textbf{submuestreo} consiste en reducir la imagen dependiendo de un \texttt{factor de reducción}, aplicar el proceso de filtrado a la imagen de menor dimensión y luego restablecer la imagen a las dimensiones originales. Esto último se lo conoce como \textbf{sobremuestreo}.
-
 
 Existiendo varias implementaciones para los algoritmos de \textbf{submuestreo}, por su simplicidad decidimos optar por eliminar filas y columnas correspondientes al parámetro recibido. Quiere decir, que nos quedamos con un pixel por cada \textbf{r} pixeles (siendo \textbf{r} el factor de reducción pasado por parámetro).
 
