@@ -195,6 +195,8 @@ Todas las imágenes con las que trabajamos, son en escala de grises reducida y p
 
 Una vez desarrollados los algoritmos, comenzamos a generar ruido a las imágenes entregadas por la cátedra para luego aplicar el filtro y comparar los resultados. Como el algoritmo demora bastante con imágenes grandes, iniciamos las pruebas fundamentales con imágenes de 128x128. \vspace{1em}
 
+\subsection{Generar y filtrar imágenes con ruido sin factor de reducción}
+
 Para empezar, comprobamos que nuestro algoritmo para generar ruido en imágenes no beneficiaba ni perjudicaba el filtro que luego aplicaríamos, para esto utilizamos una herramienta, \textbf{GIMP}, para introducir el ruido, aplicar el filtro y compararlo con el nuestro.
 
 \begin{figure}[H]
@@ -203,8 +205,8 @@ Para empezar, comprobamos que nuestro algoritmo para generar ruido en imágenes 
   \caption{ Imagen de prueba: Einsten. Valores del PSNR cuando filtramos la imagen con ruido, variando el factor de ruido introducido con el GIMP.}
 \end{figure}
 
-En la \texttt{figura 1}  vemos la mejora que produce el filtro con respecto a la imagen con ruido para un $\lambda$ determinado. \\ 
-El $\ \lambda = 5$, nos resulto muy conveniente para nuestro algoritmo dado que la mayoría de veces nos da una amplia mejora. 
+En la \texttt{figura 1}  vemos la mejora que produce el filtro con respecto a la imagen con ruido para un $\lambda$ determinado. 
+El $\ \lambda = 5$, nos resulto muy conveniente para nuestro algoritmo dado que la mayoría de veces nos da una amplia mejora. \\ 
 
 Ahora que sabemos como se comporta con una imagen con ruido generado por una herramienta como el GIMP, nos enfocamos a comparar con nuestra propia implementación de inserción de ruido.
 En la \texttt{figura 2} vamos a ver que tiene un comportamiento similar, y de hecho utilizamos otros $\lambda$ para mostrar que no es un caso particular. 
@@ -261,6 +263,50 @@ Sin embargo, continuamos con las pruebas con otra imagen, y esta vez variando pr
 \end{center}
 
 Como podemos ver, acertamos con la suposición que para imágenes con poco ruido, nuestro filtro genera imágenes de mejor calidad con $\lambda$ más grandes. Y cuando el factor de \textit{ruido} es mayor, conviene seleccionar un $\lambda$ más chico.
+
+\subsection{Factor de reducción. Ventajas y desventajas}
+Un filtro para limpiar imágenes es realmente útil si permite trabajar con imágenes grandes y no sólo eso, sino también poder controlar la relación tiempo\/calidad y este es el puntapié para nuestras siguientes pruebas.
+
+Tomamos un conjunto de imágenes de distintos tamaños y le introdujimos ruido para luego aplicarle el filtro, pero esta vez aplicando la técnica de \textbf{submuestreo} y \textbf{sobremuestreo}.
+
+El factor de reducción trae como desventaja la pérdida de calidad de la imagen, a medida que este factor crece. Es de esperar pues estamos eliminando mucha \textit{información} de la imagen por cada fila y columna que eliminamos.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.8]{graficos/PSNR_factor_reduccion.png}
+  \caption{ PSNR variando el factor de reducción. A medida que agrandamos el factor de reducción se pierde calidad. }
+\end{figure}
+
+En la \texttt{figura 8} marcamos los valores de los PSNR obtenidos y se ve claramente que seleccionando un factor de reducción más grande se pierde calidad. Si bien aumentar este parámetro en imágenes pequeñas, no sirve para obtener buenos resultados, si nos permite extraer conclusiones del comportamiento, que es nuestro caso.
+Debido a una cuestión de Hardware, las imágenes que superaban el tamaño de 600x600 no pudimos terminar de correrlas, sobretodo porque ya las superiores a 512x512 demoraban más de 20 minutos cada una!
+
+En la \texttt{figura 9} graficamos los tiempos que demoramos en filtrar las imágenes utilizadas para la prueba anterior, y podemos ver como el tiempo crece exponencialmente.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.8]{graficos/Tiempo-factor_reduccion.png}
+  \caption{ El tiempo se reduce considerablemente cuando agrandamos el factor de reducción, sacrificando calidad en la imágen pero ahorrando tiempo de computo. }
+\end{figure}
+
+En la \texttt{figura 9} no graficamos el tiempo de procesamiento cuando no se la reduce (factor de reducción 1) porque la diferencia en los valores era muy grande y no se podía apreciar la diferencia entre los otros factores.
+
+Pero como los tiempos de las pruebas los habíamos tomado, los mostramos en esta tabla a parte.
+
+\vspace{2em}
+\textit{Tiempo (segundos) para el algoritmo con factor de reducción 1}
+\begin{center}
+\begin{tabular}{|l|l|}
+  \hline
+  Tamaño & Tiempo (segundos) \\
+  \hline
+64x64 & 00.148 \\128x128 & 02.36  \\256x256 & 37.21 \\300x300 & 69.82 \\350x350 & 128.00 \\ 400x400 & 458.00 \\450x450 & 1020.00 \\500x500 & 11405.00 \\
+\hline
+\end{tabular}
+\end{center} 
+
+
+Sin embargo, sacamos provecho de la técnica de reducción y ... (imagen grande)
+
 
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
