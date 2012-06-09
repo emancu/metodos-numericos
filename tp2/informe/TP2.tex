@@ -221,7 +221,7 @@ En la \texttt{figura 2} vamos a ver que tiene un comportamiento similar, y de he
 \end{figure}
 
 Mientras observamos el comportamiento partiendo de diferentes ruidos, notamos cierta relación entre el ruido y el $\lambda$.
-Tomamos otra imagen y rehicimos todas las pruebas, y volcamos los resultados en el gráfico de la \texttt{figura 3}. 
+Tomamos otra imagen y rehicimos todas las pruebas, y volcamos los resultados en el gráfico de la \texttt{figura 7}. 
 
 \begin{figure}[H]
   \centering
@@ -230,6 +230,8 @@ Tomamos otra imagen y rehicimos todas las pruebas, y volcamos los resultados en 
 \end{figure}
 
 Una vez más, encontramos la relación entre los parámetros. Para imágenes con poco ruido, nuestro filtro genera imágenes de mejor calidad con $\lambda$ más grandes. Y cuando el factor de \textit{ruido} es mayor, conviene seleccionar un $\lambda$ más chico.
+
+Es interesante denotar que la manera en la que sucede esta tendencia depende de la imagen que se filtra. En la \texttt{figura 7} vemos que con un factor de ruido entre 20 y 30, las curvas se van acomodando de manera de que a partir de este punto la mejor calidad se logra con $\lambda = 1$. Sin embargo, en la \texttt{figura 6}, que corresponde a una imagen diferente, tomando $\lambda = 1$ obtenemos un PSNR menor al resto incluso en factores de ruido cercanos a 70.
 
 Sin embargo, continuamos con las pruebas con otra imagen, y esta vez variando progresivamente el $\lambda$. Los resultados que obtuvimos fueron los siguientes: 
 
@@ -241,17 +243,17 @@ Sin embargo, continuamos con las pruebas con otra imagen, y esta vez variando pr
   \cline{2-4}
    & F.R. 10 & F.R. 50 & F.R. 100 \\ \hline
 
-  Ruido	 & 	32.89	 & 	18.88	 & 	19.95 \\
-  01	 & 	21.73	 & 	25.80	 & 	18.50 \\
+  \textbf{Ruido} & 	\textbf{32.89}	 & 	\textbf{18.88} & \textbf{19.95} \\
+  \textbf{01}	 & 	\textbf{21.73}	 & 	\textbf{25.80} & \textbf{18.50} \\
   02	 & 	22.19	 & 	24.40	 & 	17.35 \\
   03	 & 	22.24	 & 	23.32	 & 	16.51 \\
   04	 & 	22.46	 & 	22.54	 & 	15.90 \\
-  05	 & 	22.61	 & 	21.96	 & 	15.43 \\
+  \textbf{05}	 & 	\textbf{22.61}	 & 	\textbf{21.96} & \textbf{15.43} \\
   06	 & 	22.71	 & 	21.51	 & 	15.06 \\
   07	 & 	22.78	 & 	21.16	 & 	14.76 \\
   08	 & 	22.87	 & 	20.86	 & 	14.52 \\
   09	 & 	22.94	 & 	20.66	 & 	14.31 \\
-  10	 & 	22.99	 & 	20.49	 & 	14.14 \\
+  \textbf{10}	 & 	\textbf{22.99}   &  \textbf{20.49} & \textbf{14.14} \\
   11	 & 	23.03	 & 	20.34	 & 	13.99 \\
   12	 & 	23.06	 & 	20.21	 & 	13.86 \\
   13	 & 	23.08	 & 	20.09	 & 	13.74 \\
@@ -267,6 +269,10 @@ Sin embargo, continuamos con las pruebas con otra imagen, y esta vez variando pr
 \end{center}
 
 Como podemos ver, acertamos con la suposición que para imágenes con poco ruido, nuestro filtro genera imágenes de mejor calidad con $\lambda$ más grandes. Y cuando el factor de \textit{ruido} es mayor, conviene seleccionar un $\lambda$ más chico.
+
+Habiendo verificado que esta tendencia se mantiene, lo que suponemos es que siendo que $\lambda$ mide la importancia relativa entre el ruido de la imagen sin filtrar y la suavidad de la imagen obtenida, el punto donde las curvas se estabilizan depende enteramente de la imagen que se esté tratando. Analizando la tabla vista arriba podemos confirmarlo: para $\lambda = 1$ y factor de ruido igual a 10 el PSNR es menor incluso que el de la imagen ruidosa, sin embargo cuando pasamos a factor de ruido 50 notamos una mejora mayor que para $\lambda = 5$ y $\lambda = 10$. Luego, para factor de ruido 100, la relación se mantiene. 
+
+Resumiendo, en la \texttt{figura 6} el equilibrio se concreta para valores de factor de ruido mayores a 80, para la \texttt{figura 7} de 30 en adelante y en la tabla anterior en algún momento entre factor de ruido 10 y 50. Cada uno de estos casos fue realizado con imágenes distintas y concluimos que esta es la razón del fenómeno observado.
 
 \subsection{Factor de reducción. Ventajas y desventajas}
 Un filtro para limpiar imágenes es realmente útil si permite trabajar con imágenes grandes y no sólo eso, sino también poder controlar la relación tiempo\/calidad y este es el puntapié para nuestras siguientes pruebas.
