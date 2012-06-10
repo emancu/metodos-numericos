@@ -249,15 +249,15 @@ Sin embargo, continuamos con las pruebas con otra imagen, y esta vez variando pr
    & F.R. 10 & F.R. 50 & F.R. 100 \\ \hline
 
   \textbf{Ruido} & 	\textbf{32.89}	 & 	\textbf{18.88} & \textbf{19.95} \\
-  \textbf{01}	 & 	\textbf{21.73}	 & 	\textbf{25.80} & \textbf{18.50} \\
-  02	 & 	22.19	 & 	24.40	 & 	17.35 \\
-  03	 & 	22.24	 & 	23.32	 & 	16.51 \\
-  04	 & 	22.46	 & 	22.54	 & 	15.90 \\
-  \textbf{05}	 & 	\textbf{22.61}	 & 	\textbf{21.96} & \textbf{15.43} \\
-  06	 & 	22.71	 & 	21.51	 & 	15.06 \\
-  07	 & 	22.78	 & 	21.16	 & 	14.76 \\
-  08	 & 	22.87	 & 	20.86	 & 	14.52 \\
-  09	 & 	22.94	 & 	20.66	 & 	14.31 \\
+  \textbf{1}	 & 	\textbf{21.73}	 & 	\textbf{25.80} & \textbf{18.50} \\
+  2	 & 	22.19	 & 	24.40	 & 	17.35 \\
+  3	 & 	22.24	 & 	23.32	 & 	16.51 \\
+  4	 & 	22.46	 & 	22.54	 & 	15.90 \\
+  \textbf{5}	 & 	\textbf{22.61}	 & 	\textbf{21.96} & \textbf{15.43} \\
+  6	 & 	22.71	 & 	21.51	 & 	15.06 \\
+  7	 & 	22.78	 & 	21.16	 & 	14.76 \\
+  8	 & 	22.87	 & 	20.86	 & 	14.52 \\
+  9	 & 	22.94	 & 	20.66	 & 	14.31 \\
   \textbf{10}	 & 	\textbf{22.99}   &  \textbf{20.49} & \textbf{14.14} \\
   11	 & 	23.03	 & 	20.34	 & 	13.99 \\
   12	 & 	23.06	 & 	20.21	 & 	13.86 \\
@@ -303,7 +303,9 @@ En la \texttt{figura 9} graficamos los tiempos que demoramos en filtrar las imá
   \caption{ El tiempo se reduce considerablemente cuando agrandamos el factor de reducción, sacrificando calidad en la imágen pero ahorrando tiempo de computo. }
 \end{figure}
 
-En la \texttt{figura 9} no graficamos el tiempo de procesamiento cuando no se la reduce (factor de reducción 1) porque la diferencia en los valores era muy grande y no se podía apreciar la diferencia entre los otros factores.
+Notemos ahora la relación que hay entre el \textit{tiempo de procesamiento} y la calidad obtenida con \textit{factor de reduccion}. En la \texttt{figura 8} se puede observar que en los casos de imágenes chicas, de $64 \times 64$ a $256 \times 256$, tener un \textit{factor de reduccion} igual a 1 (es decir, sin reducción) nos da un PSNR varios puntos mayor que reduciendo la imágen, sin embargo para imágenes más grandes la diferencia no es tan significativa. Si tenemos en cuenta el tiempo de procesamiento necesario para esto, en la \texttt{figura 9} vemos que utilizar un \textit{factor de reduccion} igual a 3 baja considerablemente el \textit{tiempo de procesamiento}, por lo tanto para imágenes grandes es aceptable utilizar dicho factor dado que el tiempo que se gana es bastante respecto de la poca calidad que se pierde.
+
+En la \texttt{figura 9} no graficamos el tiempo de procesamiento cuando no se la reduce porque la diferencia en los valores era muy grande y no se podía apreciar la diferencia entre los otros factores.
 
 Pero como los tiempos de las pruebas los habíamos tomado, los mostramos en esta tabla a parte.
 
