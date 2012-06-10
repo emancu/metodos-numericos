@@ -231,7 +231,12 @@ Tomamos otra imagen y rehicimos todas las pruebas, y volcamos los resultados en 
 
 Una vez más, encontramos la relación entre los parámetros. Para imágenes con poco ruido, nuestro filtro genera imágenes de mejor calidad con $\lambda$ más grandes. Y cuando el factor de \textit{ruido} es mayor, conviene seleccionar un $\lambda$ más chico.
 
-Es interesante denotar que la manera en la que sucede esta tendencia depende de la imagen que se filtra. En la \texttt{figura 7} vemos que con un factor de ruido entre 20 y 30, las curvas se van acomodando de manera de que a partir de este punto la mejor calidad se logra con $\lambda = 1$. Sin embargo, en la \texttt{figura 6}, que corresponde a una imagen diferente, tomando $\lambda = 1$ obtenemos un PSNR menor al resto incluso en factores de ruido cercanos a 70.
+La explicación para esto la encontramos en la fórmula que buscamos optimizar:
+$$  \Pi = \int_\Omega {\frac{\lambda}{2} \left| u - \tilde{u} \right|^2 + \frac{1}{2} \lVert \nabla u \rVert^2 } d\Omega$$
+
+Vemos que $\lambda$ es un valor que afecta sólo al primer término, que mide el \textit{peso} del ruido en la imagen original. Por lo tanto cuanto más chico es este valor menos ``importancia" tiene. Por eso creemos que para grandes valores de \textit{factor de ruido} es conveniente reducir el \textit{peso} del mismo para ayudar al filtrado. De la misma manera cuando el \textit{factor de ruido} es bajo darle mayor relevancia ayuda la detección del mismo.
+
+Es interesante denotar que la manera en la que sucede esta tendencia depende de la imagen que se filtra. En la \texttt{figura 7} vemos que con un \textit{factor de ruido} entre 20 y 30, las curvas se van acomodando de manera de que a partir de este punto la mejor calidad se logra con $\lambda = 1$. Sin embargo, en la \texttt{figura 6}, que corresponde a una imagen diferente, tomando $\lambda = 1$ obtenemos un PSNR menor al resto incluso en factores de ruido cercanos a 70.
 
 Sin embargo, continuamos con las pruebas con otra imagen, y esta vez variando progresivamente el $\lambda$. Los resultados que obtuvimos fueron los siguientes: 
 
@@ -270,9 +275,9 @@ Sin embargo, continuamos con las pruebas con otra imagen, y esta vez variando pr
 
 Como podemos ver, acertamos con la suposición que para imágenes con poco ruido, nuestro filtro genera imágenes de mejor calidad con $\lambda$ más grandes. Y cuando el factor de \textit{ruido} es mayor, conviene seleccionar un $\lambda$ más chico.
 
-Habiendo verificado que esta tendencia se mantiene, lo que suponemos es que siendo que $\lambda$ mide la importancia relativa entre el ruido de la imagen sin filtrar y la suavidad de la imagen obtenida, el punto donde las curvas se estabilizan depende enteramente de la imagen que se esté tratando. Analizando la tabla vista arriba podemos confirmarlo: para $\lambda = 1$ y factor de ruido igual a 10 el PSNR es menor incluso que el de la imagen ruidosa, sin embargo cuando pasamos a factor de ruido 50 notamos una mejora mayor que para $\lambda = 5$ y $\lambda = 10$. Luego, para factor de ruido 100, la relación se mantiene. 
+Habiendo verificado que esta tendencia se mantiene, lo que suponemos es que siendo que $\lambda$ mide la importancia relativa entre el ruido de la imagen sin filtrar y la suavidad de la imagen obtenida, el punto donde las curvas se estabilizan depende enteramente de la imagen que se esté tratando. Analizando la tabla vista arriba podemos confirmarlo: para $\lambda = 1$ y \textit{factor de ruido} igual a 10 el PSNR es menor incluso que el de la imagen ruidosa, sin embargo cuando pasamos a \textit{factor de ruido} 50 notamos una mejora mayor que para $\lambda = 5$ y $\lambda = 10$. Luego, para \textit{factor de ruido} 100, la relación se mantiene. 
 
-Resumiendo, en la \texttt{figura 6} el equilibrio se concreta para valores de factor de ruido mayores a 80, para la \texttt{figura 7} de 30 en adelante y en la tabla anterior en algún momento entre factor de ruido 10 y 50. Cada uno de estos casos fue realizado con imágenes distintas y concluimos que esta es la razón del fenómeno observado.
+Resumiendo, en la \texttt{figura 6} el equilibrio se concreta para valores de \textit{factor de ruido} mayores a 80, para la \texttt{figura 7} de 30 en adelante y en la tabla anterior en algún momento entre \textit{factor de ruido} 10 y 50. Cada uno de estos casos fue realizado con imágenes distintas y concluimos que esta es la razón del fenómeno.
 
 \subsection{Factor de reducción. Ventajas y desventajas}
 Un filtro para limpiar imágenes es realmente útil si permite trabajar con imágenes grandes y no sólo eso, sino también poder controlar la relación tiempo\/calidad y este es el puntapié para nuestras siguientes pruebas.
