@@ -4,5 +4,6 @@
 #include <types.h>
 
 void free_matrix_memory(Matrix*);
+void print_matrix(Matrix *matrix);
 
 #endif
