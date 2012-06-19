@@ -212,7 +212,8 @@ Para empezar, comprobamos que nuestro algoritmo para generar ruido en imágenes 
 En la \texttt{figura 1}  vemos la mejora que produce el filtro con respecto a la imagen con ruido para un $\lambda$ determinado. 
 El $\ \lambda = 5$, nos resulto muy conveniente para nuestro algoritmo dado que la mayoría de veces nos da una amplia mejora. \\ 
 
-Ahora que sabemos como se comporta con una imagen con ruido generado por una herramienta como el GIMP, nos enfocamos a comparar con nuestra propia implementación de inserción de ruido.
+Ahora que sabemos como se comporta con una imagen con ruido generado por una herramienta como el GIMP, elaboramos nuestro propio algoritmo que introduce ruido \textit{Gaussiano} y todo el análisis que prosigue es bajo esta condición.
+
 En la \texttt{figura 2} vamos a ver que tiene un comportamiento similar, y de hecho utilizamos otros $\lambda$ para mostrar que no es un caso particular. 
 \begin{figure}[H]
   \centering
@@ -251,7 +252,7 @@ Como podemos observar en la mayor parte de la imagen de la mujer de la izquierda
 
 Analizando las \texttt{figuras 6 y 7} podemos ver que fijando el \textit{factor de ruido} en 35 la imagen de la mujer necesita un $\lambda = 10$ para lograr un \textit{PSNR} igual a 20, cosa que la foto de Einstein tiene incluso antes de filtrarse. Esto es porque el ruido introducido en \texttt{blond.pgm} interfiere \textit{relativamente} más que en la otra imagen.
 
-Con esto queremos notar que ponderar más la \textit{suavidad} de la \texttt{figura 8} ayuda al filtrado sin embargo para la \texttt{figura 8} conviene darle más peso al ruido, pues de por si la imagen es más variada.
+Con esto queremos notar que ponderar más la \textit{suavidad} de la \texttt{figura 8} ayuda al filtrado sin embargo para la \texttt{figura 9} conviene darle más peso al ruido, pues de por si la imagen es más variada.\\
 
 La explicación para esto la encontramos en la fórmula que buscamos optimizar:
 $$  \Pi = \int_\Omega {\frac{\lambda}{2} \left| u - \tilde{u} \right|^2 + \frac{1}{2} \lVert \nabla u \rVert^2 } d\Omega$$
@@ -314,10 +315,10 @@ El factor de reducción trae como desventaja la pérdida de calidad de la imagen
   \caption{ PSNR variando el factor de reducción. A medida que agrandamos el factor de reducción se pierde calidad. }
 \end{figure}
 
-En la \texttt{figura 8} marcamos los valores de los PSNR obtenidos y se ve claramente que seleccionando un factor de reducción más grande se pierde calidad. Si bien aumentar este parámetro en imágenes pequeñas, no sirve para obtener buenos resultados, si nos permite extraer conclusiones del comportamiento, que es nuestro caso.
+En la \texttt{figura 10} marcamos los valores de los PSNR obtenidos y se ve claramente que seleccionando un factor de reducción más grande se pierde calidad. Si bien aumentar este parámetro en imágenes pequeñas, no sirve para obtener buenos resultados, si nos permite extraer conclusiones del comportamiento, que es nuestro caso.
 Debido a una cuestión de Hardware, las imágenes que superaban el tamaño de 600x600 no pudimos terminar de correrlas, sobretodo porque ya las superiores a 512x512 demoraban más de 20 minutos cada una!
 
-En la \texttt{figura 9} graficamos los tiempos que demoramos en filtrar las imágenes utilizadas para la prueba anterior, y podemos ver como el tiempo crece exponencialmente.
+En la \texttt{figura 11} graficamos los tiempos que demoramos en filtrar las imágenes utilizadas para la prueba anterior, y podemos ver como el tiempo crece exponencialmente.
 
 \begin{figure}[H]
   \centering
@@ -325,9 +326,9 @@ En la \texttt{figura 9} graficamos los tiempos que demoramos en filtrar las imá
   \caption{ El tiempo se reduce considerablemente cuando agrandamos el factor de reducción, sacrificando calidad en la imágen pero ahorrando tiempo de computo. }
 \end{figure}
 
-Notemos ahora la relación que hay entre el \textit{tiempo de procesamiento} y la calidad obtenida con \textit{factor de reduccion}. En la \texttt{figura 8} se puede observar que en los casos de imágenes chicas, de $64 \times 64$ a $256 \times 256$, tener un \textit{factor de reduccion} igual a 1 (es decir, sin reducción) nos da un PSNR varios puntos mayor que reduciendo la imágen, sin embargo para imágenes más grandes la diferencia no es tan significativa. Si tenemos en cuenta el tiempo de procesamiento necesario para esto, en la \texttt{figura 9} vemos que utilizar un \textit{factor de reduccion} igual a 3 baja considerablemente el \textit{tiempo de procesamiento}, por lo tanto para imágenes grandes es aceptable utilizar dicho factor dado que el tiempo que se gana es bastante respecto de la poca calidad que se pierde.
+Notemos ahora la relación que hay entre el \textit{tiempo de procesamiento} y la calidad obtenida con \textit{factor de reduccion}. En la \texttt{figura 10} se puede observar que en los casos de imágenes chicas, de $64 \times 64$ a $256 \times 256$, tener un \textit{factor de reduccion} igual a 1 (es decir, sin reducción) nos da un PSNR varios puntos mayor que reduciendo la imágen, sin embargo para imágenes más grandes la diferencia no es tan significativa. Si tenemos en cuenta el tiempo de procesamiento necesario para esto, en la \texttt{figura 11} vemos que utilizar un \textit{factor de reduccion} igual a 3 baja considerablemente el \textit{tiempo de procesamiento}, por lo tanto para imágenes grandes es aceptable utilizar dicho factor dado que el tiempo que se gana es bastante respecto de la poca calidad que se pierde.
 
-En la \texttt{figura 9} no graficamos el tiempo de procesamiento cuando no se la reduce porque la diferencia en los valores era muy grande y no se podía apreciar la diferencia entre los otros factores.
+En la \texttt{figura 11} no graficamos el tiempo de procesamiento cuando no se la reduce porque la diferencia en los valores era muy grande y no se podía apreciar la diferencia entre los otros factores.
 
 Pero como los tiempos de las pruebas los habíamos tomado, los mostramos en esta tabla a parte.
 
