@@ -231,6 +231,28 @@ Tomamos otra imagen y rehicimos todas las pruebas, y volcamos los resultados en 
 
 Una vez más, encontramos la relación entre los parámetros. Para imágenes con poco ruido, nuestro filtro genera imágenes de mejor calidad con $\lambda$ más grandes. Y cuando el factor de \textit{ruido} es mayor, conviene seleccionar un $\lambda$ más chico.
 
+Para entender mejor este fenómeno hagamos un análisis de las imágenes que filtramos:
+
+\begin{multicols}{2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1.31]{graficos/blond.png}
+  \caption{blond.pgm. Imagen agrandada.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.65]{graficos/einstein.png}
+  \caption{einstein.pgm. Tamaño original.}
+\end{figure}
+\end{multicols}
+
+Como podemos observar en la mayor parte de la imagen de la mujer de la izquierda los colores varían muy poco, por ejemplo en la región de la piel o del fondo haciendo una imagen con una tonalidad uniforme. En cambio la imagen de Einstein contiene una mayor escala de grises donde las diferencias entre la piel, el traje y el fondo son notables.
+
+Analizando las \texttt{figuras 6 y 7} podemos ver que fijando el \textit{factor de ruido} en 35 la imagen de la mujer necesita un $\lambda = 10$ para lograr un \textit{PSNR} igual a 20, cosa que la foto de Einstein tiene incluso antes de filtrarse. Esto es porque el ruido introducido en \texttt{blond.pgm} interfiere \textit{relativamente} más que en la otra imagen.
+
+Con esto queremos notar que ponderar más la \textit{suavidad} de la \texttt{figura 8} ayuda al filtrado sin embargo para la \texttt{figura 8} conviene darle más peso al ruido, pues de por si la imagen es más variada.
+
 La explicación para esto la encontramos en la fórmula que buscamos optimizar:
 $$  \Pi = \int_\Omega {\frac{\lambda}{2} \left| u - \tilde{u} \right|^2 + \frac{1}{2} \lVert \nabla u \rVert^2 } d\Omega$$
 
