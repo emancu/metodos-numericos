@@ -14,10 +14,12 @@ void parse_input(char* input_path, Matrix* a){
   int light_car_mass = atoi(light_car_mass_str.c_str()); //Parse to int
   int heavy_car_mass = atoi(heavy_car_mass_str.c_str()); //Parse to int
 
+  /*
   printf("number_floors = %s \n" ,floors.c_str());
   printf("floor_mas = %s \n" ,floor_mass_str.c_str());
   printf("Light = %s \n" , light_car_mass_str.c_str());
   printf("heavy_mas = %s \n" , heavy_car_mass_str.c_str());
+  */
 
   int *light_cars_array, *heavy_cars_array, *floors_mass, *coefficients;
   light_cars_array = new int[number_of_floors];
@@ -29,28 +31,28 @@ void parse_input(char* input_path, Matrix* a){
   for(int i = 0; i < number_of_floors ; i++){
     input >> coeff;
     coefficients[i] = atoi(coeff.c_str());
-    printf("coef piso %d = %d \n" , i,  atoi(coeff.c_str()));
+    //printf("coef piso %d = %d \n" , i,  atoi(coeff.c_str()));
   }
 
   //leo autos livianos por piso
   for(int i = 0; i < number_of_floors ; i++){
     input >> amount_light_cars;
     light_cars_array[i] = atoi(amount_light_cars.c_str());
-    printf("livianos piso %d = %d \n" , i,  atoi(amount_light_cars.c_str()));
+    //printf("livianos piso %d = %d \n" , i,  atoi(amount_light_cars.c_str()));
   }
 
   //leo autos pesados por piso
   for(int i = 0; i < number_of_floors ; i++){
     input >> amount_heavy_cars;
     heavy_cars_array[i] = atoi(amount_heavy_cars.c_str());
-    printf("pesados piso %d = %d \n" , i,  atoi(amount_heavy_cars.c_str()));
+    //printf("pesados piso %d = %d \n" , i,  atoi(amount_heavy_cars.c_str()));
   }
 
   //saco las masas de los pisos
   for(int i = 0; i < number_of_floors ; i++){
     //sumo la masa del piso (todas las mismas), el peso de los autos pesados, y los livianos
     floors_mass[i] = floor_mass + light_cars_array[i] * light_car_mass + heavy_cars_array[i] * heavy_car_mass;
-    printf("masa final piso %d = %d \n" , i,  floors_mass[i]);
+    //printf("masa final piso %d = %d \n" , i,  floors_mass[i]);
   }
 
 
@@ -80,12 +82,17 @@ void parse_input(char* input_path, Matrix* a){
 
   print_matrix(a);
 
+  factorize_qr(a);
+
+  printf("\n\n");
+  print_matrix(a);
+
 }
 
 
-void factorize_qr(Matrix *m) {
-  double a,b,c,norma;
-  Matrix q_t, p, r;
+void factorize_qr(Matrix *r) {
+  double a,b,c,norma, upper_band;
+  Matrix q_t, p;
 
   // q_t va a ser las p acumuladas, entonces es de n*n no se puede optimizar.
   // P va a ser la permutacion temporal.
@@ -108,28 +115,27 @@ void factorize_qr(Matrix *m) {
 
   // Por cada cero. Vamos de 2 a n
   // Cada iteracion solo modifica 6 elementos
-  for(int row=0; row < r.rows; row++) {
-    // r[2] Siempre es la diagonal principal
-    a = r[2][row];
-    b = r[1][row];
-    c = r[2][row+1];
-    norma = Math.sqrt( a*a + b*b);
+  for(int row=0; row < r->rows - 1; row++) {
+  //for(int row=0; row < 1; row++) {
+    // r[1] Siempre es la diagonal principal
+    a = r->matrix[1][row];
+    b = r->matrix[2][row+1];
+    c = r->matrix[0][row+1];
+    upper_band = r->matrix[0][row];
 
+    norma = sqrt( a*a + b*b);
 
     // El producto de P*R modifica R de la siguiente manera.
-    r[0][row] = b * r[1][row+1] / norma;
-    r[1][row] = (a*b + b*r[2][row+1]) / norma;
-    r[2][row] = norma;
+    //r[0][row] = b * r[1][row+1] / norma;
+    r->matrix[0][row] = (a*r->matrix[0][row] + b*r->matrix[1][row+1]) / norma;
+    r->matrix[1][row] = norma;
 
-    r[1][row+1] = ( a*b - a*r[2][row+1]) / norma;
-    r[2][row+1] = (-b*b + a*r[2][row+1]) / norma;
-    r[3][row+1] = 0;
-
+    r->matrix[0][row+1] = (a*r->matrix[0][row+1]) / norma;
+    r->matrix[1][row+1] = (-upper_band*b + a*r->matrix[1][row+1]) / norma;
+    r->matrix[2][row] = b * c / norma ; //utilizamos la fila que se hace 0 para guardar la nueva banda que se va generando (r1,r2...)
     // Generar P
     // Multiplicar R=P*R
     // Multiplicar q_t=Q_t*P
-
-
   }
 
 

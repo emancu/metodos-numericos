@@ -15,7 +15,7 @@ void print_matrix(Matrix *matrix){
   for(int i = 0; i < 3; i++){ //el 3 es por como guardamos la matriz
     printf("\n");
     for(int j = 0; j < matrix->rows; j++)
-      printf("[%d] = %lf ," ,j, matrix->matrix[i][j]);
+      printf("%lf ," , matrix->matrix[i][j]);
   }
   printf("\n");
   printf("\n");
