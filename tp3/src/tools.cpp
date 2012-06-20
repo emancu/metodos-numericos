@@ -80,10 +80,57 @@ void parse_input(char* input_path, Matrix* a){
 
   print_matrix(a);
 
-  Matrix m, k;
-  m.rows    = number_of_floors;
-  m.columns = m.rows;
-  k.rows    = m.rows;
-  k.columns = m.columns;
 }
 
+
+void factorize_qr(Matrix *m) {
+  double a,b,c,norma;
+  Matrix q_t, p, r;
+
+  // q_t va a ser las p acumuladas, entonces es de n*n no se puede optimizar.
+  // P va a ser la permutacion temporal.
+  // R clone de A y la vamos a ir modificando con una fila mas.
+
+  // Inizializar
+
+  /*
+   * R esta grabada de la forma:
+   *
+   * 0  0  0  ... 0 0
+   * k1 k2 k3 ..... 0
+   * w0 w1 w2 ..... wn
+   * 0  k1 k2 ..... kn
+   *
+   * Donde wi = -ki -k(i+1)
+   *
+   */
+
+
+  // Por cada cero. Vamos de 2 a n
+  // Cada iteracion solo modifica 6 elementos
+  for(int row=0; row < r.rows; row++) {
+    // r[2] Siempre es la diagonal principal
+    a = r[2][row];
+    b = r[1][row];
+    c = r[2][row+1];
+    norma = Math.sqrt( a*a + b*b);
+
+
+    // El producto de P*R modifica R de la siguiente manera.
+    r[0][row] = b * r[1][row+1] / norma;
+    r[1][row] = (a*b + b*r[2][row+1]) / norma;
+    r[2][row] = norma;
+
+    r[1][row+1] = ( a*b - a*r[2][row+1]) / norma;
+    r[2][row+1] = (-b*b + a*r[2][row+1]) / norma;
+    r[3][row+1] = 0;
+
+    // Generar P
+    // Multiplicar R=P*R
+    // Multiplicar q_t=Q_t*P
+
+
+  }
+
+
+}
