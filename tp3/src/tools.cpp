@@ -87,6 +87,9 @@ void parse_input(char* input_path, Matrix* a){
   printf("\n\n");
   print_matrix(a);
 
+  printf("\n\n");
+  print_threeband_matrix(a);
+
 }
 
 
