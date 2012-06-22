@@ -63,6 +63,11 @@ Matrix* parse_input(char* input_path) {
   }
   a->set(number_of_floors-1, number_of_floors-1, -coefficients[number_of_floors-1] / floors_mass[number_of_floors-1]);
 
+  delete light_cars_array;
+  delete heavy_cars_array;
+  delete floors_mass;
+  delete coefficients;
+
   return a;
 }
 
