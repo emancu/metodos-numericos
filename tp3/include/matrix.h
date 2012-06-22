@@ -2,6 +2,7 @@
 #define __MATRIX__
 
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 

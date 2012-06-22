@@ -60,6 +60,7 @@ void Matrix::zero() {
 /*
  * M * self.
  * Siempre son cuadradas y del mismo tamaño.
+ * El resultado se guarda en self
  */
 void Matrix::left_multiply_by(const Matrix &m) {
   Matrix *r = new Matrix(_rows, _cols);
@@ -83,6 +84,7 @@ void Matrix::left_multiply_by(const Matrix &m) {
 /*
  * self * M
  * Siempre son cuadradas y del mismo tamaño.
+ * El resultado se guarda en self
  */
 void Matrix::right_multiply_by(const Matrix &m) {
   Matrix *r = new Matrix(_rows, _cols);

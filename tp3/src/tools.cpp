@@ -72,7 +72,7 @@ Matrix* parse_input(char* input_path) {
 }
 
 void carvalues(const Matrix &a){
-  int iteracion = 1;
+  int iteracion = 10;
   Matrix *r = new Matrix(a);
   Matrix *q = new Matrix(a.rows(), a.cols());
 
@@ -88,12 +88,11 @@ void carvalues(const Matrix &a){
     r->print();
 
     // Calculo la proxima matriz base para la iteracion
+    r->right_multiply_by(*q);
 
-    // r->right_multiply_by(*q);
-    q->right_multiply_by(*r);
 
-    cout << "QR" << endl;
-    q->print();
+    cout << "RQ" << endl;
+    r->print();
 
   }
 
@@ -109,8 +108,8 @@ void factorize_qr(Matrix *q_t, Matrix *r) {
   Matrix *p = new Matrix(r->rows(), r->cols());
   p->identity();
 
-  q_t->print();
-  r->print();
+  //q_t->print();
+  //r->print();
   for(int row=0; row < r->rows() - 1; row++) {
     a = r->get(row,row);
     b = r->get(row+1,row);
