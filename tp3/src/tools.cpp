@@ -59,41 +59,24 @@ void parse_input(char* input_path, Matrix* a){
 
 
   a->rows = a->columns = number_of_floors;
-
-  int row_amount = 3;
-  int matrix_width = number_of_floors;
-  a->matrix = new double*[row_amount];
+  a->matrix = new double*[number_of_floors];
 
   // Fill matrix with zeroes.
-  for(int i = 0; i < row_amount; i++){
-    a->matrix[i] = new double[matrix_width];
-    for(int j = 0; j < matrix_width; j++)
+  for(int i = 0; i < number_of_floors; i++){
+    a->matrix[i] = new double[number_of_floors];
+    for(int j = 0; j < number_of_floors; j++)
       a->matrix[i][j] = 0.0;
   }
 
-  //lleno la matriz y la multiplico por la inversa de A
-  //en fila 0 tengo la banda de arriba
-  //en fila 1 tengo la diagonal
-  //en fila 2 tengo la banda de abajo
-  for(int i = 0; i < matrix_width; i++){
-    if( i < matrix_width - 1){
-      a->matrix[0][i] = coefficients[i+1] / floors_mass[i];
-      a->matrix[1][i] = (-coefficients[i] - coefficients[i + 1]) / floors_mass[i];
-      a->matrix[2][i+1] = coefficients[i+1] / floors_mass[i+1];
-    }else{
-      a->matrix[1][i] = -coefficients[i] / floors_mass[i];
-    }
+  for(int i = 0; i < number_of_floors -1; i++){
+    a->matrix[i][i+1] = coefficients[i+1] / floors_mass[i];
+    a->matrix[i][i]   = (-coefficients[i] - coefficients[i+1]) / floors_mass[i];
+    a->matrix[i+1][i] = coefficients[i+1] / floors_mass[i+1];
   }
-
-  // print_matrix(a);
-  // print_threeband_matrix(a);
+  a->matrix[number_of_floors-1][number_of_floors-1] = -coefficients[number_of_floors-1] / floors_mass[number_of_floors-1];
 
   carvalues(a);
-
-  // printf("\n\n");
-  // print_matrix(a);
-  // printf("\n\n");
-  // print_threeband_matrix(a);
+  // factorize_qr(a);
 
 }
 
@@ -103,12 +86,12 @@ void carvalues(Matrix *a){
 
   qr = factorize_qr(a);
 
-  while(iteracion++ < 0)
+  while(iteracion++ < 30)
     qr = factorize_qr( &multiplyMatrix( &qr.second, &qr.first));
 
 
   printf("Ter,omasdkla");
-  print_normal_matrix(&multiplyMatrix( &qr.second, &qr.first));
+  print_matrix(&multiplyMatrix( &qr.second, &qr.first));
 
 }
 
@@ -116,26 +99,7 @@ pair<Matrix, Matrix> factorize_qr(Matrix *m) {
   double a,b,c,norma, upper_band;
   Matrix q_t, r, p;
 
-  // a.clone(&r);
   clone_matrix(*m, &r);
-
-  // q_t va a ser las p acumuladas, entonces es de n*n no se puede optimizar.
-  // P va a ser la permutacion temporal.
-  // R clone de A y la vamos a ir modificando con una fila mas.
-
-  // Inizializar
-
-  /*
-   * R esta grabada de la forma:
-   *
-   * 0  0  0  ... 0 0
-   * k1 k2 k3 ..... 0
-   * w0 w1 w2 ..... wn
-   * 0  k1 k2 ..... kn
-   *
-   * Donde wi = -ki -k(i+1)
-   *
-   */
 
   // Hago la identidad. TODO: Exportar
   p.rows = q_t.rows = p.columns = q_t.columns = r.rows;
@@ -151,49 +115,40 @@ pair<Matrix, Matrix> factorize_qr(Matrix *m) {
     q_t.matrix[i][i] = p.matrix[i][i] = 1.0;
   }
 
-  // Por cada cero. Vamos de 2 a n
-  // Cada iteracion solo modifica 6 elementos
   for(int row=0; row < r.rows - 1; row++) {
-    // r[1] Siempre es la diagonal principal
-    a = r.matrix[1][row];
-    b = r.matrix[2][row+1];
-    c = r.matrix[0][row+1];
-    upper_band = r.matrix[0][row];
+    a = r.matrix[row][row];
+    b = r.matrix[row+1][row];
+    c = r.matrix[row+1][row+2];
+    upper_band = r.matrix[row][row+1];
 
     norma = sqrt( a*a + b*b);
 
-    // El producto de P*R modifica R de la siguiente manera.
-    //r[0][row] = b * r[1][row+1] / norma;
-    r.matrix[0][row] = (a*r.matrix[0][row] + b*r.matrix[1][row+1]) / norma;
-    r.matrix[1][row] = norma;
-
-    r.matrix[0][row+1] = (a*r.matrix[0][row+1]) / norma;
-    r.matrix[1][row+1] = (-upper_band*b + a*r.matrix[1][row+1]) / norma;
-    r.matrix[2][row] = b * c / norma ; //utilizamos la fila que se hace 0 para guardar la nueva banda que se va generando (r1,r2...)
-
     // Generamos P, a partir de la identidad
-    p.matrix[row][row] = a/norma;
-    p.matrix[row][row+1] = b/norma;
-    p.matrix[row+1][row] = -b/norma;
+    p.matrix[row][row]     = a/norma;
+    p.matrix[row][row+1]   = b/norma;
+    p.matrix[row+1][row]   = -b/norma;
     p.matrix[row+1][row+1] = a/norma;
 
+    r = multiplyMatrix(&p, &r);
     q_t = multiplyMatrix(&p, &q_t);
 
     // Restauramos la identidad en P
-    p.matrix[row][row] = p.matrix[row+1][row+1] = 1.0;
+    p.matrix[row][row]   = p.matrix[row+1][row+1] = 1.0;
     p.matrix[row][row+1] = p.matrix[row+1][row] = 0.0;
-
-
-    // Multiplicar R=P*R
-    // Multiplicar q_t=Q_t*P
   }
 
   transpose(&q_t);
-  // print_threeband_matrix(&r);
 
-  printf("A");
-  print_threeband_matrix(m);
-  printf("QR");
+  printf("-------\nA\n");
+  print_matrix(m);
+
+  printf("Q\n");
+  print_matrix(&q_t);
+  printf("R\n");
+  print_matrix(&r);
+
+  printf("QR\n");
+  print_matrix(& multiplyMatrix(&q_t, &r));
 
   return make_pair(q_t, r);
 }
