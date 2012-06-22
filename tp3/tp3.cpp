@@ -18,7 +18,6 @@ int main(int argc, char* argv[]){
   // Aplico algoritmo QR
   carvalues(*a);
 
-
   delete a;
   return 0;
 }

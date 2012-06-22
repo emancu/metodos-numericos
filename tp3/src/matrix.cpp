@@ -138,7 +138,7 @@ void Matrix::print() const {
   cout << _rows << "x" << _cols << endl;
   for(int i = 0; i < _rows; i++){
     for(int j = 0; j < _cols; j++)
-      cout << _matrix[i][j] << "\t";
+      printf("%12.4lf" , _matrix[i][j]);
 
     cout << endl;
   }
