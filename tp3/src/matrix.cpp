@@ -70,7 +70,7 @@ void Matrix::left_multiply_by(const Matrix &m) {
     for(int j = 0; j < _cols; j++) {
       aux = 0;
       for(int k = 0; k < _cols; k++)
-        aux += _matrix[i][k] * m.get(k,j);
+        aux += m.get(i,k) * _matrix[k][j];
 
       r->set(i,j, aux);
     }
@@ -93,7 +93,7 @@ void Matrix::right_multiply_by(const Matrix &m) {
     for(int j = 0; j < _cols; j++) {
       aux = 0;
       for(int k = 0; k < _cols; k++)
-        aux += m.get(i,k) * _matrix[k][j];
+        aux += _matrix[i][k] * m.get(k,j);
 
       r->set(i,j, aux);
     }
