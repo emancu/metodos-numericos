@@ -1,14 +1,41 @@
 #ifndef __MATRIX__
 #define __MATRIX__
 
-#include <types.h>
+#include <iostream>
 
-void free_matrix_memory(Matrix*);
-void print_matrix(Matrix *matrix);
-Matrix multiplyMatrix(Matrix* a,Matrix* b );
-double multiply_row_column(Matrix* a, Matrix* b,int i,int j);
+using namespace std;
 
-void clone_matrix(const Matrix, Matrix *);
-void transpose(Matrix *);
+class Matrix {
+
+  public:
+    Matrix();
+    Matrix(const Matrix&);
+    Matrix(int rows, int cols);
+    ~Matrix();
+
+    /*
+     * Metodos que modifican self
+     */
+    void identity();
+    void zero();
+    void left_multiply_by(const Matrix&);
+    void right_multiply_by(const Matrix&);
+    void transpose();
+    void set(int, int, double);
+
+    /*
+     * Metodos que NO modifican self
+     */
+    int    rows() const;
+    int    cols() const;
+    void   print() const;
+    double get(int, int) const;
+
+  private:
+    int _rows;
+    int _cols;
+    double** _matrix;
+
+};
 
 #endif

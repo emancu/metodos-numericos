@@ -1,70 +1,146 @@
 #include <matrix.h>
-#include <types.h>
-#include <tools.h>
 
-void free_matrix_memory(Matrix* matrix){
-  for(int i = 0; i < matrix->rows; i++)
-    delete [] matrix->matrix[i];
-  delete [] matrix->matrix;
+/*
+ * Generators
+ */
+
+Matrix::Matrix() {
 }
 
-void print_matrix(Matrix *matrix){
-  printf("n = %d , m = %d\n" , matrix->rows, matrix->columns);
+Matrix::Matrix(const Matrix &base) {
+  _rows = base.rows();
+  _cols = base.cols();
 
-  for(int i = 0; i < matrix->rows; i++){
-    for(int j = 0; j < matrix->rows; j++){
-      printf("%lf \t" , matrix->matrix[i][j] );
-    }
-    printf("\n");
+  _matrix = new double*[_rows];
+  for(int i = 0; i < _rows; i++){
+    _matrix[i] = new double[_cols];
+    for(int j = 0; j < _cols; j++)
+      _matrix[i][j] = base.get(i,j);
   }
-  printf("\n");
-  printf("\n");
 }
 
-Matrix multiplyMatrix(Matrix* a,Matrix* b ){
-  Matrix result;
-  result.rows = a->rows;
-  result.columns = b->columns;
+Matrix::Matrix(int rows, int cols) {
+  _rows    = rows;
+  _cols = cols;
 
-  result.matrix = new double*[result.rows];
-
-  for(int i = 0; i < result.rows; i++){
-    result.matrix[i] = new double[result.columns];
-    for(int j = 0; j < result.columns; j++)
-      result.matrix[i][j] = multiply_row_column(a,b,i,j);
+  _matrix = new double*[_rows];
+  for(int i = 0; i < _rows; i++){
+    _matrix[i] = new double[_cols];
   }
-
-  return result;
 }
 
-void transpose(Matrix* m) {
+Matrix::~Matrix() {
+  for(int i = 0; i < _rows; i++)
+    delete [] _matrix[i];
+  delete [] _matrix;
+}
+
+/*
+ * Modifican self
+ */
+
+/*
+ * Transforms self into identity matrix
+ */
+void Matrix::identity() {
+  zero();
+  for(int j = 0; j < _cols; j++)
+    _matrix[j][j] = 1.0;
+}
+
+/*
+ * Transforms self into 0 matrix
+ */
+void Matrix::zero() {
+  for(int i = 0; i < _rows; i++)
+    for(int j = 0; j < _cols; j++)
+      _matrix[i][j] = 0.0;
+}
+
+/*
+ * M * self.
+ * Siempre son cuadradas y del mismo tamaño.
+ */
+void Matrix::left_multiply_by(const Matrix &m) {
+  Matrix *r = new Matrix(_rows, _cols);
   double aux;
-  for(int i = 0; i < m->columns; i++){
-    for(int j = i+1; j < m->rows; j++){
-      aux = m->matrix[i][j];
-      m->matrix[i][j] = m->matrix[j][i];
-      m->matrix[j][i] = aux;
+  r->zero();
+
+  for(int i = 0; i < _rows; i++) {
+    for(int j = 0; j < _cols; j++) {
+      aux = 0;
+      for(int k = 0; k < _cols; k++)
+        aux += _matrix[i][k] * m.get(k,j);
+
+      r->set(i,j, aux);
+    }
+  }
+
+  delete _matrix;       //Free old matrix
+  _matrix = r->_matrix; //Copy results
+}
+
+/*
+ * self * M
+ * Siempre son cuadradas y del mismo tamaño.
+ */
+void Matrix::right_multiply_by(const Matrix &m) {
+  Matrix *r = new Matrix(_rows, _cols);
+  double aux;
+  r->zero();
+
+  for(int i = 0; i < _rows; i++) {
+    for(int j = 0; j < _cols; j++) {
+      aux = 0;
+      for(int k = 0; k < _cols; k++)
+        aux += m.get(i,k) * _matrix[k][j];
+
+      r->set(i,j, aux);
+    }
+  }
+
+  delete _matrix;       //Free old matrix
+  _matrix = r->_matrix; //Copy results
+}
+
+void Matrix::transpose() {
+  double aux;
+  for(int i = 0; i < _cols; i++){
+    for(int j = i+1; j < _rows; j++){
+      aux = _matrix[i][j];
+      _matrix[i][j] = _matrix[j][i];
+      _matrix[j][i] = aux;
     }
   }
 }
 
-double multiply_row_column(Matrix* a, Matrix* b,int row,int column){
-  double result = 0;
-  for(int i = 0; i < a->columns; i++){
-    result += (a->matrix[row][i] * b->matrix[i][column]);
-  }
-  return result;
+void Matrix::set(int r, int c, double v) {
+  _matrix[r][c] = v;
 }
 
-void clone_matrix(const Matrix a, Matrix *clone) {
-  clone->rows = a.rows;
-  clone->columns = a.columns;
+/*
+ * NO modifican self
+ */
 
-  clone->matrix = new double*[clone->rows];
+double Matrix::get(int r, int c) const {
+  return _matrix[r][c];
+}
 
-  for(int i = 0; i < clone->rows; i++){
-    clone->matrix[i] = new double[clone->columns];
-    for(int j = 0; j < clone->columns; j++)
-      clone->matrix[i][j] = a.matrix[i][j];
+int Matrix::cols() const {
+  return _cols;
+}
+
+int Matrix::rows() const {
+  return _rows;
+}
+
+void Matrix::print() const {
+  cout << _rows << "x" << _cols << endl;
+  for(int i = 0; i < _rows; i++){
+    for(int j = 0; j < _cols; j++)
+      cout << _matrix[i][j] << "\t";
+
+    cout << endl;
   }
+  cout << endl << endl;
 }

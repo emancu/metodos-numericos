@@ -1,5 +1,5 @@
-#include <types.h>
 #include <tools.h>
+#include <matrix.h>
 
 int main(int argc, char* argv[]){
   static const char *optString = "f:";
@@ -13,10 +13,12 @@ int main(int argc, char* argv[]){
     }
   }
 
-  Matrix a;
-  parse_input(input_path, &a);
+  Matrix *a = parse_input(input_path);
 
-  printf("\ntp3\n");
+  // Aplico algoritmo QR
+  carvalues(*a);
 
+
+  delete a;
   return 0;
 }

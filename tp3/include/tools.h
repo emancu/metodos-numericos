@@ -1,10 +1,19 @@
 #ifndef __TOOLS__
 #define __TOOLS__
+#include <stdlib.h>
+#include <math.h>
+#include <fstream>
+#include <string>
+#include <iostream>
 
-void parse_input(char*, Matrix*);
+#include <matrix.h>
 
-void carvalues(Matrix*);
-pair<Matrix, Matrix> factorize_qr(Matrix *m);
+using namespace std;
+
+Matrix* parse_input(char*);
+
+void carvalues(const Matrix&);
+void factorize_qr(Matrix*, Matrix*);
 
 
 #endif

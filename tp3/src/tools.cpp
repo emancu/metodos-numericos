@@ -1,10 +1,6 @@
-#include <types.h>
 #include <tools.h>
-#include <matrix.h>
 
-using namespace std;
-
-void parse_input(char* input_path, Matrix* a){
+Matrix* parse_input(char* input_path) {
   string floors, floor_mass_str, light_car_mass_str, heavy_car_mass_str, coeff, amount_light_cars, amount_heavy_cars;
   ifstream input;
 
@@ -57,98 +53,84 @@ void parse_input(char* input_path, Matrix* a){
     //printf("masa final piso %d = %d \n" , i,  floors_mass[i]);
   }
 
-
-  a->rows = a->columns = number_of_floors;
-  a->matrix = new double*[number_of_floors];
-
-  // Fill matrix with zeroes.
-  for(int i = 0; i < number_of_floors; i++){
-    a->matrix[i] = new double[number_of_floors];
-    for(int j = 0; j < number_of_floors; j++)
-      a->matrix[i][j] = 0.0;
-  }
+  Matrix *a = new Matrix(number_of_floors, number_of_floors);
+  a->zero();
 
   for(int i = 0; i < number_of_floors -1; i++){
-    a->matrix[i][i+1] = coefficients[i+1] / floors_mass[i];
-    a->matrix[i][i]   = (-coefficients[i] - coefficients[i+1]) / floors_mass[i];
-    a->matrix[i+1][i] = coefficients[i+1] / floors_mass[i+1];
+    a->set(i, i+1, coefficients[i+1] / floors_mass[i]);
+    a->set(i,   i, (-coefficients[i] - coefficients[i+1]) / floors_mass[i]);
+    a->set(i+1, i, coefficients[i+1] / floors_mass[i+1]);
   }
-  a->matrix[number_of_floors-1][number_of_floors-1] = -coefficients[number_of_floors-1] / floors_mass[number_of_floors-1];
+  a->set(number_of_floors-1, number_of_floors-1, -coefficients[number_of_floors-1] / floors_mass[number_of_floors-1]);
 
-  carvalues(a);
-  // factorize_qr(a);
+  return a;
+}
+
+void carvalues(const Matrix &a){
+  int iteracion = 1;
+  Matrix *r = new Matrix(a);
+  Matrix *q = new Matrix(a.rows(), a.cols());
+
+  cout << "-----------" << endl << "A" << endl;
+  a.print();
+
+  while(iteracion--){
+    q->identity();
+    factorize_qr(q, r);
+    cout << "Q" << endl;
+    q->print();
+    cout << "R" << endl;
+    r->print();
+
+    // Calculo la proxima matriz base para la iteracion
+
+    // r->right_multiply_by(*q);
+    q->right_multiply_by(*r);
+
+    cout << "QR" << endl;
+    q->print();
+
+  }
+
+  cout << "Termino la factorizacion." << endl;
+
+  delete r;
+  delete q;
 
 }
 
-void carvalues(Matrix *a){
-  pair<Matrix, Matrix> qr;
-  int iteracion = 0;
-
-  qr = factorize_qr(a);
-
-  while(iteracion++ < 30)
-    qr = factorize_qr( &multiplyMatrix( &qr.second, &qr.first));
-
-
-  printf("Ter,omasdkla");
-  print_matrix(&multiplyMatrix( &qr.second, &qr.first));
-
-}
-
-pair<Matrix, Matrix> factorize_qr(Matrix *m) {
+void factorize_qr(Matrix *q_t, Matrix *r) {
   double a,b,c,norma, upper_band;
-  Matrix q_t, r, p;
+  Matrix *p = new Matrix(r->rows(), r->cols());
+  p->identity();
 
-  clone_matrix(*m, &r);
+  q_t->print();
+  r->print();
+  for(int row=0; row < r->rows() - 1; row++) {
+    a = r->get(row,row);
+    b = r->get(row+1,row);
+    c = r->get(row+1,row+2);
+    upper_band = r->get(row,row+1);
 
-  // Hago la identidad. TODO: Exportar
-  p.rows = q_t.rows = p.columns = q_t.columns = r.rows;
-  q_t.matrix = new double*[r.rows];
-  p.matrix = new double*[r.rows];
-
-  for(int i = 0; i < p.rows; i++){
-    q_t.matrix[i] = new double[q_t.columns];
-    p.matrix[i]   = new double[p.columns];
-    for(int j = 0; j < p.columns; j++)
-      q_t.matrix[i][j] = p.matrix[i][j] = 0.0;
-
-    q_t.matrix[i][i] = p.matrix[i][i] = 1.0;
-  }
-
-  for(int row=0; row < r.rows - 1; row++) {
-    a = r.matrix[row][row];
-    b = r.matrix[row+1][row];
-    c = r.matrix[row+1][row+2];
-    upper_band = r.matrix[row][row+1];
-
-    norma = sqrt( a*a + b*b);
+    norma = sqrt(a*a + b*b);
 
     // Generamos P, a partir de la identidad
-    p.matrix[row][row]     = a/norma;
-    p.matrix[row][row+1]   = b/norma;
-    p.matrix[row+1][row]   = -b/norma;
-    p.matrix[row+1][row+1] = a/norma;
+    p->set(row,  row,    a/norma);
+    p->set(row,  row+1,  b/norma);
+    p->set(row+1,row,   -b/norma);
+    p->set(row+1,row+1,  a/norma);
 
-    r = multiplyMatrix(&p, &r);
-    q_t = multiplyMatrix(&p, &q_t);
+    r->left_multiply_by(*p);
+    q_t->left_multiply_by(*p);
 
     // Restauramos la identidad en P
-    p.matrix[row][row]   = p.matrix[row+1][row+1] = 1.0;
-    p.matrix[row][row+1] = p.matrix[row+1][row] = 0.0;
+    p->set(row,  row,   1.0);
+    p->set(row+1,row+1, 1.0);
+    p->set(row,  row+1, 1.0);
+    p->set(row+1,row,   0.0);
   }
 
-  transpose(&q_t);
+  q_t->transpose();
 
-  printf("-------\nA\n");
-  print_matrix(m);
-
-  printf("Q\n");
-  print_matrix(&q_t);
-  printf("R\n");
-  print_matrix(&r);
-
-  printf("QR\n");
-  print_matrix(& multiplyMatrix(&q_t, &r));
-
-  return make_pair(q_t, r);
+  delete p;
 }
