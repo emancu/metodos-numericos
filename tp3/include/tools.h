@@ -3,7 +3,8 @@
 
 void parse_input(char*, Matrix*);
 
-void factorize_qr(Matrix *m);
+void carvalues(Matrix*);
+pair<Matrix, Matrix> factorize_qr(Matrix *m);
 
 
 #endif

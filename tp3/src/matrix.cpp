@@ -31,7 +31,7 @@ void print_threeband_matrix(Matrix *matrix){
         }else if ( j == i+1){
             printf("%lf \t" , matrix->matrix[0][i] );
         }else if (j == i-1){
-            printf("%lf \t" , matrix->matrix[2][i + 1] );
+            printf("%lf \t" , matrix->matrix[2][i] );
         }else{
             printf("%lf \t" , 0.0);
         }
@@ -55,13 +55,12 @@ void print_normal_matrix(Matrix *matrix){
   printf("\n");
 }
 
-Matrix  multiplyMatrix(Matrix* a,Matrix* b ){
+Matrix multiplyMatrix(Matrix* a,Matrix* b ){
   Matrix result;
   result.rows = a->rows;
   result.columns = b->columns;
 
   result.matrix = new double*[result.rows];
-
 
   for(int i = 0; i < result.rows; i++){
     result.matrix[i] = new double[result.columns];
@@ -72,6 +71,16 @@ Matrix  multiplyMatrix(Matrix* a,Matrix* b ){
   return result;
 }
 
+void transpose(Matrix* m) {
+  double aux;
+  for(int i = 0; i < m->columns; i++){
+    for(int j = i+1; j < m->rows; j++){
+      aux = m->matrix[i][j];
+      m->matrix[i][j] = m->matrix[j][i];
+      m->matrix[j][i] = aux;
+    }
+  }
+}
 
 double multiply_row_column(Matrix* a, Matrix* b,int row,int column){
   double result = 0;
@@ -82,9 +91,17 @@ double multiply_row_column(Matrix* a, Matrix* b,int row,int column){
 }
 
 
+void clone_matrix(const Matrix a, Matrix *clone) {
+  clone->rows = a.rows;
+  clone->columns = a.columns;
 
+  clone->matrix = new double*[clone->rows];
 
-
-
+  for(int i = 0; i < clone->rows; i++){
+    clone->matrix[i] = new double[clone->columns];
+    for(int j = 0; j < clone->columns; j++)
+      clone->matrix[i][j] = a.matrix[i][j];
+  }
+}
 
 
