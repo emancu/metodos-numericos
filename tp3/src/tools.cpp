@@ -126,7 +126,7 @@ void factorize_qr(Matrix *q_t, Matrix *r) {
     // Restauramos la identidad en P
     p->set(row,  row,   1.0);
     p->set(row+1,row+1, 1.0);
-    p->set(row,  row+1, 1.0);
+    p->set(row,  row+1, 0.0);
     p->set(row+1,row,   0.0);
   }
 
