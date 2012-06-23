@@ -1,6 +1,6 @@
 CC= g++
 CFLAGS= -Wall -ggdb -I include/
-OBJ= src/tools.o src/matrix.o
+OBJ= src/tools.o src/matrix.o src/building.o
 MAINS= tp3.o
 BIN= tp
 

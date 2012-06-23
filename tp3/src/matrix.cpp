@@ -20,7 +20,7 @@ Matrix::Matrix(const Matrix &base) {
 }
 
 Matrix::Matrix(int rows, int cols) {
-  _rows    = rows;
+  _rows = rows;
   _cols = cols;
 
   _matrix = new double*[_rows];

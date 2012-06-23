@@ -16,6 +16,7 @@ double* eigenvalues(const Matrix&, double, int);
 void qr_decomposition(Matrix*, Matrix*);
 void natural_frecuencies(double*, int);
 bool is_building_safe(double*, int);
+void print_array(double* , int );
 
 
 #endif

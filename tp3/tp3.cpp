@@ -1,5 +1,6 @@
 #include <tools.h>
 #include <matrix.h>
+#include <building.h>
 
 int main(int argc, char* argv[]){
   static const char *optString = "f:e:i:";
@@ -16,21 +17,33 @@ int main(int argc, char* argv[]){
     }
   }
 
-  Matrix *a = parse_input(input_path);
+  Building *building = new Building(input_path);
+  Matrix *a = building->matrix();
 
   // Aplico algoritmo QR
-  double *values = eigenvalues(*a, epsilon, iterations);
+  double *values;
 
+  values = eigenvalues(*a, epsilon, iterations);
   natural_frecuencies(values, a->rows());
 
-  for(int i=0; i < a->rows(); i++)
-    cout << values[i] << " ";
+  while(!is_building_safe(values, a->rows())){
 
-  cout << endl << "Is it safe? " << is_building_safe(values, a->rows()) << endl;
+    building->randomize();
+    building->generate_matrix();
+    a = building->matrix();
 
+    values = eigenvalues(*a, epsilon, iterations);
+    natural_frecuencies(values, a->rows());
 
-  delete a;
+    cout << is_building_safe(values, a->rows());
+  }
+
+  building->print();
+
+  print_array(values, a->rows());
+
   delete values;
+  delete building;
 
   return 0;
 }
