@@ -146,3 +146,21 @@ void Matrix::print() const {
   }
   cout << endl << endl;
 }
+
+double* Matrix::diagonal() const {
+  double *diagonal = new double[_rows];
+  for(int i=0; i < _rows; i++)
+    diagonal[i] = _matrix[i][i];
+
+  return diagonal;
+}
+
+double Matrix::sum_lower_triangular() const {
+  double sum = 0;
+
+  for(int i=1; i < _rows; i++)
+    for(int j=0; j < i; j++)
+      sum += abs(_matrix[i][j]);
+
+  return sum;
+}

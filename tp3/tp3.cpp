@@ -2,13 +2,16 @@
 #include <matrix.h>
 
 int main(int argc, char* argv[]){
-  static const char *optString = "f:";
-  int c;
+  static const char *optString = "f:e:i:";
   char* input_path;
+  double epsilon;
+  int c, iterations;
 
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
-      case 'f': { input_path  = optarg; break; }
+      case 'f': { input_path  = optarg;       break; }
+      case 'e': { epsilon     = atof(optarg); break; }
+      case 'i': { iterations  = atoi(optarg); break; }
       default:  { printf("Cannot parse.\n"); }
     }
   }
@@ -16,9 +19,19 @@ int main(int argc, char* argv[]){
   Matrix *a = parse_input(input_path);
 
   // Aplico algoritmo QR
-  carvalues(*a);
+  double *values = eigenvalues(*a, epsilon, iterations);
+
+  natural_frecuencies(values, a->rows());
+
+  for(int i=0; i < a->rows(); i++)
+    cout << values[i] << " ";
+
+  cout << endl << "Is it safe? " << is_building_safe(values, a->rows()) << endl;
+
 
   delete a;
+  delete values;
+
   return 0;
 }
 

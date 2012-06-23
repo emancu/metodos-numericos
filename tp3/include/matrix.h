@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <cmath>
 
 using namespace std;
 
@@ -31,6 +32,8 @@ class Matrix {
     int    cols() const;
     void   print() const;
     double get(int, int) const;
+    double* diagonal() const;
+    double sum_lower_triangular() const;
 
   private:
     int _rows;

@@ -71,58 +71,70 @@ Matrix* parse_input(char* input_path) {
   return a;
 }
 
-void carvalues(const Matrix &a){
-  int iteracion = 10;
-  Matrix *r = new Matrix(a);
+double* eigenvalues(const Matrix &a, double epsilon, int iterations) {
+  double prev_sum=0, cur_sum=0;
   Matrix *q = new Matrix(a.rows(), a.cols());
+  Matrix *r = new Matrix(a);
 
   cout << "-----------" << endl << "A" << endl;
-  a.print();
+  // a.print();
+  cur_sum = r->sum_lower_triangular();
 
-  while(iteracion--){
+  while( abs(cur_sum - prev_sum) > epsilon && --iterations) {
+    prev_sum = cur_sum;
+
     q->identity();
     qr_decomposition(q, r);
-    cout << "Q" << endl;
-    q->print();
-    cout << "R" << endl;
-    r->print();
 
-    // Calculo la proxima matriz base para la iteracion
+    // Calculo la proxima matriz base para la iteracion.
     r->right_multiply_by(*q);
-
-
-    cout << "RQ" << endl;
-    r->print();
-
+    cur_sum = r->sum_lower_triangular();
   }
+
+  if(!iterations) cout << "Sali por ITERACIONES" << endl;
+
+  // cout << "RQ" << endl;
+  // r->print();
 
   cout << "Termino la factorizacion." << endl;
 
+  double *diagonal = r->diagonal();
   delete r;
   delete q;
 
+  return diagonal;
+}
+
+void natural_frecuencies(double *eigenvalues, int size) {
+  for(int i=0; i < size; i++)
+    eigenvalues[i] = sqrt(-eigenvalues[i]);
+}
+
+bool is_building_safe(double *eigenvalues, int size) {
+  for(int i=0; i < size; i++)
+    if(2.7 <= eigenvalues[i] && eigenvalues[i] <= 3.3)
+      return false;
+  return true;
 }
 
 void qr_decomposition(Matrix *q_t, Matrix *r) {
-  double a,b,c,norma, upper_band;
+  double a,b,c,norm, upper_band;
   Matrix *p = new Matrix(r->rows(), r->cols());
   p->identity();
 
-  //q_t->print();
-  //r->print();
   for(int row=0; row < r->rows() - 1; row++) {
     a = r->get(row,row);
     b = r->get(row+1,row);
     c = r->get(row+1,row+2);
     upper_band = r->get(row,row+1);
 
-    norma = sqrt(a*a + b*b);
+    norm = sqrt(a*a + b*b);
 
     // Generamos P, a partir de la identidad
-    p->set(row,  row,    a/norma);
-    p->set(row,  row+1,  b/norma);
-    p->set(row+1,row,   -b/norma);
-    p->set(row+1,row+1,  a/norma);
+    p->set(row,  row,    a/norm);
+    p->set(row,  row+1,  b/norm);
+    p->set(row+1,row,   -b/norm);
+    p->set(row+1,row+1,  a/norm);
 
     r->left_multiply_by(*p);
     q_t->left_multiply_by(*p);
