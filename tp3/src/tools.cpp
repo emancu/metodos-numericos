@@ -81,7 +81,7 @@ void carvalues(const Matrix &a){
 
   while(iteracion--){
     q->identity();
-    factorize_qr(q, r);
+    qr_decomposition(q, r);
     cout << "Q" << endl;
     q->print();
     cout << "R" << endl;
@@ -103,7 +103,7 @@ void carvalues(const Matrix &a){
 
 }
 
-void factorize_qr(Matrix *q_t, Matrix *r) {
+void qr_decomposition(Matrix *q_t, Matrix *r) {
   double a,b,c,norma, upper_band;
   Matrix *p = new Matrix(r->rows(), r->cols());
   p->identity();

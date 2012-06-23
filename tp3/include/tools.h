@@ -13,7 +13,7 @@ using namespace std;
 Matrix* parse_input(char*);
 
 void carvalues(const Matrix&);
-void factorize_qr(Matrix*, Matrix*);
+void qr_decomposition(Matrix*, Matrix*);
 
 
 #endif
