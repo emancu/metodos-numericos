@@ -97,7 +97,28 @@ void random_heuristic(Building* building, int epsilon, int iterations){
   delete values;
 }
 
+void swap_or_move_heuristic(Building* building, int epsilon, int iterations){
+  Matrix *a = building->matrix();
 
+  // Aplico algoritmo QR
+  double *values;
+
+  values = eigenvalues(*a, epsilon, iterations);
+  natural_frecuencies(values, a->rows());
+
+  while(!is_building_safe(values, a->rows())){
+    building->swap_or_move_heavy_light_cars();
+    building->generate_matrix();
+    a = building->matrix();
+
+    values = eigenvalues(*a, epsilon, iterations);
+    natural_frecuencies(values, a->rows());
+
+    //cout << is_building_safe(values, a->rows()) << endl;
+  }
+
+  delete values;
+}
 
 void print_array(double* array, int size) {
   for(int i=0; i < size; i++)

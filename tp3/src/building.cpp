@@ -86,7 +86,7 @@ void Building::generate_matrix() {
 void Building::randomize() {
   int amount_light = _light_cars_amount;
   int amount_heavy = _heavy_cars_amount;
-  srand( time(NULL));
+  srand(time(NULL));
 
   for(int i=0; i< _floors-1; i++) {
     _light_cars_array[i] = rand() % (amount_light+1);
@@ -99,6 +99,29 @@ void Building::randomize() {
   _light_cars_array[_floors-1] = amount_light;
   _heavy_cars_array[_floors-1] = amount_heavy;
 
+}
+
+void Building::swap_or_move_heavy_light_cars() {
+  srand(time(NULL));
+
+  int floor_i = rand() % _floors;
+  int floor_j = rand() % _floors;
+
+  // In case the floors are the same.
+  while(floor_i == floor_j || (_light_cars_array[floor_i] == 0 && _heavy_cars_array[floor_j] == 0)){
+    floor_i = rand() % _floors;
+    floor_j = rand() % _floors;
+  }
+
+  if(_light_cars_array[floor_i] > 0){
+    _light_cars_array[floor_i]--;
+    _light_cars_array[floor_j]++;
+  }
+
+  if(_heavy_cars_array[floor_j] > 0){
+    _heavy_cars_array[floor_j]--;
+    _heavy_cars_array[floor_i]++;
+  }
 }
 
 /*
@@ -167,3 +190,4 @@ void Building::output_file(char* output_path) const {
 
   file.close();
 }
+

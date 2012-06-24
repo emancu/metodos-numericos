@@ -21,14 +21,14 @@ int main(int argc, char* argv[]){
 
   Building *building = new Building(input_path);
 
-
   switch(heuristic){
     case 0 : {
       random_heuristic(building, epsilon, iterations);
       break;
     }
     case 1 : {
-
+      swap_or_move_heuristic(building, epsilon, iterations);
+      break;
     }
   }
 

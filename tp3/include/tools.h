@@ -19,6 +19,7 @@ void natural_frecuencies(double*, int);
 bool is_building_safe(double*, int);
 void print_array(double* , int );
 void random_heuristic(Building*,int,int);
+void swap_or_move_heuristic(Building*,int,int);
 
 
 #endif
