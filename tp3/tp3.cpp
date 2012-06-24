@@ -3,10 +3,10 @@
 #include <building.h>
 
 int main(int argc, char* argv[]){
-  static const char *optString = "f:e:i:o:";
+  static const char *optString = "f:e:i:h:o:";
   char *input_path, *output_path;
   double epsilon;
-  int c, iterations;
+  int c, iterations, heuristic;
 
   while((c = getopt(argc, argv, optString)) != -1){
     switch(c){
@@ -14,37 +14,28 @@ int main(int argc, char* argv[]){
       case 'e': { epsilon     = atof(optarg); break; }
       case 'i': { iterations  = atoi(optarg); break; }
       case 'o': { output_path = optarg;       break; }
+      case 'h': { heuristic  = atoi(optarg); break; }
       default:  { printf("Cannot parse.\n"); }
     }
   }
 
   Building *building = new Building(input_path);
-  Matrix *a = building->matrix();
 
-  // Aplico algoritmo QR
-  double *values;
 
-  values = eigenvalues(*a, epsilon, iterations);
-  natural_frecuencies(values, a->rows());
+  switch(heuristic){
+    case 0 : {
+      random_heuristic(building, epsilon, iterations);
+      break;
+    }
+    case 1 : {
 
-  while(!is_building_safe(values, a->rows())){
-
-    building->randomize();
-    building->generate_matrix();
-    a = building->matrix();
-
-    values = eigenvalues(*a, epsilon, iterations);
-    natural_frecuencies(values, a->rows());
-
-    cout << is_building_safe(values, a->rows()) << endl;
+    }
   }
 
   building->print();
   building->output_file(output_path);
+  //print_array(values, a->rows());
 
-  print_array(values, a->rows());
-
-  delete values;
   delete building;
 
   return 0;
