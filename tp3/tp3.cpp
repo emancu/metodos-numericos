@@ -3,8 +3,8 @@
 #include <building.h>
 
 int main(int argc, char* argv[]){
-  static const char *optString = "f:e:i:";
-  char* input_path;
+  static const char *optString = "f:e:i:o:";
+  char *input_path, *output_path;
   double epsilon;
   int c, iterations;
 
@@ -13,6 +13,7 @@ int main(int argc, char* argv[]){
       case 'f': { input_path  = optarg;       break; }
       case 'e': { epsilon     = atof(optarg); break; }
       case 'i': { iterations  = atoi(optarg); break; }
+      case 'o': { output_path = optarg;       break; }
       default:  { printf("Cannot parse.\n"); }
     }
   }
@@ -35,10 +36,11 @@ int main(int argc, char* argv[]){
     values = eigenvalues(*a, epsilon, iterations);
     natural_frecuencies(values, a->rows());
 
-    cout << is_building_safe(values, a->rows());
+    cout << is_building_safe(values, a->rows()) << endl;
   }
 
   building->print();
+  building->output_file(output_path);
 
   print_array(values, a->rows());
 

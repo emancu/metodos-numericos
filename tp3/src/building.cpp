@@ -135,3 +135,35 @@ void Building::print() const {
 
 }
 
+void Building::output_file(char* output_path) const {
+  ofstream file;
+  file.open(output_path);
+
+  file << _floors << " " << _floor_mass << " " << _light_car_mass << " " << _heavy_car_mass << endl;
+
+  for(int i = 0; i < _floors; i++){
+    file << _coefficients[i];
+    if(i == _floors - 1)
+      file << endl;
+    else
+      file << " ";
+  }
+
+  for(int i = 0; i < _floors; i++){
+    file << _light_cars_array[i];
+    if(i == _floors - 1)
+      file << endl;
+    else
+      file << " ";
+  }
+
+  for(int i = 0; i < _floors; i++){
+    file << _heavy_cars_array[i];
+    if(i == _floors - 1)
+      file << endl;
+    else
+      file << " ";
+  }
+
+  file.close();
+}
