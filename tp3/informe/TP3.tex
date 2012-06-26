@@ -64,6 +64,18 @@
 
 \section{Desarrollo}
 
+En este trabajo práctico debemos calcular las \textit{frecuencias naturales} de un estacionamiento de varios pisos ante un hipotético terremoto, y como distribuir los automóviles para que se encuentre a salvo. Para esto, el trasfondo teórico propuesto por la cátedra toma en cuenta el peso de cada piso y el desplazamiento horizontal de cada uno respecto del suelo. Con estos datos armamos una ecuación por piso logrando un sistema de ecuaciones que en su forma matricial consiste en una \textbf{matriz de tres bandas}. Calculando los \textit{autovalores} de esta matriz es como obtenemos las \textit{frecuencias naturales} necesarias para el desarrollo del problema.
+
+\subsection{Autovalores}
+El primer paso en este trabajo consiste en calcular los \textit{autovalores} de una matriz y para lograrlo utilizamos el \textit{Algoritmo QR} que es un método iterativo basado en la \textit{factorización QR} de una matriz. Este algoritmo es en verdad bastante simple; siendo $A = Q_0 \times R_0$ la matriz a la cual queremos calcularle los \textit{autovalores}, formamos la matriz $A_1 = R_0 \times Q_0$ y repetimos lo mismo para calcular $A_2$. En definitiva, el algoritmo genera una serie de matrices de la forma
+
+$$A_{i + 1} = R_i \times Q_i$$
+
+la cual tiende a ser una matriz cuya diagonal principal contiene los \textit{autovalores} de \textit{A}. Cabe destacar que $A_i$ tiende a ser una \textbf{matriz diagonal} si \textit{A} es \textbf{simétrica} o a una \textbf{matriz triangular superior} si no lo es.\\
+
+\subsection{Factorización QR}
+Sabiendo esto el principal desafío del \textit{Algoritmo QR} es obtener la \textit{factorización QR} de la matriz.
+
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
 
 \newpage
