@@ -26,7 +26,7 @@ void newton(Params *p, TFloat (*fn_pos)(Params*, TFloat), TFloat (*fn_speed)(Par
   p->v = res.speed * -1 * p->f;
 
   res = zero_newton(p, fn_speed, fn_accel);
-  output(1, fn_pos(p,res.zero), instant + res.zero, res.speed);
+  output(1, fn_pos(p,res.zero), instant + res.zero, fn_speed(p,res.zero));
 
   // Segundo impacto
   res = zero_newton(p, fn_pos, fn_speed);
