@@ -1,2 +1,12 @@
 tp
 *.o
+informe/*.aux
+informe/*.log
+informe/*.synctex
+informe/*.toc
+informe/*.out
+informe/TSWLatexianTemp*
+informe/*.bbl
+informe/*.blg
+informe/*.pdf
+informe/*.synctex.gz
