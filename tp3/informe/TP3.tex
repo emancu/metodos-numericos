@@ -25,7 +25,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead [LO,LE]{\scriptsize Trabajo Práctico N$^{\circ}$2}
+\fancyhead [LO,LE]{\scriptsize Trabajo Práctico N$^{\circ}$3}
 \fancyhead [RO,RE]{\scriptsize Mancuso, Mataloni, Tolchinsky}
 \fancyfoot[CE,CO]{\thepage}
 \renewcommand{\footrulewidth}{0.4pt}
@@ -38,8 +38,8 @@
 
 \materia{Métodos Numéricos}
 \submateria{Primer Cuatrimestre de 2012}
-\titulo{Filtrado de imágenes resueltas con ecuaciones lineales. }
-\subtitulo{ Ecuaciones Lineales, Filtro de imagen }
+\titulo{Cuando pase el temblor...}
+\subtitulo{Autovalores}
 \grupo{Trabajo Práctico N$^{\circ}$3}
 
 \integrante{Mancuso, Emiliano}{597/07}{emiliano.mancuso@gmail.com}
@@ -83,6 +83,123 @@
 
 \section{Apéndices}
 \subsection{A - Enunciado}
+
+El trabajo pr\'actico consiste en evaluar la resistencia s\'\i smica de un
+edificio de varios pisos que funciona como estacionamiento, proponiendo un plan de
+reubicaci\'on de los veh\'iculos lo m\'as eficiente posible.\\
+
+\textbf{El modelo}\\
+Consideremos un edificio de $n$ pisos como el de la Figura~1. Un modelo sencillo
+para estudiar el efecto de un terremoto sobre el edificio consiste en
+considerar cada piso $i=1,\dots,n$ como un bloque de masa $m_i$, unido a los
+pisos adyacentes por medio de un conector el\'astico cuya acci\'on se parece
+a la de un resorte. Para $i=0,\dots,n-1$, la uni\'on entre los pisos $i$ e
+$i+1$ suministra una fuerza de restituci\'on
+\begin{displaymath}
+F_i\ =\ k_i (x_{i+1}-x_i),
+\end{displaymath}
+donde $x_i(t)\colon \mathbb{R}_+ \rightarrow \mathbb{R}$ representa el desplazamiento
+horizontal del $i$-\'esimo piso en cada instante con respecto al suelo (asumimos que $i=0$ corresponde
+al suelo y que $x_0=0$), y los $k_i\in\mathbb{R}_+$ representan los coeficientes
+de rigidez. Aplicando la segunda ley de Newton del movimiento %$F = ma$ 
+a cada secci\'on del edificio ($m_i\, a_i = F_i-F_{i-1}$, con $a_i$ la aceleraci\'on, que escribiremos como la derivada segunda de $x_i$), 
+obtenemos el siguiente sistema de ecuaciones diferenciales ordinarias:
+\begin{eqnarray*}
+m_1 \ddot{x}_1 & = & -k_0 x_1 + k_1 (x_2-x_1) \nonumber \\
+m_2 \ddot{x}_2 & = & -k_1 (x_2-x_1) + k_2 (x_3-x_2) \nonumber \\
+m_3 \ddot{x}_3 & = & -k_2 (x_3-x_2) + k_3 (x_4-x_3) \nonumber \\
+\vdots &  & \vdots \nonumber \\
+m_n \ddot{x}_n & = & -k_{n-1} (x_n-x_{n-1}) \nonumber \\
+\end{eqnarray*}
+Escrito en forma matricial, este
+sistema toma la forma $M\ddot{\mathbf{x}} = K\mathbf{x}$, 
+donde $M\in\mathbb{R}^{n\times n}$ es una matriz
+diagonal con las masas de los pisos y $K\in\mathbb{R}^{n\times n}$ es una matriz
+tridiagonal con los coeficientes de rigidez adecuados. Como $m_i>0$ para
+$i=1,\dots,n$, entonces $M$ tiene inversa y el sistema se puede reescribir
+como $\ddot{\mathbf{x}} = (M^{-1} K) \mathbf{x} = A\mathbf{x}$, donde $A = M^{-1} K$ tiene autovalores negativos.
+
+Sean $\lambda_1,\dots,\lambda_n$ los autovalores de $A$. Los valores
+$\omega_i=\sqrt{-\lambda_i}$, para $i=1,\dots,n$, representan las frecuencias
+naturales del sistema, e indican la estabilidad del edificio durante un
+terremoto. Si la frecuencia del sismo es muy pr\'oxima a alguna de estas
+frecuencias, hay riesgo de que el edificio entre en resonancia y colapse.\\
+
+\textbf{El problema}
+
+Nos encontramos en el 
+estacionamiento de una importante concesionaria de autom\' oviles de una reconocida marca,
+% dep\'osito de lavarropas de una conocida casa de electrodom\'esticos, 
+y se avecina un terremoto sobre nuestra ciudad. 
+Contamos con informaci\'on fidedigna provista por nuestro
+informante en el Departamento de Geolog\'\i a de la FCEyN 
+de que la frecuencia del terremoto ser\'a $\omega = 3\ \hbox{Hz}
+= 3 \frac{1}{\hbox{seg}}$.
+
+Para realizar c\'alculos simplificados podemos asumir que todos los autos 
+se pueden agrupar en 2 categor\'ias: livianos, de masa $m_l$, y pesados, 
+de masa $m_p > m_l$.
+Adem\'as, $m_0$ es la masa propia del edificio correspondiente a cada piso.
+De esta forma, si el piso $i$ tiene $l_i$ veh\'\i culos livianos y 
+$p_i$ veh\'\i culos pesados, entonces su masa es $m_i = m_0 + l_i m_l + p_i m_p$. 
+El problema que debemos resolver -y r\'apidamente- consiste en determinar
+cu\'antos autos livianos y pesados debemos quitar de cada piso 
+(reubic\'andolos en otros pisos) para que ninguna de las frecuencias 
+naturales del edificio se encuentre a menos del 10\% de la frecuencia 
+$\omega$ del terremoto.
+La soluci\'on \'optima del problema es aquella que permite evitar que el
+edificio colapse, reubicando la menor cantidad posible de autom\'oviles.\\
+
+\textbf{El enunciado}
+
+El trabajo pr\'actico consiste en implementar un programa que permita 
+resolver este problema. La soluci\'on propuesta debe indicar cu\'antos 
+autos livianos y cu\'antos pesados quitar de cada piso, y a qu\'e pisos 
+se deben llevarlos. 
+
+Deben proponerse (por lo menos) dos m\'etodos (es v\'alido que sean 
+heur\'\i sticos) para obtener el plan de reubicaci\'on. El informe 
+deber\'a contener los resultados de los experimentos realizados para
+compararlos y evaluar cu\'al es mejor. 
+
+El programa debe incluir una implementaci\'on de
+alg\'un algoritmo para calcular los autovalores de una matriz cuadrada, que
+deber\'a ser utilizado durante el proceso de decisi\'on. Sugerimos implementar
+el algoritmo QR para el c\'alculo de autovalores. El programa debe tomar los
+datos desde un archivo de texto con el siguiente formato:
+\begin{eqnarray}
+ & & n\ m_0\ m_l\ m_p \nonumber \\
+ & & k_0\ k_1\ \dots\ k_{n-1} \nonumber \\
+ & & l_1\ l_2\ \dots\ l_n \nonumber \\
+ & & p_1\ p_2\ \dots\ p_n \nonumber
+\end{eqnarray}
+Se debe retornar la soluci\'on propuesta con este mismo formato.
+
+El programa que obtenga la mejor redistribuci\'on de autom\'oviles se har\'a
+acreedor a la medalla \emph{M\'etodos Num\'ericos 2012} al Mejor Redistribuidor Vehicular.\\
+
+\vskip 15pt
+
+\hrule
+
+\vskip 11pt
+
+{\bf \underline{Entrega Final}}
+
+\begin{description}
+  \setlength{\itemsep}{0pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+ \item[Formato Electr\'onico:] jueves 28 de junio de 2012, hasta las 23:59 hs, a la direcci\'on: 
+
+  {\emph{metnum.lab@gmail.com}}
+%  \item[Formato f\'isico y experimentación en clase:] 13 de abril de 2012, de 17 a 21 hs.
+ \item[Formato f\'isico:] viernes 29 de junio de 2012, de 17 a 19 hs.
+ \item[Competencia entre grupos:] viernes 29 de junio de 2012, 19 hs.
+ \item[Entrega de premios:] viernes 29 de junio de 2012, 20:30 hs.
+\end{description}
+
+
 \newpage
 
 %\section{Referencias TODO}
