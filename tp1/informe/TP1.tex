@@ -135,51 +135,16 @@ También se puede usar como criterio de parada el error relativo entre dos aprox
 \begin{equation}\frac{c_n - c_{n-1}}{c_n} < \epsilon \end{equation}
 Otro criterio que puede utilizarse, y de hecho es el que utilizamos, es examinar sí \begin{equation}\frac{b_n - a_n}{2} < \epsilon\end{equation}
 
-\section{Resultados}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.80]{graficos/1-Biseccion_vs_BiseccionNewton.png}
-  \caption{Cantidad de Iteraciones. Bisección vs Newton (con aproximación de Bisección) }
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.80]{graficos/2-BiseccionXIteraciones.png}
-  \caption{Aproximación con Bisección limitada a 5 iteraciones. }
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.80]{graficos/3-BiseccionXTolerancia.png}
-  \caption{Aproximación con Bisección limitada a una tolerancia de 2. }
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.75]{graficos/4-energiaMecanica-alpha.png}
-  \caption{Comparación diferencia de energía mecánica. Variando $\alpha$ }
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.75]{graficos/5-energiaMecanica-fr.png}
-  \caption{Comparación diferencia de energía mecánica. Variando \textit{Fr} }
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.75]{graficos/6-errorAbsoluto.png}
-  \caption{Error absoluto cambiando los bits de la mantisa }
-\end{figure}
-
-%Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 \newpage
+\section{Discusión y Resultados}
+\begin{quote}
+Salvo para las pruebas de precision, \textit{Figura 6}, utilizamos la mayor precision que podíamos dada por \textbf{TFloat}, que es 52bits.
+\end{quote}
+\vspace{1em}
 
-\section{Discusión}
 Sabiendo que el método de \textbf{Newton-Raphson} converge de forma cuadrática, decidímos comparar la cantidad de iteraciones que requiere cada algoritmo para mostrar de forma gráfica la eficiencia de los mismos. \\
 
-Para esto, nos centramos en resolver el problema con parámetros fijos de solución exacta
+Para esto, nos centramos en resolver el problema con parámetros fijos de solución exacta.
 
 Las \textit{Figuras 1, 2 y 3} representan los resultados con los siguientes parámetros, 
 \begin{itemize}
@@ -197,6 +162,13 @@ Bajo estas condiciones, es fácil probar que la solución es exactamente 8, bast
 \end{displaymath}
 
 Ahora, con este problema bien definido, variamos la longitud del intervalo donde comienza \textbf{bisección} y graficamos la cantidad de iteraciones que necesita cada algoritmo (\textit{Figura 1}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.80]{graficos/1-Biseccion_vs_BiseccionNewton.png}
+  \caption{Cantidad de Iteraciones. Bisección vs Newton (con aproximación de Bisección) }
+\end{figure}
+
 En primer lugar, encontramos una gran diferencia entre la cantidad de iteraciones necesarias por parte de \textbf{Bisección puro} y \textbf{Bisección + Newton}. Este resultado ya lo sabíamos teóricamente con el orden de convergencia de ambos métodos y quedó demostrado. Cabe destacar que no solo probamos este caso en particular sino todas las pruebas que fuimos haciendo verificábamos esto.\\ \vspace{1em}
  
 Por otro lado , necesitábamos un criterio de aproximación por \textbf{Bisección} para la semilla de \textbf{Newton}, y decidimos probar las 2 alternativas:
@@ -205,26 +177,107 @@ Por otro lado , necesitábamos un criterio de aproximación por \textbf{Bisecci�
   \item Acercarnos al valor a una distancia \textbf{d} de la raíz
 \end{itemize}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.80]{graficos/2-BiseccionXIteraciones.png}
+  \caption{Aproximación con Bisección limitada a 5 iteraciones. }
+\end{figure}
+ 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.80]{graficos/3-BiseccionXTolerancia.png}
+  \caption{Aproximación con Bisección limitada a una tolerancia de 2. }
+\end{figure}
+
 En la \textit{Figura 2} podemos observar que no variaba mucho la cantidad final de iteraciones del algoritmo total para encontrar la raíz. En las \textit{figuras 2 y 3} diferenciamos la cantidad de iteraciones de cada método, y dado que para este problema en particular \textbf{Newton} se comporta \textit{bien} para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones.
 En el caso de un problema en que sea necesario tener una semilla buena, se optaría por el otro criterio de parada.
-Este fue uno de los resultados que nos sorprendió, ya que esperábamos que acercarse a una distancia \textbf{d} de la raíz, nos iba a aportar muchas más iteraciones de las experimentadas.
- 
- 
-En este caso debíamos analizar cómo variaba la energía mecánica entre el lanzamiento y el segundo rebote.
+Este fue uno de los resultados que nos sorprendió, ya que esperábamos que acercarse a una distancia \textbf{d} de la raíz, nos iba a aportar muchas más iteraciones de las experimentadas.\\
+
+%En este caso debíamos analizar cómo variaba la energía mecánica entre el lanzamiento y el segundo rebote.
 	
-En la \textit{Figura 4} comparamos la energía mecánica a través del tiempo. En este primer experimento dejamos fijo el factor de restitución y variamos la variable $\alpha$  ( $\alpha == 0$ significa sin rozamiento ). Podemos observar que en el caso de no haber rozamiento la energía mecánica se conserva, en cambio a mayor $\alpha$, o sea a mayor rozamiento, la perdida de energía es mayor con el paso del tiempo. \\
-	
-En la \textit{Figura 5} lo que hicimos fue, dejando fijo el $\alpha$, modificar el factor de restitución para ver como variaba la energía en este caso. Como era de esperar se puede observar que en el momento de los rebotes, a menor factor de restitución mayor pérdida de energía .
- 
+Más adelante, \textit{Figura 4}, comparamos la energía mecánica a través del tiempo. En este primer experimento dejamos fijo el factor de restitución y variamos la variable $\alpha$  ( $\alpha = 0$ significa sin rozamiento ). Podemos observar que en el caso de no haber rozamiento la energía mecánica se conserva, en cambio a mayor $\alpha$, o sea a mayor rozamiento, la perdida de energía es mayor con el paso del tiempo. \\
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/4-energiaMecanica-alpha.png}
+  \caption{Comparación diferencia de energía mecánica. Variando $\alpha$ }
+\end{figure}
+
+Los cambios bruscos que podemos ver en los gráficos, se corresponden con los momentos de impacto del cuerpo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/5-energiaMecanica-fr.png}
+  \caption{Comparación diferencia de energía mecánica. Variando \textit{Fr} }
+\end{figure}
+ 	
+En la \textit{Figura 5} lo que hicimos fue, dejando fijo el $\alpha$, modificar el factor de restitución para ver como variaba la energía en este caso. Como era de esperar se puede observar que en el momento de los rebotes, a menor factor de restitución mayor pérdida de energía.\\[1em]
+
+Como bien aclaramos antes, los resultados que mostramos hasta el momento utilizan una precisión de 52 bits de mantisa. Para los siguientes experimentos, vamos a variar la precisión para demostrar los errores que se cometen al reducir la misma.
+  
+\vspace{2em}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+  \hline
+  Tolerancia & Instante (segundos) & Posición \\
+  \hline
+  2 & 8.875000000000000 & -46.674140624999950 \\
+  1 &  8.312500000000000 & -15.807128906250000 \\
+  0.5 & 8.031250000000000 & -1.537602539062505 \\
+  0.1 & 7.960937500000000 & 1.908531188964787 \\
+  0.01 & 8.004882812500000 & -0.239618897438106 \\
+  0.001 & 7.999938964843750 & 0.002993756141507 \\
+  0.0001 & 8.000007629394531 & -0.000374222087260 \\
+  0.00001 & 7.999999046325684 & 0.000046777720740 \\
+  0.000001 & 7.999999582767487 & 0.000020465253954 \\
+  0.0000001 & 8.000000052154064 & -0.000002558156893 \\
+  0.00000001 & 7.999999993480742 & 0.000000319769583 \\
+  0.000000001 & 8.000000000291038 & -0.000000014275486 \\
+  0.0000000001 & 7.999999999963620 & 0.000000001784485 \\
+  0.00000000001 & 8.000000000004547 & -0.000000000223054 \\
+\hline
+\end{tabular}
+\end{center} 
+\vspace{1em}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/6-errorAbsoluto.png}
+  \caption{Error absoluto cambiando los bits de la mantisa }
+\end{figure}
+
 En la \textit{Figura 6} graficamos el error que se produce al tener una menor precisión de representación para los números de punto flotante en aritmetica finita. 
-Como la clase TFloat, alcanza su máxima representación con 52 bits de mantisa, este fue el valor que utilizamos para tomar como valor válido. Luego, fuimos decrementando la mantisa y ejecutando el mismo problema pero con menor precisión.
-Una vez obtenidos los resultados, los comparamos con nuestro \textit{valor ideal} y representamos la diferencia en el gráfico.
-Claramente una precision acotada aumenta el error en los cálculos.
+Como la clase \textit{TFloat}, alcanza su máxima representación con 52 bits de mantisa, este fue el valor que utilizamos para tomar como valor válido. Luego, fuimos decrementando la mantisa y ejecutando el mismo problema pero con menor precisión.
+
+Se representan los resultados obtenidos de la ejecución con los siguientes parámetros, 
+\begin{itemize}
+  \item{G = 9.81}
+  \item{Velocidad Inicial = 0.0} 
+  \item{Altura Inicial = 19.62 (2G)} 
+  \item{Tolerancia = $10^{-14}$} 
+  \item{Máx. Iteraciones = $10^5$}
+\end{itemize}
+
+Una vez obtenidos los resultados, los comparamos con nuestro \textit{valor ideal} y representamos la diferencia en la \textbf{Figura 6}.
 
 
+Claramente una baja precision aumenta el error en los cálculos.
+
+
+%Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
+\newpage
+
+%\section{Discusión}
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
 \newpage
+
+\section{Corrección de código}
+\begin{itemize}
+	\item El print estaba mal, utilizaba un \textbf{.dbl()} cuando no correspondía y el compilador no nos notificaba sobre eso.
+	\item Problema al calcular el segundo rebote. se llamaba la función posición en lugar de la de velocidad.
+\end{itemize}
+
 
 \section{Conclusiones}
 %Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
