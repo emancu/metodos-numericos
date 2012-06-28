@@ -140,13 +140,89 @@ Notemos cómo en las heurísticas propuestas siempre hay un grado de aleatorieda
 
 \newpage
 
-\section{Resultados}
+\section{Resultados y Discusión}
+
+A la hora de poner a prueba nuestro programa, decidimos dividir en análisis en dos partes: el \textit{Algoritmo QR} y las \textit{heurísticas}. Esto se debe a que estas dos etapas del algoritmo son de naturaleza muy distinta, una por su rigor matemático y la otra por el factor  aleatorio que introduce.
+
+\subsection{Algoritmo QR}
+
+En esta primer etapa de la evaluación queremos probar el desempeño del algoritmo que calcula los \textit{autovalores} de la matriz asociada al problema y lo necesario para esto es asegurarnos que todo el trabajo del algoritmo esté en esta parte. Por eso lo que hicimos fue buscar una instancia solución al problema de 3, 5 y 10 pisos provisto por la cátedra con una de nuestras heurísticas y utilizar eso como dato de entrada. De esta manera lo único que tiene que realizar el algoritmo es el cálculo de los \textit{autovalores} para verificar que el edificio no sufrirá consecuencias del terremoto.
+
+Las instancias utilizadas para estas pruebas son las siguientes:
+
+\vspace{2em}
+\textit{3 pisos de 236.500kg, 150 autos de 500kg y 150 autos de 1000kg}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Piso & Livianos & Pesados \\
+  \hline
+1   & 149 & 1     \\
+2   & 1     & 144 \\
+3   & 0     & 5     \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{2em}
+\textit{5 pisos de 66.500kg, 200 autos de 500kg y 200 autos de 1000kg}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Piso & Livianos & Pesados \\
+  \hline
+1   & 79   & 13   \\
+2   & 121 & 0     \\
+3   & 0     & 186 \\
+4   & 0     & 1     \\
+5   & 0     & 0     \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{2em}
+\textit{10 pisos de 20.000kg, 56 autos de 550kg y 56 autos de 900kg}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Piso & Livianos & Pesados \\
+  \hline
+1   & 1   & 6   \\
+2   & 19 & 0   \\
+3   & 0   & 0   \\
+4   & 22 & 0   \\
+5   & 0   & 24 \\
+6   & 0   & 0   \\
+7   & 0   & 13 \\
+8   & 0   & 13 \\
+9   & 14 & 0   \\
+10  & 0  & 0   \\
+\hline
+\end{tabular}
+\end{center}
+
+Sabiendo que el \textit{Algoritmo QR} es iterativo, pusimos un tope de cantidad de iteraciones que el algoritmo va a realizar en caso de no alcanzar el criterio de parada y nos propusimos estudiar qué sucede con este valor para matrices de distintos tamaños, ajustando el parámetro del criterio de parada en $\epsilon = 0.00001$. Lo que suponemos es que cuanto más grande es la matriz, más iteraciones requiere para afinar los \textit{autovalores}.\\
+
+En la tabla a continuación presentamos los resultados de esta prueba. Para las tres instancias tomamos nota de cuántas iteraciones requiere como mínimo para cumplir con el criterio de parada que hemos fijado. Además observamos otro fenómeno interesante: para la instancia de tamaño 3, si la ejecutamos con menos de 5 iteraciones el algoritmo no detecta que esta es una solución (y por lo tanto, comienzan a trabajar las heurísticas). 
+
+\vspace{2em}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Pisos & Cumple criterio & Detecta solución \\
+  \hline
+3   & 26 & 5  \\
+5   & 41 & 1  \\
+10 & 278 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+En un principio el fenómeno ocurrido para la instancia de tres pisos nos resultó bastante extraño, pues la misma es una solución (y lo comprobamos con sus \textit{frecuencias naturales}). Luego de analizar el algoritmo encontramos cuál era la razón detrás de esto y lo que estaba sucediendo era que con una cantidad de iteraciones tan baja, la matriz resultante del \textit{Algoritmo QR} no produce \textit{autovalores} de una calidad suficiente como para que el cálculo de \textit{frecuencias naturales} quede en el rango correspondiente de una solución. Notablemente esto no sucede para instancias más grandes del problema, donde si bien el criterio de parada no se cumple, la primer matriz resultante $A_1 = R_0 \times Q_0$ tiene en su diagonal valores suficientemente cercanos a los \textit{autovalores} como para detectar la solución.
+
+\subsection{Heurísticas}
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
-
-\newpage
-
-\section{Discusión}
 
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
