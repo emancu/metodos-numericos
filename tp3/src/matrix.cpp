@@ -155,6 +155,14 @@ double* Matrix::diagonal() const {
   return diagonal;
 }
 
+double* Matrix::sub_diagonal() const {
+  double *sub_diagonal = new double[_rows - 1];
+  for(int i=1; i < _rows; i++)
+    sub_diagonal[i-1] = _matrix[i][i-1];
+
+  return sub_diagonal;
+}
+
 double Matrix::sum_lower_triangular() const {
   double sum = 0;
 

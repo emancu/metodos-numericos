@@ -33,6 +33,7 @@ class Matrix {
     void   print() const;
     double get(int, int) const;
     double* diagonal() const;
+    double* sub_diagonal() const;
     double sum_lower_triangular() const;
 
   private:

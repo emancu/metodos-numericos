@@ -5,10 +5,19 @@ double* eigenvalues(const Matrix &a, double epsilon, int iterations) {
   Matrix *q = new Matrix(a.rows(), a.cols());
   Matrix *r = new Matrix(a);
 
+  double* prev_diag = new double[r->rows() - 1];
+  for(int i=0; i < r->rows() - 1; i++)
+    prev_diag[i] = 0;
+
+  double* cur_diag = r->sub_diagonal();
+
   cur_sum = r->sum_lower_triangular();
 
-  while( abs(cur_sum - prev_sum) > epsilon && --iterations) {
+  while( stop_criteria_only_sub_diagonal(r->rows(), cur_diag, prev_diag, epsilon) && --iterations) {
     prev_sum = cur_sum;
+    for(int i=0; i < r->rows() - 1; i++)
+      prev_diag[i] = cur_diag[i];
+
 
     q->identity();
     qr_decomposition(q, r);
@@ -16,7 +25,9 @@ double* eigenvalues(const Matrix &a, double epsilon, int iterations) {
     // Calculo la proxima matriz base para la iteracion.
     r->right_multiply_by(*q);
     cur_sum = r->sum_lower_triangular();
+    cur_diag = r->sub_diagonal();
   }
+
 
   if(!iterations) cout << "Sali por ITERACIONES" << endl;
 
@@ -25,6 +36,13 @@ double* eigenvalues(const Matrix &a, double epsilon, int iterations) {
   delete q;
 
   return diagonal;
+}
+
+bool stop_criteria_only_sub_diagonal(int size, double* cur,double* prev, double epsilon ){
+  for(int i=0; i < size -1; i++)
+    if(abs(cur[i] - prev[i]) > epsilon)
+      return true;
+  return false;
 }
 
 void natural_frecuencies(double *eigenvalues, int size) {
@@ -75,7 +93,8 @@ void qr_decomposition(Matrix *q_t, Matrix *r) {
 
 void print_array(double* array, int size) {
   for(int i=0; i < size; i++)
-    cout << array[i] << " ";
+    //cout << array[i] << " ";
+    printf("%4.5lf ", array[i]);
 
   cout << endl;
 }

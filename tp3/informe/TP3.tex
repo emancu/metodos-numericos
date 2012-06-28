@@ -11,6 +11,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{verbatim}
 %%\usepackage{mathtools}
 
 
@@ -122,9 +123,14 @@ $$
 En cada iteración de \textit{Givens} el algoritmo transforma la matriz \textit{A} en una \textbf{matriz triangular superior} eliminando $b_i$ y agregando $c'_i$ por encima de la banda superior (\texttt{figura 2}). Para esto en cada iteración se arma una \textit{matriz $P_i$ de rotación} (que es igual a la identidad salvo por cuatro valores) y se la la multiplica por izquierda con $R_i$. La matriz \textit{Q} se obtiene multiplicando las \textit{matrices de rotación} anteriores.\\
 
 
+
 \section{Desarrollo}
 
-Sabiendo esto el principal desafío del \textit{Algoritmo QR} es obtener la \textit{factorización QR} de la matriz para lo cual tuvimos en cuenta dos algoritmos conocidos: \textit{Householder} y \textit{Givens}.
+
+En este trabajo debiamos calcular las \textit{frecuencias naturales} de un edificio para asegurar que se encuentra seguro frente a un posible terremoto. Para esto calculamos la matriz $A = M^{-1}K$ asociada, siendo $M$ la matriz diagonal con las masas de los pisos y $K$ una matriz tridiagonal con los coeficientes adecuados. Siendo $\lambda_i < 0$ con $i = 1 \hdots n$ los autovalores de $A$, las \textit{frecuencias naturales} están dadas por $\sqrt{-\lambda_i}$. Por lo tanto nuestro trabajo se reducia a ir modificando el edificio (moviendo los autos de lugar) y aplicar un método numérico para calcular los \textit{autovalores} de la matriz $A$ correspondiente a cada configuración del mismo para asegurar que las \textit{frecuencias naturales} no se corresponden con las del terremoto.\\
+
+
+Para calcularlos utilizamos el \textit{Algoritmo QR}. Sabiendo esto el principal desafío es obtener la \textit{factorización QR} de la matriz para lo cual tuvimos en cuenta dos algoritmos conocidos: \textit{Householder} y \textit{Givens}.
 En un principio consideramos utilizar el algoritmo de \textit{Householder} pues en una primera impresión parecía ser más sencillo de mantener, dado que en su iteración iésima pone en cero todos los valores debajo de la diagonal de la iésima columna, no es necesario preocuparse granularmente por cada operación que cancela un valor.\\
 Sin embargo en un análisis posterior nos dimos cuenta que siendo que la matriz a factorizar es de tres bandas, el algoritmo de \textit{Givens} sólo necesita anular los valores de la banda que se encuentra por debajo de la diagonal y dado que en la clase teórica estudiamos que este algoritmo se comporta mejor con matrices ralas, consideramos que implementar \textit{Givens} era el acercamiento más apropiado para el problema.\\
 
@@ -137,7 +143,7 @@ Lo cierto es que no hay garantía de que al acercarse la \textbf{triangular infe
 
 \subsection{Heurísticas}
 
-Volviendo al problema original, los \textit{autovectores} de la matriz son necesarios para calcular las \textit{frecuencias naturales} del edificio en cuestión. Siendo $\lambda_i < 0$ con $i = 1 \hdots n$ los autovalores, las \textit{frecuencias naturales} están dadas por $\sqrt{-\lambda_i}$. El objetivo del trabajo es distribuir los autos en los pisos de manera tal de que las \textit{frecuencias naturales} estén alejadas de la frecuencia del terremoto y para lograrlo elaboramos diferentes algoritmos heurísticos.
+Una manera de solucionar el problema es ir revisando todas las posibles distribuciones de autos, e ir verificando si las \textit{frecuencias naturales} son seguras para esa configuración. Siendo \textit{n} el número de pisos, \textit{p} y \textit{m} la cantidad de autos pesados y livianos respectivamente, la cantidad total de configuraciones es $n^l \times n^p$ haciendo que éste procedimiento sea computacionalmente caro. Por lo tanto el enfoque más práctico es realizar algoritmos heurísticos para encontrar una solución y a continuación exponemos las estrategias utilizadas:
 
 \begin{itemize}
   \item \textbf{Random}. Esta es la heurística más sencilla, consiste en dar una distribución aleatoria de los autos en el edificio y verificar si es una solución. Esto se repite hasta encontrar una solución.
@@ -145,17 +151,18 @@ Volviendo al problema original, los \textit{autovectores} de la matriz son neces
   \item \textbf{Intercambiar dos autos}. Muy similar al algoritmo anterior, solo que en este caso intenta intercambiar un auto pesado por uno liviano en dos de los pisos. De no haber dos autos disponibles para ello, realiza un movimiento.
 \end{itemize}
 
-Notemos cómo en las heurísticas propuestas siempre hay un grado de aleatoriedad. Esto se debe a que no existe ninguna relación entre las \textit{frecuencias naturales} del edificio y la  distribución de los autos o el peso de los pisos. Tan solo mover un auto de un piso a otro puede alterar por completo las frecuencias y por eso creemos que no tiene mucho sentido tomar una decisión arbitraria para elegir qué movimiento realizar. 
+Notemos cómo en las heurísticas propuestas siempre hay un grado de aleatoriedad. Esto se debe a que no existe una relación ponderable entre las \textit{frecuencias naturales} del edificio y la  distribución de los autos o el peso de los pisos. Tan solo mover un auto de un piso a otro puede alterar por completo las frecuencias y por eso creemos que no tiene mucho sentido tomar una decisión arbitraria para elegir qué movimiento realizar. 
 
-\subsection{Heurísticas fallidas}
+\subsection{Heurísticas alternativas}
 
-\begin{itemize}
-  \item baja pesado sube liviano de bordes al centro
-  \item distribuir los livianos
-  \item distribuir los pesados
-  \item alternada de los dos anteriores. No tan fallida, eh!!
-\end{itemize}
+A la vista de la naturaleza de este problema, donde no es posible determinar una mejora en las \textit{frecuencias naturales} dado un movimiento y decidimos utilizar heurísticas aleatorias, nos encontramos con el problema de que muchas veces no nos es posible obtener una solución, por ejemplo, para el archivo \texttt{prueba20.txt} ninguna de nuestras heurísticas es capaz de dar una configuración que satisfaga el problema. Esto se debe a que las combinaciones que generan nuestros algoritmos son muy diversas y desorganizadas. Por esto decidimos explorar otra alternativa y barrer un conjunto de combinaciones más reducido, con la esperanza de que entre ellas encontremos una solución.
 
+\begin{enumerate}
+  \item \textbf{Pesados abajo, livianos arriba}. Este algoritmo lo que hace es, empezando por planta baja y último piso, subir los autos livianos y bajar los pesados. Cuando no puede hacer más intercambios, pasa al primer y el anteúltimo piso, repitiendo este procedimiento para todo el edificio.
+  \item \textbf{Distribuir los livianos}. Esta heurística busca distribuir los autos livianos en todos los pisos. Comienza llevando todos a planta baja para luego ir moviendo un auto a cada uno de los demás pisos. Esto se repite hasta quedarse sin autos donde pasa a repartir los que hay en el primer piso. Cuando el algoritmo acumula todos los autos livianos en el último piso, termina. Cabe destacar que luego de mover un auto se prueba si la distribución es una solución.
+  \item \textbf{Distribuir los pesados}. Idem el algoritmo anterior, pero para autos pesados.
+  \item \textbf{Distribución pesados y livianos}. Para este algoritmo utilizamos los dos anteriores de manera alternada. Primero moviendo un liviano y luego un pesado.
+\end{enumerate}
 
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
 
@@ -167,7 +174,8 @@ A la hora de poner a prueba nuestro programa, decidimos dividir en análisis en 
 
 \subsection{Algoritmo QR}
 
-En esta primer etapa de la evaluación queremos probar el desempeño del algoritmo que calcula los \textit{autovalores} de la matriz asociada al problema y lo necesario para esto es asegurarnos que todo el trabajo del algoritmo esté en esta parte. Por eso lo que hicimos fue buscar una instancia solución al problema de 3, 5 y 10 pisos provisto por la cátedra con una de nuestras heurísticas y utilizar eso como dato de entrada. De esta manera lo único que tiene que realizar el algoritmo es el cálculo de los \textit{autovalores} para verificar que el edificio no sufrirá consecuencias del terremoto.
+\begin{comment}
+Por eso lo que hicimos fue buscar una instancia solución al problema de 3, 5 y 10 pisos provisto por la cátedra con una de nuestras heurísticas y utilizar eso como dato de entrada. De esta manera lo único que tiene que realizar el algoritmo es el cálculo de los \textit{autovalores} para verificar que el edificio no sufrirá consecuencias del terremoto.
 
 Las instancias utilizadas para estas pruebas son las siguientes:
 
@@ -241,9 +249,18 @@ En la tabla a continuación presentamos los resultados de esta prueba. Para las 
 
 En un principio el fenómeno ocurrido para la instancia de tres pisos nos resultó bastante extraño, pues la misma es una solución (y lo comprobamos con sus \textit{frecuencias naturales}). Luego de analizar el algoritmo encontramos cuál era la razón detrás de esto y lo que estaba sucediendo era que con una cantidad de iteraciones tan baja, la matriz resultante del \textit{Algoritmo QR} no produce \textit{autovalores} de una calidad suficiente como para que el cálculo de \textit{frecuencias naturales} quede en el rango correspondiente de una solución. Notablemente esto no sucede para instancias más grandes del problema, donde si bien el criterio de parada no se cumple, la primer matriz resultante $A_1 = R_0 \times Q_0$ tiene en su diagonal valores suficientemente cercanos a los \textit{autovalores} como para detectar la solución.\\
 
+
 En cuanto a la cantidad de iteraciones necesarias para cumplir con el criterio de parada, vemos que la misma aumenta a medida que la matriz asociada crece, y esto tiene bastante sentido dado que son más los valores que deben tender a cero en la \textbf{triangular inferior}.\\
 
 Como próxima evaluación quisimos poner a prueba la tolerancia del criterio de parada elegido y ver cuántas iteraciones le toma al algoritmo desacelerar la convergencia de la \textbf{triangular inferior}. Para esto, utilizamos las mismas instancias que para la prueba anterior y 1000 como cantidad de iteraciones máxima.\\
+\end{comment}
+
+%/////////////////////////////////////////////
+En esta primer etapa de la evaluación queremos probar el desempeño del algoritmo que calcula los \textit{autovalores} de la matriz asociada al problema, verificando la calidad de los mismos utilizando diferentes valores de $\epsilon$ para el cirterio de parada y comparandolos con los valores obtenidos del programa \textit{octave} . Para ésto utilizamos la matriz $A$ correspondiente a un edificio random generado por nosotros \textit{archivosPrueba/random10.txt}. 
+
+
+
+
 
 \begin{figure}[H]
   \centering
