@@ -218,7 +218,15 @@ En la tabla a continuación presentamos los resultados de esta prueba. Para las 
 \end{tabular}
 \end{center}
 
-En un principio el fenómeno ocurrido para la instancia de tres pisos nos resultó bastante extraño, pues la misma es una solución (y lo comprobamos con sus \textit{frecuencias naturales}). Luego de analizar el algoritmo encontramos cuál era la razón detrás de esto y lo que estaba sucediendo era que con una cantidad de iteraciones tan baja, la matriz resultante del \textit{Algoritmo QR} no produce \textit{autovalores} de una calidad suficiente como para que el cálculo de \textit{frecuencias naturales} quede en el rango correspondiente de una solución. Notablemente esto no sucede para instancias más grandes del problema, donde si bien el criterio de parada no se cumple, la primer matriz resultante $A_1 = R_0 \times Q_0$ tiene en su diagonal valores suficientemente cercanos a los \textit{autovalores} como para detectar la solución.
+En un principio el fenómeno ocurrido para la instancia de tres pisos nos resultó bastante extraño, pues la misma es una solución (y lo comprobamos con sus \textit{frecuencias naturales}). Luego de analizar el algoritmo encontramos cuál era la razón detrás de esto y lo que estaba sucediendo era que con una cantidad de iteraciones tan baja, la matriz resultante del \textit{Algoritmo QR} no produce \textit{autovalores} de una calidad suficiente como para que el cálculo de \textit{frecuencias naturales} quede en el rango correspondiente de una solución. Notablemente esto no sucede para instancias más grandes del problema, donde si bien el criterio de parada no se cumple, la primer matriz resultante $A_1 = R_0 \times Q_0$ tiene en su diagonal valores suficientemente cercanos a los \textit{autovalores} como para detectar la solución.\\
+
+En cuanto a la cantidad de iteraciones necesarias para cumplir con el criterio de parada, vemos que la misma aumenta a medida que la matriz asociada crece, y esto tiene bastante sentido dado que son más los valores que deben tender a cero en la \textbf{triangular inferior}.\\
+
+Como próxima evaluación quisimos poner a prueba la tolerancia del criterio de parada elegido y ver cuántas iteraciones le toma al algoritmo desacelerar la convergencia de la \textbf{triangular inferior}. Para esto, utilizamos las mismas instancias que para la prueba anterior y 1000 como cantidad de iteraciones máxima.\\
+
+TODO: ACA VA EL GRAFICO, pero en libreoffice queda horrible. Fijense si dps lo pueden agregar con el excel. Yo les paso por mail el .xls con los datos\\
+
+La primera impresión que tuvimos al ver los resultados fue la gran diferencia en cantidad de iteraciones entre la instancia de tamaño 10 y la de tamaño 5, siendo que la segunda no está muy lejos de la instancia de tres pisos. De todas maneras podemos ver que lograr una precisión de $1\times 10^{-10}$ en menos de mil iteraciones para es bastante satisfactorio, en especial si tenemos en cuenta que los elementos de la diagonal empiezan a parecerse a los \textit{autovalores} en iteraciones muy tempranas para $\epsilon = 0.00001$.
 
 \subsection{Heurísticas}
 
