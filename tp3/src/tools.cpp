@@ -25,6 +25,7 @@ double* eigenvalues(const Matrix &a, double epsilon, int iterations) {
     // Calculo la proxima matriz base para la iteracion.
     r->right_multiply_by(*q);
     cur_sum = r->sum_lower_triangular();
+    delete[] cur_diag;
     cur_diag = r->sub_diagonal();
   }
 
@@ -34,6 +35,8 @@ double* eigenvalues(const Matrix &a, double epsilon, int iterations) {
   double *diagonal = r->diagonal();
   delete r;
   delete q;
+  delete[] cur_diag;
+  delete[] prev_diag;
 
   return diagonal;
 }
@@ -58,14 +61,13 @@ bool is_building_safe(double *eigenvalues, int size) {
 }
 
 void qr_decomposition(Matrix *q_t, Matrix *r) {
-  double a,b,c,norm, upper_band;
+  double a,b,norm, upper_band;
   Matrix *p = new Matrix(r->rows(), r->cols());
   p->identity();
 
   for(int row=0; row < r->rows() - 1; row++) {
     a = r->get(row,row);
     b = r->get(row+1,row);
-    c = r->get(row+1,row+2);
     upper_band = r->get(row,row+1);
 
     norm = sqrt(a*a + b*b);
@@ -91,10 +93,9 @@ void qr_decomposition(Matrix *q_t, Matrix *r) {
   delete p;
 }
 
-void print_array(double* array, int size) {
+void print_array(double *array, int size) {
   for(int i=0; i < size; i++)
-    //cout << array[i] << " ";
     printf("%4.5lf ", array[i]);
 
-  cout << endl;
+  printf("\n");
 }

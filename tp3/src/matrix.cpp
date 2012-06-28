@@ -30,9 +30,7 @@ Matrix::Matrix(int rows, int cols) {
 }
 
 Matrix::~Matrix() {
-  for(int i = 0; i < _rows; i++)
-    delete [] _matrix[i];
-  delete [] _matrix;
+  delete_matrix();
 }
 
 /*
@@ -77,8 +75,10 @@ void Matrix::left_multiply_by(const Matrix &m) {
     }
   }
 
-  delete _matrix;       //Free old matrix
+  delete_matrix();       //Free old matrix
   _matrix = r->_matrix; //Copy results
+  r->_matrix = NULL;
+  delete r;
 }
 
 /*
@@ -101,8 +101,10 @@ void Matrix::right_multiply_by(const Matrix &m) {
     }
   }
 
-  delete _matrix;       //Free old matrix
+  delete_matrix();       //Free old matrix
   _matrix = r->_matrix; //Copy results
+  r->_matrix = NULL;
+  delete r;
 }
 
 void Matrix::transpose() {
@@ -118,6 +120,14 @@ void Matrix::transpose() {
 
 void Matrix::set(int r, int c, double v) {
   _matrix[r][c] = v;
+}
+
+void Matrix::delete_matrix() {
+  if(_matrix) {
+    for(int i = 0; i < _rows; i++)
+      delete[] this->_matrix[i];
+    delete[] _matrix;
+  }
 }
 
 /*

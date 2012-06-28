@@ -27,6 +27,7 @@ int main(int argc, char* argv[]){
   bool moved_light = false;
 
   while(!is_building_safe(values, a->rows())){
+    print_array(values, a->rows());
     switch(heuristic){
       case 0: {
         building->randomize();
@@ -60,16 +61,17 @@ int main(int argc, char* argv[]){
 
     building->generate_matrix();
     a = building->matrix();
+    delete[] values;
     values = eigenvalues(*a, epsilon, iterations);
     natural_frecuencies(values, a->rows());
   }
 
   building->print();
   building->output_file(output_path);
-  //print_array(values, a->rows());
+  // print_array(values, a->rows());
 
   delete building;
-  delete values;
+  delete[] values;
 
   return 0;
 }

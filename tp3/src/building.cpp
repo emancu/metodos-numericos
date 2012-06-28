@@ -76,7 +76,7 @@ void Building::generate_matrix() {
     //sumo la masa del piso (todas las mismas), el peso de los autos pesados, y los livianos
     floors_mass[i] = _floor_mass + _light_cars_array[i] * _light_car_mass + _heavy_cars_array[i] * _heavy_car_mass;
 
-
+  if(_matrix) delete _matrix;
   _matrix = new Matrix(_floors, _floors);
   _matrix->zero();
 
@@ -87,6 +87,7 @@ void Building::generate_matrix() {
   }
   _matrix->set(_floors-1, _floors-1, -_coefficients[_floors-1] / floors_mass[_floors-1]);
 
+  delete[] floors_mass;
 }
 
 void Building::randomize() {
@@ -230,7 +231,6 @@ void Building::print() const {
 
   cout << " => " << aux << endl;
   cout << "------------------------ ******** ------------------------" << endl;
-
 }
 
 void Building::output_file(char* output_path) const {

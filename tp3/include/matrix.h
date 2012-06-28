@@ -20,6 +20,7 @@ class Matrix {
      */
     void identity();
     void zero();
+    void delete_matrix();
     void left_multiply_by(const Matrix&);
     void right_multiply_by(const Matrix&);
     void transpose();
