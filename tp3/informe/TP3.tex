@@ -117,7 +117,7 @@ $$
 
 En cada iteración de \textit{Givens} el algoritmo transforma la matriz \textit{A} en una \textbf{matriz triangular superior} eliminando $b_i$ y agregando $c'_i$ por encima de la banda superior (\texttt{figura 2}). Para esto en cada iteración se arma una \textit{matriz de rotación} (que es igual a la identidad salvo por cuatro valores) y se la la multiplica por izquierda con $R_i$. La matriz \textit{Q} se obtiene multiplicando las \textit{matrices de rotación} anteriores.\\
 
-A la hora de implementar el algoritmo decidimos optimizar el espacio y no guardar los ceros que contiene nuestra matriz, con lo cual la primer representación consistió de tres un \texttt{arrays}, uno por cada banda. Y dado que la banda inferior se convierte en ceros y aparece una nueva banda por encima de la $c_i$ no necesitamos de más estructura que esta para guardar los datos. El problema con esta propuesta fue que las multiplicaciones eran complicadas de programar y que no podíamos representar otro tipo de matriz. Descartamos esta estructura rápidamente y terminamos implementando las matrices como \texttt{arrays de doubles} aunque tuviéramos que guardar los ceros extra, además, dado que la matriz tiene una fila por cada piso y los edificios de estacionamiento difícilmente tengan más de 100 pisos, el espacio desperdiciado no es tan significativo.
+A la hora de implementar el algoritmo decidimos optimizar el espacio y no guardar los ceros que contiene nuestra matriz, con lo cual la primer representación consistió de tres un \texttt{arrays}, uno por cada banda. Y dado que la banda inferior se convierte en ceros y aparece una nueva banda por encima de la $c_i$ no necesitamos de más estructura que esta para guardar los datos. El problema con esta propuesta fue que las multiplicaciones eran complicadas de programar y que no podíamos representar otro tipo de matriz. Descartamos esta estructura rápidamente y terminamos implementando las matrices como \texttt{arrays de doubles} aunque tuviéramos que guardar los ceros extra, además, dado que la matriz tiene una fila por cada piso y los edificios de estacionamiento difícilmente sean muy altos, el espacio desperdiciado no es tan significativo.
 
 \subsection{Algoritmo QR: criterios de parada}
 
@@ -126,6 +126,13 @@ Lo cierto es que no hay garantía de que al acercarse la \textbf{triangular infe
 
 \subsection{Heurísticas}
 
+Volviendo al problema original, los \textit{autovectores} de la matriz son necesarios para calcular las \textit{frecuencias naturales} del edificio en cuestión. Siendo $\lambda_i < 0$ con $i = 1 \hdots n$ los autovalores, las \textit{frecuencias naturales} están dadas por $\sqrt{-\lambda_i}$. El objetivo del trabajo es distribuir los autos en los pisos de manera tal de que las \textit{frecuencias naturales} estén alejadas de la frecuencia del terremoto y para lograrlo elaboramos diferentes algoritmos heurísticos.
+
+\begin{itemize}
+  \item \textbf{Random}. Esta es la heurística más sencilla, consiste en dar una distribución aleatoria de los autos en el edificio y verificar si es una solución. Esto se repite hasta encontrar una solución.
+  \item \textbf{Mover un auto pesado}. Este algoritmo elige un piso de manera aleatoria y mueve un auto a otro piso, también elegido al azar.
+  \item \textbf{Intercambiar dos autos}. Muy similar al algoritmo anterior, solo que en este caso intenta intercambiar un auto pesado por uno liviano en dos de los pisos. De no haber dos autos disponibles para ello, realiza un movimiento.
+\end{itemize}
 
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
 
