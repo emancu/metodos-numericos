@@ -24,6 +24,7 @@ int main(int argc, char* argv[]){
   double *values;
   values = eigenvalues(*a, epsilon, iterations);
   natural_frecuencies(values, a->rows());
+  bool moved_light = false;
 
   while(!is_building_safe(values, a->rows())){
     switch(heuristic){
@@ -37,6 +38,22 @@ int main(int argc, char* argv[]){
       }
       case 2: {
         building->swap_or_move_heavy_light_cars();
+        break;
+      }
+      case 3: {
+        building->move_all_light_cars();
+        break;
+      }
+      case 4: {
+        building->move_all_heavy_cars();
+        break;
+      }
+      case 5: {
+        if(moved_light)
+          building->move_all_heavy_cars();
+        else
+          building->move_all_light_cars();
+        moved_light = !moved_light;
         break;
       }
     }

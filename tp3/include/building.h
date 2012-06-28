@@ -24,6 +24,8 @@ class Building {
     void randomize();
     void swap_or_move_heavy_light_cars();
     void move_heavy_car();
+    void move_all_light_cars();
+    void move_all_heavy_cars();
 
     /*
      * Metodos que NO modifican self
@@ -40,6 +42,11 @@ class Building {
     int _light_cars_amount;
     int _heavy_cars_amount;
     int _moves;
+
+    int _light_cars_stack;
+    int _light_car_to;
+    int _heavy_cars_stack;
+    int _heavy_car_to;
 
     int *_light_cars_array;
     int *_heavy_cars_array;

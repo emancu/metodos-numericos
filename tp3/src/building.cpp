@@ -23,6 +23,11 @@ Building::Building(char *input_path) {
   _heavy_cars_amount = 0;
   _moves = 0;
 
+  _light_cars_stack = 0;
+  _light_car_to     = 0;
+  _heavy_cars_stack = 0;
+  _heavy_car_to     = 0;
+
   _light_cars_array = new int[_floors];
   _heavy_cars_array = new int[_floors];
   _coefficients = new int[_floors];
@@ -144,6 +149,55 @@ void Building::move_heavy_car() {
   _moves++;
 }
 
+void Building::move_all_light_cars(){
+  if(_light_cars_stack == _floors - 1){
+    cout << "move_all_light_cars: no hubo suerte, usando move_heavy_car()" << endl;
+    this->move_heavy_car();
+  }else if(_light_cars_stack == 0 && _light_car_to == 0){
+    for(int i = 0; i < _floors; i++)
+      _light_cars_array[i] = 0;
+
+    _light_cars_array[_light_cars_stack] = _light_cars_amount;
+    _light_car_to = 1;
+  }else{
+    _light_cars_array[_light_cars_stack]--;
+    if(_light_cars_array[_light_cars_stack] == 0)
+      _light_cars_stack++;
+
+    _light_cars_array[_light_car_to]++;
+    if(_light_car_to == _floors - 1)
+      _light_car_to = _light_cars_stack + 1;
+    else
+      _light_car_to++;
+
+    _moves++;
+  }
+}
+
+void Building::move_all_heavy_cars(){
+  if(_heavy_cars_stack == _floors - 1){
+    cout << "move_all_heavy_cars: no hubo suerte, usando move_heavy_car()" << endl;
+    this->move_heavy_car();
+  }else if(_heavy_cars_stack == 0 && _heavy_car_to == 0){
+    for(int i = 0; i < _floors; i++)
+      _heavy_cars_array[i] = 0;
+
+    _heavy_cars_array[_heavy_cars_stack] = _heavy_cars_amount;
+    _heavy_car_to = 1;
+  }else{
+    _heavy_cars_array[_heavy_cars_stack]--;
+    if(_heavy_cars_array[_heavy_cars_stack] == 0)
+      _heavy_cars_stack++;
+
+    _heavy_cars_array[_heavy_car_to]++;
+    if(_heavy_car_to == _floors - 1)
+      _heavy_car_to = _heavy_cars_stack + 1;
+    else
+      _heavy_car_to++;
+
+    _moves++;
+  }
+}
 /*
  * NO modifican self
  */
