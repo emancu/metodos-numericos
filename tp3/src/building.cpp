@@ -127,6 +127,23 @@ void Building::swap_or_move_heavy_light_cars() {
   }
 }
 
+void Building::move_heavy_car() {
+  srand(time(NULL));
+
+  int floor_i = rand() % _floors;
+  int floor_j = rand() % _floors;
+
+  // In case the floors are the same.
+  while(floor_i == floor_j || _heavy_cars_array[floor_i] == 0){
+    floor_i = rand() % _floors;
+    floor_j = rand() % _floors;
+  }
+
+  _heavy_cars_array[floor_i]--;
+  _heavy_cars_array[floor_j]++;
+  _moves++;
+}
+
 /*
  * NO modifican self
  */

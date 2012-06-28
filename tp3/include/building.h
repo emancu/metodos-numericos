@@ -23,6 +23,7 @@ class Building {
     void generate_matrix();
     void randomize();
     void swap_or_move_heavy_light_cars();
+    void move_heavy_car();
 
     /*
      * Metodos que NO modifican self

@@ -27,11 +27,15 @@ int main(int argc, char* argv[]){
 
   while(!is_building_safe(values, a->rows())){
     switch(heuristic){
-      case 0 : {
+      case 0: {
         building->randomize();
         break;
       }
-      case 1 : {
+      case 1: {
+        building->move_heavy_car();
+        break;
+      }
+      case 2: {
         building->swap_or_move_heavy_light_cars();
         break;
       }
