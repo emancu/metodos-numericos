@@ -1,6 +1,6 @@
 \documentclass[a4paper]{article}
 \usepackage[spanish]{babel}
-\title{Trabajo Práctico 2}
+\title{Trabajo Práctico 3}
 
 \usepackage[utf8]{inputenc}
 \usepackage{caratula}
@@ -11,7 +11,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{mathtools}
+%%\usepackage{mathtools}
 
 
 \setlength{\leftmargin}{2cm}
@@ -62,8 +62,6 @@
 
 %Contendr ́a una breve explicaci ́on de la base te ́orica que fundamenta los m ́etodos involu- crados en el trabajo, junto con los m ́etodos mismos. No deben incluirse demostraciones de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como por ejemplo la de matriz sim ́etrica). En vez de definiciones b ́asicas es conveniente citar ejemplos de bibliograf ́ıa adecuada. Una cita vale m ́as que mil palabras.
 
-\section{Desarrollo}
-
 En este trabajo práctico debemos calcular las \textit{frecuencias naturales} de un estacionamiento de varios pisos ante un hipotético terremoto, y como distribuir los automóviles para que se encuentre a salvo. Para esto, el trasfondo teórico propuesto por la cátedra toma en cuenta el peso de cada piso y el desplazamiento horizontal de cada uno respecto del suelo. Con estos datos armamos una ecuación por piso logrando un sistema de ecuaciones que en su forma matricial consiste en una \textbf{matriz de tres bandas}. Calculando los \textit{autovalores} de esta matriz es como obtenemos las \textit{frecuencias naturales} necesarias para el desarrollo del problema.
 
 \subsection{Autovalores}
@@ -74,9 +72,15 @@ $$A_{i + 1} = R_i \times Q_i$$
 la cual tiende a ser una matriz cuya diagonal principal contiene los \textit{autovalores} de \textit{A}. Cabe destacar que $A_i$ tiende a ser una \textbf{matriz diagonal} si \textit{A} es \textbf{simétrica} o a una \textbf{matriz triangular superior} si no lo es.\\
 
 \subsection{Factorización QR}
-Sabiendo esto el principal desafío del \textit{Algoritmo QR} es obtener la \textit{factorización QR} de la matriz para lo cual tuvimos en cuenta dos algoritmos conocidos: \textit{Householder} y \textit{Givens}.
-En un principio consideramos utilizar el algoritmo de \textit{Householder} pues en una primera impresión parecía ser más sencillo de mantener, dado que en su iteración iésima pone en cero todos los valores debajo de la diagonal de la iésima columna, no es necesario preocuparse granularmente por cada operación que cancela un valor.\\
-Sin embargo en un análisis posterior nos dimos cuenta que siendo que la matriz a factorizar es de tres bandas, el algoritmo de \textit{Givens} sólo necesita anular los valores de la banda que se encuentra por debajo de la diagonal y dado que en la clase teórica estudiamos que este algoritmo se comporta mejor con matrices ralas, consideramos que implementar \textit{Givens} era el acercamiento más apropiado para el problema.
+
+Sea $A\in\mathbb{R}^{n\times n}$, la \textit{factorizacion QR} de $A$ es 
+
+$$A = QR$$ 
+
+donde $Q$ una matriz ortogonal y $R$ es una matriz triangular superior.\\
+
+Existen varios métodos para obtener ésta factorizacion: \textit{Householder}, \textit{Givens} y \textit{Gram-Schmidt}.
+ 
 
 \subsection{Rotaciones de Givens}
 
@@ -115,7 +119,14 @@ $$
 \end{figure}
 \end{multicols}
 
-En cada iteración de \textit{Givens} el algoritmo transforma la matriz \textit{A} en una \textbf{matriz triangular superior} eliminando $b_i$ y agregando $c'_i$ por encima de la banda superior (\texttt{figura 2}). Para esto en cada iteración se arma una \textit{matriz de rotación} (que es igual a la identidad salvo por cuatro valores) y se la la multiplica por izquierda con $R_i$. La matriz \textit{Q} se obtiene multiplicando las \textit{matrices de rotación} anteriores.\\
+En cada iteración de \textit{Givens} el algoritmo transforma la matriz \textit{A} en una \textbf{matriz triangular superior} eliminando $b_i$ y agregando $c'_i$ por encima de la banda superior (\texttt{figura 2}). Para esto en cada iteración se arma una \textit{matriz $P_i$ de rotación} (que es igual a la identidad salvo por cuatro valores) y se la la multiplica por izquierda con $R_i$. La matriz \textit{Q} se obtiene multiplicando las \textit{matrices de rotación} anteriores.\\
+
+
+\section{Desarrollo}
+
+Sabiendo esto el principal desafío del \textit{Algoritmo QR} es obtener la \textit{factorización QR} de la matriz para lo cual tuvimos en cuenta dos algoritmos conocidos: \textit{Householder} y \textit{Givens}.
+En un principio consideramos utilizar el algoritmo de \textit{Householder} pues en una primera impresión parecía ser más sencillo de mantener, dado que en su iteración iésima pone en cero todos los valores debajo de la diagonal de la iésima columna, no es necesario preocuparse granularmente por cada operación que cancela un valor.\\
+Sin embargo en un análisis posterior nos dimos cuenta que siendo que la matriz a factorizar es de tres bandas, el algoritmo de \textit{Givens} sólo necesita anular los valores de la banda que se encuentra por debajo de la diagonal y dado que en la clase teórica estudiamos que este algoritmo se comporta mejor con matrices ralas, consideramos que implementar \textit{Givens} era el acercamiento más apropiado para el problema.\\
 
 A la hora de implementar el algoritmo decidimos optimizar el espacio y no guardar los ceros que contiene nuestra matriz, con lo cual la primer representación consistió de tres un \texttt{arrays}, uno por cada banda. Y dado que la banda inferior se convierte en ceros y aparece una nueva banda por encima de la $c_i$ no necesitamos de más estructura que esta para guardar los datos. El problema con esta propuesta fue que las multiplicaciones eran complicadas de programar y que no podíamos representar otro tipo de matriz. Descartamos esta estructura rápidamente y terminamos implementando las matrices como \texttt{arrays de doubles} aunque tuviéramos que guardar los ceros extra, además, dado que la matriz tiene una fila por cada piso y los edificios de estacionamiento difícilmente sean muy altos, el espacio desperdiciado no es tan significativo.
 
@@ -234,7 +245,11 @@ En cuanto a la cantidad de iteraciones necesarias para cumplir con el criterio d
 
 Como próxima evaluación quisimos poner a prueba la tolerancia del criterio de parada elegido y ver cuántas iteraciones le toma al algoritmo desacelerar la convergencia de la \textbf{triangular inferior}. Para esto, utilizamos las mismas instancias que para la prueba anterior y 1000 como cantidad de iteraciones máxima.\\
 
-TODO: ACA VA EL GRAFICO, pero en libreoffice queda horrible. Fijense si dps lo pueden agregar con el excel. Yo les paso por mail el .xls con los datos\\
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/1-Cantidad_iteraciones_por_piso.png}
+  \caption{Agrupados por $\epsilon$ se muestran los distintos edificios y las iteraciones necesarias hasta detenerse. En el ultimo caso, el edificio de 10 pisos corta por iteraciones.}
+\end{figure}
 
 La primera impresión que tuvimos al ver los resultados fue la gran diferencia en cantidad de iteraciones entre la instancia de tamaño 10 y la de tamaño 5, siendo que la segunda no está muy lejos de la instancia de tres pisos. De todas maneras podemos ver que lograr una precisión de $1\times 10^{-10}$ en menos de mil iteraciones para es bastante satisfactorio, en especial si tenemos en cuenta que los elementos de la diagonal empiezan a parecerse a los \textit{autovalores} en iteraciones muy tempranas para $\epsilon = 0.00001$.
 
