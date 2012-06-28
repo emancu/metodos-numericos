@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char* argv[]){
   srand(time(NULL));
-  int floors = (rand() % 15) + 1;
+  int floors = (rand() % 20) + 1;
   int number_light_cars = (rand() % 200) + 1;
   int number_heavy_cars = (rand() % 200) + 1;
 
