@@ -1,5 +1,9 @@
 tp
 *.o
+out
+randbuil
+random_building
+random_building.dSYM/
 informe/*.aux
 informe/*.log
 informe/*.synctex
