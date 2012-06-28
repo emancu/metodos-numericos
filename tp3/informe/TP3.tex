@@ -74,15 +74,62 @@ $$A_{i + 1} = R_i \times Q_i$$
 la cual tiende a ser una matriz cuya diagonal principal contiene los \textit{autovalores} de \textit{A}. Cabe destacar que $A_i$ tiende a ser una \textbf{matriz diagonal} si \textit{A} es \textbf{simétrica} o a una \textbf{matriz triangular superior} si no lo es.\\
 
 \subsection{Factorización QR}
-Sabiendo esto el principal desafío del \textit{Algoritmo QR} es obtener la \textit{factorización QR} de la matriz.
+Sabiendo esto el principal desafío del \textit{Algoritmo QR} es obtener la \textit{factorización QR} de la matriz para lo cual tuvimos en cuenta dos algoritmos conocidos: \textit{Householder} y \textit{Givens}.
+En un principio consideramos utilizar el algoritmo de \textit{Householder} pues en una primera impresión parecía ser más sencillo de mantener, dado que en su iteración iésima pone en cero todos los valores debajo de la diagonal de la iésima columna, no es necesario preocuparse granularmente por cada operación que cancela un valor.\\
+Sin embargo en un análisis posterior nos dimos cuenta que siendo que la matriz a factorizar es de tres bandas, el algoritmo de \textit{Givens} sólo necesita anular los valores de la banda que se encuentra por debajo de la diagonal y dado que en la clase teórica estudiamos que este algoritmo se comporta mejor con matrices ralas, consideramos que implementar \textit{Givens} era el acercamiento más apropiado para el problema.
+
+\subsection{Rotaciones de Givens}
+
+El método de \textit{Rotaciones de Givens} es utilizado para obtener la \textit{factorización QR} de una matriz que en nuestro caso es de tres bandas. Por esta razón los únicos valores que hacen falta eliminar son los de la banda por debajo de la diagonal principal de \textit{A}, que llamaremos $b_i$, como mostramos en la \texttt{figura 1}.
+
+\begin{multicols}{2}
+\begin{figure}[H]
+$$
+ \begin{pmatrix}
+   a_1 & c_1 & \hdotsfor{4} \\
+   b_2 & a_2 &  c_2 & \hdotsfor{3} \\
+  \hdots & b_3 & a_3 & c_3 & \hdotsfor{2} \\
+   & & \ddots \\
+   \hdotsfor{2} & b_i & a_i & c_i & \hdots \\
+   & & & & \ddots \\
+   \hdotsfor{4} & b_n & a_n \\
+ \end{pmatrix}
+$$
+ \caption{matriz de tres bandas. Los $\cdots$ representan ceros.}
+\end{figure}
+
+\begin{figure}[H]
+$$
+ \begin{pmatrix}
+   a_1 & c_1 & c'_1 & \hdotsfor{3} \\
+   \hdots & a_2 &  c_2 & c'_2 &\hdotsfor{2} \\
+   \hdotsfor{2} & a_3 & c_3 & c'_3 & \hdots \\
+   & & \ddots \\
+   \hdotsfor{2} & a_{i - 1} & c_{i - 1} & c'_{i - 1} & \hdots \\
+   \hdotsfor{3} & a_i & c_i & \hdots \\
+   & & & & \ddots \\
+   \hdotsfor{4} & b_n & a_n \\
+ \end{pmatrix}
+$$
+ \caption{matriz $R_i$ de Givens. Los $\cdots$ representan ceros.}
+\end{figure}
+\end{multicols}
+
+En cada iteración de \textit{Givens} el algoritmo transforma la matriz \textit{A} en una \textbf{matriz triangular superior} eliminando $b_i$ y agregando $c'_i$ por encima de la banda superior (\texttt{figura 2}). Para esto en cada iteración se arma una \textit{matriz de rotación} (que es igual a la identidad salvo por cuatro valores) y se la la multiplica por izquierda con $R_i$. La matriz \textit{Q} se obtiene multiplicando las \textit{matrices de rotación} anteriores.\\
+
+A la hora de implementar el algoritmo decidimos optimizar el espacio y no guardar los ceros que contiene nuestra matriz, con lo cual la primer representación consistió de tres un \textttt{arrays}, uno por cada banda. 
 
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
 
 \newpage
 
-\section{Discusión y Resultados}
+\section{Resultados}
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
+
+\newpage
+
+\section{Discusión}
 
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
