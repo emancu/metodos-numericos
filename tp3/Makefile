@@ -18,6 +18,9 @@ src/%.o: src/%.cpp
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -rf $(OBJ) $(MAINS) $(BIN)
+	rm -rf $(OBJ) $(MAINS) $(BIN) random_buildings
+
+random_buildings:
+	$(CC) $(CFLAGS) -o random_building random_building.cpp
 
 clear: clean
