@@ -14,22 +14,33 @@ int main(int argc, char* argv[]){
       case 'e': { epsilon     = atof(optarg); break; }
       case 'i': { iterations  = atoi(optarg); break; }
       case 'o': { output_path = optarg;       break; }
-      case 'h': { heuristic  = atoi(optarg); break; }
+      case 'h': { heuristic   = atoi(optarg); break; }
       default:  { printf("Cannot parse.\n"); }
     }
   }
 
   Building *building = new Building(input_path);
+  Matrix *a = building->matrix();
+  double *values;
+  values = eigenvalues(*a, epsilon, iterations);
+  natural_frecuencies(values, a->rows());
 
-  switch(heuristic){
-    case 0 : {
-      random_heuristic(building, epsilon, iterations);
-      break;
+  while(!is_building_safe(values, a->rows())){
+    switch(heuristic){
+      case 0 : {
+        building->randomize();
+        break;
+      }
+      case 1 : {
+        building->swap_or_move_heavy_light_cars();
+        break;
+      }
     }
-    case 1 : {
-      swap_or_move_heuristic(building, epsilon, iterations);
-      break;
-    }
+
+    building->generate_matrix();
+    a = building->matrix();
+    values = eigenvalues(*a, epsilon, iterations);
+    natural_frecuencies(values, a->rows());
   }
 
   building->print();
@@ -37,6 +48,7 @@ int main(int argc, char* argv[]){
   //print_array(values, a->rows());
 
   delete building;
+  delete values;
 
   return 0;
 }

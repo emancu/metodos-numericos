@@ -21,6 +21,7 @@ Building::Building(char *input_path) {
 
   _light_cars_amount = 0;
   _heavy_cars_amount = 0;
+  _moves = 0;
 
   _light_cars_array = new int[_floors];
   _heavy_cars_array = new int[_floors];
@@ -116,11 +117,13 @@ void Building::swap_or_move_heavy_light_cars() {
   if(_light_cars_array[floor_i] > 0){
     _light_cars_array[floor_i]--;
     _light_cars_array[floor_j]++;
+    _moves++;
   }
 
   if(_heavy_cars_array[floor_j] > 0){
     _heavy_cars_array[floor_j]--;
     _heavy_cars_array[floor_i]++;
+    _moves++;
   }
 }
 
@@ -138,6 +141,7 @@ void Building::print() const {
   cout << "Floor mass: " << _floor_mass << endl;
   cout << "Light car mass: " << _light_car_mass << "  Heavy car mass: " << _heavy_car_mass << endl;
   cout << "Light car amount: " << _light_cars_amount << " Heavy car amount: " << _heavy_cars_amount << endl;
+  cout << "Number of moves: " << _moves << endl;
 
   cout << endl << "Cars" << endl << "L ";
   int aux = 0;
