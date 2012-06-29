@@ -174,86 +174,6 @@ A la hora de poner a prueba nuestro programa, decidimos dividir en análisis en 
 
 \subsection{Algoritmo QR}
 
-\begin{comment}
-Por eso lo que hicimos fue buscar una instancia solución al problema de 3, 5 y 10 pisos provisto por la cátedra con una de nuestras heurísticas y utilizar eso como dato de entrada. De esta manera lo único que tiene que realizar el algoritmo es el cálculo de los \textit{autovalores} para verificar que el edificio no sufrirá consecuencias del terremoto.
-
-Las instancias utilizadas para estas pruebas son las siguientes:
-
-\vspace{2em}
-\textit{3 pisos de 236.500kg, 150 autos de 500kg y 150 autos de 1000kg}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-  \hline
-  Piso & Livianos & Pesados \\
-  \hline
-1   & 149 & 1     \\
-2   & 1     & 144 \\
-3   & 0     & 5     \\
-\hline
-\end{tabular}
-\end{center}
-
-\vspace{2em}
-\textit{5 pisos de 66.500kg, 200 autos de 500kg y 200 autos de 1000kg}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-  \hline
-  Piso & Livianos & Pesados \\
-  \hline
-1   & 79   & 13   \\
-2   & 121 & 0     \\
-3   & 0     & 186 \\
-4   & 0     & 1     \\
-5   & 0     & 0     \\
-\hline
-\end{tabular}
-\end{center}
-
-\vspace{2em}
-\textit{10 pisos de 20.000kg, 56 autos de 550kg y 56 autos de 900kg}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-  \hline
-  Piso & Livianos & Pesados \\
-  \hline
-1   & 1   & 6   \\
-2   & 19 & 0   \\
-3   & 0   & 0   \\
-4   & 22 & 0   \\
-5   & 0   & 24 \\
-6   & 0   & 0   \\
-7   & 0   & 13 \\
-8   & 0   & 13 \\
-9   & 14 & 0   \\
-10  & 0  & 0   \\
-\hline
-\end{tabular}
-\end{center}
-
-Sabiendo que el \textit{Algoritmo QR} es iterativo, pusimos un tope de cantidad de iteraciones que el algoritmo va a realizar en caso de no alcanzar el criterio de parada y nos propusimos estudiar qué sucede con este valor para matrices de distintos tamaños, ajustando el parámetro del criterio de parada en $\epsilon = 0.00001$. Lo que suponemos es que cuanto más grande es la matriz, más iteraciones requiere para afinar los \textit{autovalores}.\\
-
-En la tabla a continuación presentamos los resultados de esta prueba. Para las tres instancias tomamos nota de cuántas iteraciones requiere como mínimo para cumplir con el criterio de parada que hemos fijado. Además observamos otro fenómeno interesante: para la instancia de tamaño 3, si la ejecutamos con menos de 5 iteraciones el algoritmo no detecta que esta es una solución (y por lo tanto, comienzan a trabajar las heurísticas). 
-
-\vspace{2em}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-  \hline
-  Pisos & Cumple criterio & Detecta solución \\
-  \hline
-3   & 26 & 5  \\
-5   & 41 & 1  \\
-10 & 278 & 1 \\
-\hline
-\end{tabular}
-\end{center}
-
-En un principio el fenómeno ocurrido para la instancia de tres pisos nos resultó bastante extraño, pues la misma es una solución (y lo comprobamos con sus \textit{frecuencias naturales}). Luego de analizar el algoritmo encontramos cuál era la razón detrás de esto y lo que estaba sucediendo era que con una cantidad de iteraciones tan baja, la matriz resultante del \textit{Algoritmo QR} no produce \textit{autovalores} de una calidad suficiente como para que el cálculo de \textit{frecuencias naturales} quede en el rango correspondiente de una solución. Notablemente esto no sucede para instancias más grandes del problema, donde si bien el criterio de parada no se cumple, la primer matriz resultante $A_1 = R_0 \times Q_0$ tiene en su diagonal valores suficientemente cercanos a los \textit{autovalores} como para detectar la solución.\\
-
-
-En cuanto a la cantidad de iteraciones necesarias para cumplir con el criterio de parada, vemos que la misma aumenta a medida que la matriz asociada crece, y esto tiene bastante sentido dado que son más los valores que deben tender a cero en la \textbf{triangular inferior}.\\
-
-Como próxima evaluación quisimos poner a prueba la tolerancia del criterio de parada elegido y ver cuántas iteraciones le toma al algoritmo desacelerar la convergencia de la \textbf{triangular inferior}. Para esto, utilizamos las mismas instancias que para la prueba anterior y 1000 como cantidad de iteraciones máxima.\\
-\end{comment}
 
 En esta primer etapa de la evaluación queremos probar el desempeño del algoritmo que calcula los \textit{autovalores} de la matriz asociada al problema, verificando la calidad de los mismos utilizando diferentes valores de $\epsilon$ para el criterio de parada y comparándolos con los valores obtenidos del programa \textit{Matlab}. Para esto, utilizamos la matriz $A$ correspondiente a un edificio random generado por nosotros \textit{archivosPrueba/random10.txt}. 
 
@@ -278,6 +198,7 @@ Para este trabajo práctico, consideramos que un $\epsilon$ del orden de $10^{-4
 
 La primera impresión que tuvimos al ver los resultados fue la gran diferencia en cantidad de iteraciones entre la instancia de tamaño 10 y la de tamaño 5, siendo que la segunda no está muy lejos de la instancia de tres pisos. De todas maneras podemos ver que lograr una precisión de $1\times 10^{-10}$ en menos de mil iteraciones para es bastante satisfactorio, en especial si tenemos en cuenta que los elementos de la diagonal empiezan a parecerse a los \textit{autovalores} en iteraciones muy tempranas para $\epsilon = 0.00001$.
 
+\newpage
 \subsection{Heurísticas}
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
