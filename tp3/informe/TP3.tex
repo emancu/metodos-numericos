@@ -255,11 +255,19 @@ En cuanto a la cantidad de iteraciones necesarias para cumplir con el criterio d
 Como próxima evaluación quisimos poner a prueba la tolerancia del criterio de parada elegido y ver cuántas iteraciones le toma al algoritmo desacelerar la convergencia de la \textbf{triangular inferior}. Para esto, utilizamos las mismas instancias que para la prueba anterior y 1000 como cantidad de iteraciones máxima.\\
 \end{comment}
 
-%/////////////////////////////////////////////
-En esta primer etapa de la evaluación queremos probar el desempeño del algoritmo que calcula los \textit{autovalores} de la matriz asociada al problema, verificando la calidad de los mismos utilizando diferentes valores de $\epsilon$ para el cirterio de parada y comparandolos con los valores obtenidos del programa \textit{octave} . Para ésto utilizamos la matriz $A$ correspondiente a un edificio random generado por nosotros \textit{archivosPrueba/random10.txt}. 
+En esta primer etapa de la evaluación queremos probar el desempeño del algoritmo que calcula los \textit{autovalores} de la matriz asociada al problema, verificando la calidad de los mismos utilizando diferentes valores de $\epsilon$ para el criterio de parada y comparándolos con los valores obtenidos del programa \textit{Matlab}. Para esto, utilizamos la matriz $A$ correspondiente a un edificio random generado por nosotros \textit{archivosPrueba/random10.txt}. 
 
 
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/3-Autovalores.png}
+  \caption{Agrupados por $\epsilon$ se muestran los errores que cometemos para los distintos autovalores.}
+\end{figure}
+
+Lamentablemente en la \texttt{Figura 3} la diferencia de los autovalores a medida que achicamos el $\epsilon$ es tan chica que no se puede apreciar de forma visual por un tema de escala. Sin embargo, la tabla donde están las diferencias no vale la pena presentarla pues realmente las diferencias son muy pequeñas. Lo importante de esta figura es la notable diferencia que hay para valores de $\epsilon$ más grandes.
+
+Para este trabajo práctico, consideramos que un $\epsilon$ del orden de $10^{-4}$ es aceptable para seguir adelante con la experimentación.
 
 
 \begin{figure}[H]
