@@ -138,9 +138,25 @@ A la hora de implementar el algoritmo decidimos optimizar el espacio y no guarda
 
 \subsection{Algoritmo QR: criterios de parada}
 
-El \textit{Algoritmo QR} es un algoritmo iterativo es decir que en cada iteración del procedimiento se mejora el resultado, pero cuándo terminar de iterar es algo que no está definido y depende de la situación. En nuestro caso sabemos que la matriz resultante tiende a ser \textbf{diagonal} o \textbf{triangular superior} y de cualquier manera la \textbf{triangular inferior} tiende a cero. Teniendo en cuenta esto, el criterio de parada que elegimos consiste en realizar la \textbf{suma del módulo} de los elementos de la \textbf{triangular inferior} y comparar este valor con la suma de la iteración anterior, si dicha suma es menor a un $\epsilon > 0$ (parámetro de nuestro programa), terminamos el algoritmo.\\
-Lo cierto es que no hay garantía de que al acercarse la \textbf{triangular inferior} a cero los valores en la diagonal se parezcan a los \textit{autovalores} y es por esto que probar este criterio de parada y asegurarnos buenos resultados va a ser parte de nuestra experimentación.
+El \textit{Algoritmo QR} es un algoritmo iterativo es decir que en cada iteración del procedimiento se mejora el resultado, pero cuándo terminar de iterar es algo que no está definido y depende de la situación. En nuestro caso sabemos que la matriz resultante tiende a ser \textbf{diagonal} o \textbf{triangular superior} y de cualquier manera la \textbf{triangular inferior} tiende a cero. 
 
+Nosotros proponemos los siguientes criterios: 
+
+\begin{itemize}
+\item Cota subdiagonal: consiste en realizar la suma del módulo de los elementos de la subdiagonal de la matriz actual y la anterior y que la diferencia sea menor a $\epsilon$.
+
+\item Cota elementos: consiste en comparar el valor de cada elemento de la subdiagonal actual con el correspondiente a la iteracion anterior y que la diferencia sea menor a $\epsilon$.
+\end{itemize}
+
+Los dos criterios son muy parecidos pero la \textit{cota subdiagonal} es mas reestrictiva y no pone una cota explicita para cada valor, por lo que decidimos quedarnos con la \textit{cota elementos} en la cual tenemos un mayor control de lo que le estamos pidiendo a cada elemento
+
+Lo cierto es que al ser un algoritmo iterativo debemos poner una cota de iteraciones para asegurarnos que el algoritmo termine.
+
+
+
+
+
+\newpage
 \subsection{Heurísticas}
 
 Una manera de solucionar el problema es ir revisando todas las posibles distribuciones de autos, e ir verificando si las \textit{frecuencias naturales} son seguras para esa configuración. Siendo \textit{n} el número de pisos, \textit{p} y \textit{m} la cantidad de autos pesados y livianos respectivamente, la cantidad total de configuraciones es $n^l \times n^p$ haciendo que éste procedimiento sea computacionalmente caro. Por lo tanto el enfoque más práctico es realizar algoritmos heurísticos para encontrar una solución y a continuación exponemos las estrategias utilizadas:
@@ -199,15 +215,14 @@ Para este trabajo práctico, consideramos que un $\epsilon$ del orden de $10^{-4
 La primera impresión que tuvimos al ver los resultados fue la gran diferencia en cantidad de iteraciones entre la instancia de tamaño 10 y la de tamaño 5, siendo que la segunda no está muy lejos de la instancia de tres pisos. De todas maneras podemos ver que lograr una precisión de $1\times 10^{-10}$ en menos de mil iteraciones para es bastante satisfactorio, en especial si tenemos en cuenta que los elementos de la diagonal empiezan a parecerse a los \textit{autovalores} en iteraciones muy tempranas para $\epsilon = 0.00001$.
 
 \newpage
-\subsection{Heurísticas}
+%\subsection{Heurísticas}
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
 \newpage
-
-\section{Conclusiones}
+%\section{Conclusiones}
 %Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
 
 \newpage
