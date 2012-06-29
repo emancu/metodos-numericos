@@ -26,8 +26,16 @@ int main(int argc, char* argv[]){
   natural_frecuencies(values, a->rows());
   bool moved_light = false;
 
+  int limit = 30;
+  int family_reset=0;
+
+  cout << limit << endl;
   while(!is_building_safe(values, a->rows())){
-    print_array(values, a->rows());
+    if(family_reset == limit) {
+      building->randomize();
+      family_reset = 0;
+    }
+
     switch(heuristic){
       case 0: {
         building->randomize();
@@ -64,11 +72,11 @@ int main(int argc, char* argv[]){
     delete[] values;
     values = eigenvalues(*a, epsilon, iterations);
     natural_frecuencies(values, a->rows());
+    family_reset++;
   }
 
   building->print();
   building->output_file(output_path);
-  // print_array(values, a->rows());
 
   delete building;
   delete[] values;

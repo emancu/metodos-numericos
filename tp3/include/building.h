@@ -33,6 +33,13 @@ class Building {
     Matrix* matrix() const;
     void print() const;
     void output_file(char*) const;
+    int distance_to(const Building&) const;
+
+    /*
+     * Getters
+     */
+    int amount_heavy_cars() const;
+    int amount_light_cars() const;
 
   private:
     int _floors;

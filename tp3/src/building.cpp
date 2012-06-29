@@ -95,16 +95,50 @@ void Building::randomize() {
   int amount_heavy = _heavy_cars_amount;
   srand(time(NULL));
 
-  for(int i=0; i< _floors-1; i++) {
-    _light_cars_array[i] = rand() % (amount_light+1);
-    _heavy_cars_array[i] = rand() % (amount_heavy+1);
+  int moves = rand() % (50) + _floors;
 
-    amount_light -= _light_cars_array[i];
-    amount_heavy -= _heavy_cars_array[i];
+  // Limpio los arrays
+  for(int i = 0; i < _floors ; i++){
+    _light_cars_array[i] = 0;
+    _heavy_cars_array[i] = 0;
   }
 
-  _light_cars_array[_floors-1] = amount_light;
-  _heavy_cars_array[_floors-1] = amount_heavy;
+  int i;
+  while(moves-- && amount_light) {
+    i = rand() % _floors;
+    if(_light_cars_array[i] == 0) {
+      _light_cars_array[i] = rand() % (amount_light+1);
+      amount_light -= _light_cars_array[i];
+    }
+  }
+
+  moves = rand() % (50) + _floors;
+  while(moves-- && amount_heavy ) {
+    i = rand() % (_floors);
+    if(_heavy_cars_array[i] == 0) {
+      _heavy_cars_array[i] = rand() % (amount_heavy+1);
+      amount_heavy -= _heavy_cars_array[i];
+    }
+  }
+
+  i = rand() % _floors;
+  _light_cars_array[i] += amount_light;
+
+  i = rand() % _floors;
+  _heavy_cars_array[i] += amount_heavy;
+
+  // Check integrity
+  int auxl = 0, auxh = 0;
+  for(i=0; i < _floors; i++){
+    auxl += _light_cars_array[i];
+    auxh += _heavy_cars_array[i];
+  }
+
+  if(auxl != _light_cars_amount || auxh != _heavy_cars_amount) {
+    cout << "Mal los light" << auxl << " as " << _light_cars_amount << endl;
+    cout << "Mal los heavy" << auxh << " as " << _heavy_cars_amount << endl;
+    exit(1);
+  }
 
 }
 
@@ -199,6 +233,7 @@ void Building::move_all_heavy_cars(){
     _moves++;
   }
 }
+
 /*
  * NO modifican self
  */
@@ -266,3 +301,26 @@ void Building::output_file(char* output_path) const {
   file.close();
 }
 
+int Building::distance_to(const Building& building) const {
+  int differences_light = 0;
+  int differences_heavy = 0;
+
+  for(int i = 0; i < _floors; i++){
+    differences_light += abs(_light_cars_array[i] - building._light_cars_array[i]);
+    differences_heavy += abs(_heavy_cars_array[i] - building._heavy_cars_array[i]);
+  }
+
+  return differences_light + differences_heavy;
+}
+
+/*
+ * Getters
+ */
+
+int Building::amount_light_cars() const {
+  return _light_cars_amount;
+}
+
+int Building::amount_heavy_cars() const {
+  return _heavy_cars_amount;
+}
