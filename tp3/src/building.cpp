@@ -28,10 +28,10 @@ Building::Building(char *input_path) {
   _heavy_cars_stack = 0;
   _heavy_car_to     = 0;
 
-  _light_cars_array = new int[_floors];
-  _heavy_cars_array = new int[_floors];
-  _coefficients = new int[_floors];
-
+  _light_cars_array    = new int[_floors];
+  _heavy_cars_array    = new int[_floors];
+  _coefficients        = new int[_floors];
+  _natural_frequencies = new double[_floors];
 
   //leo los coeficientes
   for(int i = 0; i < _floors ; i++){
@@ -57,9 +57,10 @@ Building::Building(char *input_path) {
 }
 
 Building::~Building() {
-  delete _light_cars_array;
-  delete _heavy_cars_array;
-  delete _coefficients;
+  delete[] _light_cars_array;
+  delete[] _heavy_cars_array;
+  delete[] _coefficients;
+  delete[] _natural_frequencies;
   delete _matrix;
 }
 
@@ -234,6 +235,11 @@ void Building::move_all_heavy_cars(){
   }
 }
 
+void Building::natural_frequencies(double* eigenvalues) {
+  for(int i=0; i < _floors; i++)
+    _natural_frequencies[i] = sqrt(-eigenvalues[i]);
+}
+
 /*
  * NO modifican self
  */
@@ -313,6 +319,13 @@ int Building::distance_to(const Building& building) const {
   return differences_light + differences_heavy;
 }
 
+bool Building::is_safe() const {
+  for(int i=0; i < _floors; i++)
+    if(2.7 <= _natural_frequencies[i] && _natural_frequencies[i] <= 3.3)
+      return false;
+  return true;
+}
+
 /*
  * Getters
  */
@@ -324,3 +337,4 @@ int Building::amount_light_cars() const {
 int Building::amount_heavy_cars() const {
   return _heavy_cars_amount;
 }
+

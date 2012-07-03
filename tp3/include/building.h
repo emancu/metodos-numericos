@@ -26,6 +26,7 @@ class Building {
     void move_heavy_car();
     void move_all_light_cars();
     void move_all_heavy_cars();
+    void natural_frequencies(double*);
 
     /*
      * Metodos que NO modifican self
@@ -33,7 +34,8 @@ class Building {
     Matrix* matrix() const;
     void print() const;
     void output_file(char*) const;
-    int distance_to(const Building&) const;
+    int  distance_to(const Building&) const;
+    bool is_safe() const;
 
     /*
      * Getters
@@ -58,6 +60,7 @@ class Building {
     int *_light_cars_array;
     int *_heavy_cars_array;
     int *_coefficients;
+    double *_natural_frequencies;
 
     Matrix *_matrix;
 

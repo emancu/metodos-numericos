@@ -48,18 +48,6 @@ bool stop_criteria_only_sub_diagonal(int size, double* cur,double* prev, double 
   return false;
 }
 
-void natural_frecuencies(double *eigenvalues, int size) {
-  for(int i=0; i < size; i++)
-    eigenvalues[i] = sqrt(-eigenvalues[i]);
-}
-
-bool is_building_safe(double *eigenvalues, int size) {
-  for(int i=0; i < size; i++)
-    if(2.7 <= eigenvalues[i] && eigenvalues[i] <= 3.3)
-      return false;
-  return true;
-}
-
 void qr_decomposition(Matrix *q_t, Matrix *r) {
   double a,b,norm, upper_band;
   Matrix *p = new Matrix(r->rows(), r->cols());

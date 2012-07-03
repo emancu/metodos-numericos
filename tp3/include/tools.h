@@ -15,9 +15,7 @@ Matrix* parse_input(char*);
 
 double* eigenvalues(const Matrix&, double, int);
 void qr_decomposition(Matrix*, Matrix*);
-void natural_frecuencies(double*, int);
-bool is_building_safe(double*, int);
-void print_array(double* , int );
+void print_array(double* , int);
 
 bool stop_criteria_only_sub_diagonal(int, double*,double*, double);
 

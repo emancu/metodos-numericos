@@ -21,16 +21,15 @@ int main(int argc, char* argv[]){
 
   Building *building = new Building(input_path);
   Matrix *a = building->matrix();
-  double *values;
-  values = eigenvalues(*a, epsilon, iterations);
-  natural_frecuencies(values, a->rows());
+  double *values = eigenvalues(*a, epsilon, iterations);
+  building->natural_frequencies(values);
   bool moved_light = false;
 
   int limit = 30;
   int family_reset=0;
 
   cout << limit << endl;
-  while(!is_building_safe(values, a->rows())){
+  while(!building->is_safe()){
     if(family_reset == limit) {
       building->randomize();
       family_reset = 0;
@@ -71,7 +70,7 @@ int main(int argc, char* argv[]){
     a = building->matrix();
     delete[] values;
     values = eigenvalues(*a, epsilon, iterations);
-    natural_frecuencies(values, a->rows());
+    building->natural_frequencies(values);
     family_reset++;
   }
 
