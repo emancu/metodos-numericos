@@ -321,9 +321,17 @@ int Building::distance_to(const Building& building) const {
 
 bool Building::is_safe() const {
   for(int i=0; i < _floors; i++)
-    if(2.7 <= _natural_frequencies[i] && _natural_frequencies[i] <= 3.3)
-      return false;
+    if(frequency_in_range(_natural_frequencies[i])) return false;
   return true;
+  // Alternative implementation?
+  // return frequencies_in_range() == 0;
+}
+
+int Building::frequencies_in_range() const {
+  int result = 0;
+  for(int i=0; i < _floors; i++)
+    if(frequency_in_range(_natural_frequencies[i])) result++;
+  return result;
 }
 
 /*
@@ -338,3 +346,10 @@ int Building::amount_heavy_cars() const {
   return _heavy_cars_amount;
 }
 
+/*
+ * Helpers
+ */
+
+bool Building::frequency_in_range(double frequency) const {
+  return (2.7 <= frequency && frequency <= 3.3);
+}

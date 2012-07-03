@@ -36,6 +36,7 @@ class Building {
     void output_file(char*) const;
     int  distance_to(const Building&) const;
     bool is_safe() const;
+    int  frequencies_in_range() const;
 
     /*
      * Getters
@@ -64,6 +65,8 @@ class Building {
 
     Matrix *_matrix;
 
+    // Helper
+    bool frequency_in_range(double) const;
 };
 
 #endif
