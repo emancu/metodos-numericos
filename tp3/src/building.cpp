@@ -7,6 +7,41 @@
 Building::Building() {
 }
 
+Building::Building(const Building& building) {
+  _floors         = building._floors;
+  _floor_mass     = building._floor_mass;
+  _light_car_mass = building._light_car_mass;
+  _heavy_car_mass = building._heavy_car_mass;
+
+  _light_cars_amount = building._light_cars_amount;
+  _heavy_cars_amount = building._heavy_cars_amount;
+  _moves = building._moves;
+
+  _light_cars_stack = building._light_cars_stack;
+  _light_car_to     = building._light_car_to;
+  _heavy_cars_stack = building._heavy_cars_stack;
+  _heavy_car_to     = building._heavy_car_to;
+
+  _light_cars_array    = new int[_floors];
+  _heavy_cars_array    = new int[_floors];
+  _coefficients        = new int[_floors];
+  _natural_frequencies = new double[_floors];
+
+  // copio los coeficientes.
+  for(int i = 0; i < _floors ; i++)
+    _coefficients[i] = building._coefficients[i];
+
+  // copio autos livianos por piso.
+  for(int i = 0; i < _floors ; i++)
+    _light_cars_array[i] = building._light_cars_array[i];
+
+  // copio autos pesados por piso.
+  for(int i = 0; i < _floors ; i++)
+    _heavy_cars_array[i] = building._heavy_cars_array[i];
+
+  _matrix = new Matrix(*(building.matrix()));
+}
+
 Building::Building(char *input_path) {
   string floors, floor_mass_str, light_car_mass_str, heavy_car_mass_str, coeff, amount_light_cars, amount_heavy_cars;
   ifstream input;
@@ -344,6 +379,10 @@ int Building::amount_light_cars() const {
 
 int Building::amount_heavy_cars() const {
   return _heavy_cars_amount;
+}
+
+int Building::floors() const {
+  return _floors;
 }
 
 /*

@@ -15,6 +15,7 @@ class Building {
   public:
     Building();
     Building(char*);
+    Building(const Building&);
     ~Building();
 
     /*
@@ -43,6 +44,7 @@ class Building {
      */
     int amount_heavy_cars() const;
     int amount_light_cars() const;
+    int floors() const;
 
   private:
     int _floors;
