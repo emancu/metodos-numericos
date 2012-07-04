@@ -1,6 +1,7 @@
 #include <tools.h>
 #include <matrix.h>
 #include <building.h>
+#include <math.h>
 
 int main(int argc, char* argv[]){
   static const char *optString = "f:e:i:h:o:";
@@ -25,16 +26,12 @@ int main(int argc, char* argv[]){
   building->natural_frequencies(values);
   bool moved_light = false;
 
-  int limit = 30;
-  int family_reset=0;
+  int neighbor_count = 0;
+  int neighbor_limit = (int) ceil(building->floors() / 2);
+  double *neighbor_eigenvalues = new double[building->floors()];
+  Building *neighbor = new Building(*building);
 
-  cout << limit << endl;
   while(!building->is_safe()){
-    if(family_reset == limit) {
-      building->randomize();
-      family_reset = 0;
-    }
-
     switch(heuristic){
       case 0: {
         building->randomize();
@@ -64,6 +61,23 @@ int main(int argc, char* argv[]){
         moved_light = !moved_light;
         break;
       }
+      case 6: {
+        if(neighbor_count == neighbor_limit){
+          building->randomize();
+          neighbor_count = 0;
+        }else{
+          delete neighbor;
+          neighbor = new Building(*building);
+          neighbor->move_heavy_car();
+          neighbor->generate_matrix();
+          delete[] neighbor_eigenvalues;
+          neighbor_eigenvalues = eigenvalues(*(neighbor->matrix()), epsilon, iterations);
+          neighbor->natural_frequencies(neighbor_eigenvalues);
+
+          neighbor_count++;
+        }
+        break;
+      }
     }
 
     building->generate_matrix();
@@ -71,7 +85,15 @@ int main(int argc, char* argv[]){
     delete[] values;
     values = eigenvalues(*a, epsilon, iterations);
     building->natural_frequencies(values);
-    family_reset++;
+
+    if(heuristic == 6){
+      if(neighbor->frequencies_in_range() < building->frequencies_in_range()){
+        Building* temp_building = building;
+        building = neighbor;
+        neighbor_count = 0;
+        delete temp_building;
+      }
+    }
   }
 
   building->print();
@@ -79,6 +101,8 @@ int main(int argc, char* argv[]){
 
   delete building;
   delete[] values;
+  delete neighbor;
+  delete[] neighbor_eigenvalues;
 
   return 0;
 }

@@ -53,7 +53,6 @@ class Building {
     int _heavy_car_mass;
     int _light_cars_amount;
     int _heavy_cars_amount;
-    int _moves;
 
     int _light_cars_stack;
     int _light_car_to;
