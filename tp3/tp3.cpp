@@ -21,6 +21,7 @@ int main(int argc, char* argv[]){
   }
 
   Building *building = new Building(input_path);
+  Building *original_building = new Building(*building);
   Matrix *a = building->matrix();
   double *values = eigenvalues(*a, epsilon, iterations);
   building->natural_frequencies(values);
@@ -96,13 +97,14 @@ int main(int argc, char* argv[]){
     }
   }
 
-  building->print();
+
+  cout << "Distancia: " << endl << original_building->distance_to(*building) << endl;
+  //building->print();
   building->output_file(output_path);
 
-  delete building;
+  delete   building;
+  delete   original_building;
   delete[] values;
-  delete neighbor;
-  delete[] neighbor_eigenvalues;
 
   return 0;
 }
