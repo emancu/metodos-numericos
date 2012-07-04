@@ -343,7 +343,7 @@ int Building::distance_to(const Building& building) const {
     differences_heavy += abs(_heavy_cars_array[i] - building._heavy_cars_array[i]);
   }
 
-  return differences_light + differences_heavy;
+  return (differences_light + differences_heavy) / 2;
 }
 
 bool Building::is_safe() const {
