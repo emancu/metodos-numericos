@@ -1,6 +1,6 @@
 tp
 *.o
-out
+out*
 randbuil
 random_building
 random_building.dSYM/
