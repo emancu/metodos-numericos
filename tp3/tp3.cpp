@@ -32,7 +32,9 @@ int main(int argc, char* argv[]){
   double *neighbor_eigenvalues = new double[building->floors()];
   Building *neighbor = new Building(*building);
 
-  while(!building->is_safe()){
+  building->print();
+
+  while(!(building->is_safe())){
     switch(heuristic){
       case 0: {
         building->randomize();
@@ -63,12 +65,12 @@ int main(int argc, char* argv[]){
         break;
       }
       case 6: {
+        delete neighbor;
+        neighbor = new Building(*building);
         if(neighbor_count == neighbor_limit){
-          building->randomize();
+          neighbor->randomize();
           neighbor_count = 0;
         }else{
-          delete neighbor;
-          neighbor = new Building(*building);
           neighbor->move_heavy_car();
           neighbor->generate_matrix();
           delete[] neighbor_eigenvalues;
@@ -98,8 +100,9 @@ int main(int argc, char* argv[]){
   }
 
 
-  cout << "Distancia: " << endl << original_building->distance_to(*building) << endl;
-  //building->print();
+  cout << "Distancia: " << endl;
+  printf("%d\n", original_building->distance_to(*building));
+  building->print();
   building->output_file(output_path);
 
   delete   building;

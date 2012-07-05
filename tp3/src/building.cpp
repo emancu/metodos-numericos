@@ -7,19 +7,19 @@
 Building::Building() {
 }
 
-Building::Building(const Building& building) {
-  _floors         = building._floors;
-  _floor_mass     = building._floor_mass;
-  _light_car_mass = building._light_car_mass;
-  _heavy_car_mass = building._heavy_car_mass;
+Building::Building(const Building& base) {
+  _floors         = base._floors;
+  _floor_mass     = base._floor_mass;
+  _light_car_mass = base._light_car_mass;
+  _heavy_car_mass = base._heavy_car_mass;
 
-  _light_cars_amount = building._light_cars_amount;
-  _heavy_cars_amount = building._heavy_cars_amount;
+  _light_cars_amount = base._light_cars_amount;
+  _heavy_cars_amount = base._heavy_cars_amount;
 
-  _light_cars_stack = building._light_cars_stack;
-  _light_car_to     = building._light_car_to;
-  _heavy_cars_stack = building._heavy_cars_stack;
-  _heavy_car_to     = building._heavy_car_to;
+  _light_cars_stack = base._light_cars_stack;
+  _light_car_to     = base._light_car_to;
+  _heavy_cars_stack = base._heavy_cars_stack;
+  _heavy_car_to     = base._heavy_car_to;
 
   _light_cars_array    = new int[_floors];
   _heavy_cars_array    = new int[_floors];
@@ -28,17 +28,21 @@ Building::Building(const Building& building) {
 
   // copio los coeficientes.
   for(int i = 0; i < _floors ; i++)
-    _coefficients[i] = building._coefficients[i];
+    _coefficients[i] = base._coefficients[i];
 
   // copio autos livianos por piso.
   for(int i = 0; i < _floors ; i++)
-    _light_cars_array[i] = building._light_cars_array[i];
+    _light_cars_array[i] = base._light_cars_array[i];
 
   // copio autos pesados por piso.
   for(int i = 0; i < _floors ; i++)
-    _heavy_cars_array[i] = building._heavy_cars_array[i];
+    _heavy_cars_array[i] = base._heavy_cars_array[i];
 
-  _matrix = new Matrix(*(building.matrix()));
+  // copio frecuencias naturales.
+  for(int i = 0; i < _floors ; i++)
+    _natural_frequencies[i] = base._natural_frequencies[i];
+
+  _matrix = new Matrix(*(base.matrix()));
 }
 
 Building::Building(char *input_path) {
@@ -200,19 +204,21 @@ void Building::swap_or_move_heavy_light_cars() {
 }
 
 void Building::move_heavy_car() {
-  srand(time(NULL));
+  if(_heavy_cars_amount > 0){
+    srand(time(NULL));
 
-  int floor_i = rand() % _floors;
-  int floor_j = rand() % _floors;
+    int floor_i = rand() % _floors;
+    int floor_j = rand() % _floors;
 
-  // In case the floors are the same.
-  while(floor_i == floor_j || _heavy_cars_array[floor_i] == 0){
-    floor_i = rand() % _floors;
-    floor_j = rand() % _floors;
+    // In case the floors are the same.
+    while(floor_i == floor_j || _heavy_cars_array[floor_i] == 0){
+      floor_i = rand() % _floors;
+      floor_j = rand() % _floors;
+    }
+
+    _heavy_cars_array[floor_i]--;
+    _heavy_cars_array[floor_j]++;
   }
-
-  _heavy_cars_array[floor_i]--;
-  _heavy_cars_array[floor_j]++;
 }
 
 void Building::move_all_light_cars(){
@@ -235,7 +241,6 @@ void Building::move_all_light_cars(){
       _light_car_to = _light_cars_stack + 1;
     else
       _light_car_to++;
-
   }
 }
 
@@ -259,7 +264,6 @@ void Building::move_all_heavy_cars(){
       _heavy_car_to = _heavy_cars_stack + 1;
     else
       _heavy_car_to++;
-
   }
 }
 
@@ -339,11 +343,11 @@ int Building::distance_to(const Building& building) const {
   int differences_heavy = 0;
 
   for(int i = 0; i < _floors; i++){
-    differences_light += abs(_light_cars_array[i] - building._light_cars_array[i]);
-    differences_heavy += abs(_heavy_cars_array[i] - building._heavy_cars_array[i]);
+    differences_light += (int) abs(_light_cars_array[i] - building._light_cars_array[i]);
+    differences_heavy += (int) abs(_heavy_cars_array[i] - building._heavy_cars_array[i]);
   }
 
-  return (differences_light + differences_heavy) / 2;
+  return ((differences_light + differences_heavy) / 2);
 }
 
 bool Building::is_safe() const {
@@ -359,6 +363,45 @@ int Building::frequencies_in_range() const {
   for(int i=0; i < _floors; i++)
     if(frequency_in_range(_natural_frequencies[i])) result++;
   return result;
+}
+
+bool Building::operator== (const Building& base) const {
+  bool result = _floors            == base._floors            &&
+                _floor_mass        == base._floor_mass        &&
+                _light_car_mass    == base._light_car_mass    &&
+                _heavy_car_mass    == base._heavy_car_mass    &&
+                _light_cars_amount == base._light_cars_amount &&
+                _heavy_cars_amount == base._heavy_cars_amount;
+
+  for(int i = 0; i < _floors ; i++)
+    result = result && _coefficients[i] == base._coefficients[i];
+
+  for(int i = 0; i < _floors ; i++)
+    result = result && _heavy_cars_array[i] == base._heavy_cars_array[i];
+
+  for(int i = 0; i < _floors ; i++)
+    result = result && _light_cars_array[i] == base._light_cars_array[i];
+
+  for(int i = 0; i < _floors ; i++)
+    result = result && _natural_frequencies[i] == base._natural_frequencies[i];
+
+  return result;
+}
+
+bool Building::same_number_of_cars(const Building& base) const {
+  int auxl = 0, auxh = 0;
+  for(int i=0; i < _floors; i++){
+    auxl += _light_cars_array[i];
+    auxh += _heavy_cars_array[i];
+  }
+
+  int auxl_base = 0, auxh_base = 0;
+  for(int i=0; i < _floors; i++){
+    auxl_base += base._light_cars_array[i];
+    auxh_base += base._heavy_cars_array[i];
+  }
+
+  return auxl_base == auxl && auxh_base == auxh;
 }
 
 /*

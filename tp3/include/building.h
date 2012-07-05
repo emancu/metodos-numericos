@@ -38,6 +38,8 @@ class Building {
     int  distance_to(const Building&) const;
     bool is_safe() const;
     int  frequencies_in_range() const;
+    bool operator== (const Building&) const;
+    bool same_number_of_cars(const Building&) const;
 
     /*
      * Getters
