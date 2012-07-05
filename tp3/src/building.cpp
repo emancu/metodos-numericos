@@ -1,5 +1,6 @@
 #include <building.h>
 #include <tools.h>
+#include <math.h>
 
 /*
  * Generators
@@ -278,6 +279,29 @@ void Building::calculate_natural_frequencies(double epsilon, int iterations) {
   double* values = eigenvalues(*_matrix, epsilon, iterations);
   natural_frequencies_from_eigenvalues(values);
   delete[] values;
+}
+
+Building* Building::best_neighbor(double epsilon, int iterations) {
+  int neighbor_limit = (int) ceil(_floors / 2);
+  Building* result = new Building(*this);
+  result->move_heavy_car();
+  result->calculate_natural_frequencies(epsilon, iterations);
+
+  for(int i = 0; i < neighbor_limit; i++){
+    Building* current = new Building(*this);
+    current->move_heavy_car();
+    current->calculate_natural_frequencies(epsilon, iterations);
+
+    if(current->frequencies_in_range() < result->frequencies_in_range()){
+      Building* temp_build = result;
+      result = current;
+      delete temp_build;
+    }else{
+      delete current;
+    }
+  }
+
+  return result;
 }
 
 /*

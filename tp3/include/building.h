@@ -29,6 +29,7 @@ class Building {
     void move_all_heavy_cars();
     void natural_frequencies_from_eigenvalues(double*);
     void calculate_natural_frequencies(double, int);
+    Building* best_neighbor(double, int);
 
     /*
      * Metodos que NO modifican self
@@ -57,11 +58,6 @@ class Building {
     int _light_cars_amount;
     int _heavy_cars_amount;
 
-    int _light_cars_stack;
-    int _light_car_to;
-    int _heavy_cars_stack;
-    int _heavy_car_to;
-
     int *_light_cars_array;
     int *_heavy_cars_array;
     int *_coefficients;
@@ -69,7 +65,13 @@ class Building {
 
     Matrix *_matrix;
 
-    // Helper
+    // For heuristic number 5. See tp3.cpp
+    int _light_cars_stack;
+    int _light_car_to;
+    int _heavy_cars_stack;
+    int _heavy_car_to;
+
+    // Helpers
     bool frequency_in_range(double) const;
 };
 

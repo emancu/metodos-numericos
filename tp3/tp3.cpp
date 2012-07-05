@@ -1,5 +1,4 @@
 #include <building.h>
-#include <math.h>
 
 int main(int argc, char* argv[]){
   static const char *optString = "f:e:i:h:o:";
@@ -23,11 +22,6 @@ int main(int argc, char* argv[]){
 
   // For Heuristic number 5
   bool moved_light = false;
-
-  // For heuristic number 6
-  int neighbor_count = 0;
-  int neighbor_limit = (int) ceil(building->floors() / 2);
-  Building *neighbor = new Building(*building);
 
   building->print();
   building->calculate_natural_frequencies(epsilon, iterations);
@@ -62,36 +56,22 @@ int main(int argc, char* argv[]){
         break;
       }
       case 6: {
-        delete neighbor;
-        neighbor = new Building(*building);
-        if(neighbor_count == neighbor_limit){
-          neighbor->randomize();
-          neighbor_count = 0;
+        Building* neighbor = building->best_neighbor(epsilon, iterations);
+        if(neighbor->frequencies_in_range() < building->frequencies_in_range()){
+          Building* temp_build = building;
+          building = neighbor;
+          delete temp_build;
         }else{
-          neighbor->move_heavy_car();
-          neighbor_count++;
+          delete neighbor;
+          building->randomize();
         }
-
-        neighbor->calculate_natural_frequencies(epsilon, iterations);
-        break;
       }
     }
 
     building->calculate_natural_frequencies(epsilon, iterations);
-
-    if(heuristic == 6){
-      if(neighbor->frequencies_in_range() < building->frequencies_in_range()){
-        Building* temp_building = building;
-        building = neighbor;
-        neighbor_count = 0;
-        delete temp_building;
-      }
-    }
   }
 
-
-  cout << "Distancia: " << endl;
-  printf("%d\n", original_building->distance_to(*building));
+  cout << "Distancia: " << original_building->distance_to(*building) << endl;
   building->print();
   building->output_file(output_path);
 
