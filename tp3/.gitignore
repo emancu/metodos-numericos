@@ -14,3 +14,4 @@ informe/*.bbl
 informe/*.blg
 informe/*.pdf
 informe/*.synctex.gz
+*.dSYM
