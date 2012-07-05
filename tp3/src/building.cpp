@@ -1,4 +1,5 @@
 #include <building.h>
+#include <tools.h>
 
 /*
  * Generators
@@ -267,9 +268,16 @@ void Building::move_all_heavy_cars(){
   }
 }
 
-void Building::natural_frequencies(double* eigenvalues) {
+void Building::natural_frequencies_from_eigenvalues(double* eigenvalues) {
   for(int i=0; i < _floors; i++)
     _natural_frequencies[i] = sqrt(-eigenvalues[i]);
+}
+
+void Building::calculate_natural_frequencies(double epsilon, int iterations) {
+  generate_matrix();
+  double* values = eigenvalues(*_matrix, epsilon, iterations);
+  natural_frequencies_from_eigenvalues(values);
+  delete[] values;
 }
 
 /*

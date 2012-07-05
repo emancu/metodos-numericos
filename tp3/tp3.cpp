@@ -1,5 +1,3 @@
-#include <tools.h>
-#include <matrix.h>
 #include <building.h>
 #include <math.h>
 
@@ -22,18 +20,17 @@ int main(int argc, char* argv[]){
 
   Building *building = new Building(input_path);
   Building *original_building = new Building(*building);
-  Matrix *a = building->matrix();
-  double *values = eigenvalues(*a, epsilon, iterations);
-  building->natural_frequencies(values);
+
+  // For Heuristic number 5
   bool moved_light = false;
 
+  // For heuristic number 6
   int neighbor_count = 0;
   int neighbor_limit = (int) ceil(building->floors() / 2);
-  double *neighbor_eigenvalues = new double[building->floors()];
   Building *neighbor = new Building(*building);
 
   building->print();
-
+  building->calculate_natural_frequencies(epsilon, iterations);
   while(!(building->is_safe())){
     switch(heuristic){
       case 0: {
@@ -72,22 +69,15 @@ int main(int argc, char* argv[]){
           neighbor_count = 0;
         }else{
           neighbor->move_heavy_car();
-          neighbor->generate_matrix();
-          delete[] neighbor_eigenvalues;
-          neighbor_eigenvalues = eigenvalues(*(neighbor->matrix()), epsilon, iterations);
-          neighbor->natural_frequencies(neighbor_eigenvalues);
-
           neighbor_count++;
         }
+
+        neighbor->calculate_natural_frequencies(epsilon, iterations);
         break;
       }
     }
 
-    building->generate_matrix();
-    a = building->matrix();
-    delete[] values;
-    values = eigenvalues(*a, epsilon, iterations);
-    building->natural_frequencies(values);
+    building->calculate_natural_frequencies(epsilon, iterations);
 
     if(heuristic == 6){
       if(neighbor->frequencies_in_range() < building->frequencies_in_range()){
@@ -105,9 +95,8 @@ int main(int argc, char* argv[]){
   building->print();
   building->output_file(output_path);
 
-  delete   building;
-  delete   original_building;
-  delete[] values;
+  delete building;
+  delete original_building;
 
   return 0;
 }

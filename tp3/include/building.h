@@ -27,7 +27,8 @@ class Building {
     void move_heavy_car();
     void move_all_light_cars();
     void move_all_heavy_cars();
-    void natural_frequencies(double*);
+    void natural_frequencies_from_eigenvalues(double*);
+    void calculate_natural_frequencies(double, int);
 
     /*
      * Metodos que NO modifican self
