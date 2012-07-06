@@ -131,7 +131,11 @@ Un error que se nos presentó fue justamente el de la presentación de la inform
 
 Dado que ambos métodos son iterativos, y bajo ciertas circunstancias nos aseguran una convergencia a la solución, debiamos proveer de un criterio para saber cuando nos encontramos con una 'buena' aproximación a la solución. Dado que no podemos preguntarle a una computadora si un valor es exactamente igual a 0, debiamos conformarnos con una aproximación al mismo.
 
-Siendo $\epsilon$ una tolerancia previamente establecida (por ejemplo $\epsilon = 10^{-3}$), el criterio que decidimos utilizar es examinar sí \begin{equation}\vert{b_n - a_n}\vert < \epsilon\end{equation}
+Siendo $\epsilon$ una tolerancia previamente establecida (por ejemplo $\epsilon = 10^{-3}$), uno de los criterios de parada consiste en parar cuando 
+\begin{equation}|f(c_n)| < \epsilon \end{equation}
+También se puede usar como criterio de parada el error relativo entre dos aproximaciones del cero de f, 
+\begin{equation}\frac{c_n - c_{n-1}}{c_n} < \epsilon \end{equation}
+Otro criterio que puede utilizarse, y de hecho es el que utilizamos, es examinar sí \begin{equation}\vert{b_n - a_n}\vert < \epsilon\end{equation}
 
 \newpage
 \section{Discusión y Resultados}
