@@ -99,7 +99,7 @@ Nuestro objetivo consistía en calcular el momento de impacto de un cuerpo, lanz
  y(t) = h + v_0 t - \frac{g}{2} t^2,
 \end{equation}
 
-nuestro trabajo se reducia a encontrar los instantes en que esta función vale cero, y esto se transforma en calcular las raíces o ceros de la función. Para esto utilizamos los métodos numéricos de \textbf{Bisección} y \textbf{Newton}.
+nuestro trabajo se reducía a encontrar los instantes en que esta función vale cero, y esto se transforma en calcular las raíces o ceros de la función. Para esto utilizamos los métodos numéricos de \textbf{Bisección} y \textbf{Newton}.
 
 Como las condiciones de convergencia de \textbf{Newton} exigen que la semilla este \textit{cerca} de la raíz, decidimos implementar la combinación de los mismos, es decir conseguir una \textit{semilla} con el método de \textbf{bisección} y luego utilizar la misma para aplicar \textbf{Newton}. \\ \hspace{1em}
 
@@ -120,16 +120,14 @@ Para calcular el segundo impacto, volvemos a calcular el cero a la función posi
 
 O sea, lo que hacemos es tirar el cuerpo desde una altura $V_0$ con una velocidad igual a la contraria con la que llego al piso multiplicada por el correspondiente factor de rozamiento. La raiz de la función posición con estos parámetros iniciales se corresponde con el instante en el que el cuerpo impacta con el piso por segunda vez.
 
-
 \hspace{1em}
-
 
 Básicamente, el trabajo consiste en calcular o aproximar ceros de distintas funciones y por eso decidimos implementar una función genérica para cada algoritmo, que recibe como parámetro la función a la cual se le quiere aproximar las raíces. 
 
 En un principio utilizamos el tipo \textit{double} para asegurarnos de que todo funcionaba según lo esperado. Luego fue reemplazado por la clase \textit{TFLoat} proporcionada por la cátedra, con la cual íbamos a poder manejar la cantidad de bits de la mantisa.   
-Un error que se nos presentó fue justamente el de la presentación de la información. Al imprimir los valores de las variables, imprimimos pocos decimales, estos eran redoneados dandonos valores alejados de lo esperado. Para saber la cantidad máxima de dígitos consultamos la clase $float.h$\footnote{http://www.cplusplus.com/reference/clibrary/cfloat/} la cual contiene una constante que indica el número de decimales significativos. \\[1em]
+Un error que se nos presentó fue justamente el de la presentación de la información. Al imprimir los valores de las variables, imprimimos pocos decimales, estos eran redondeados dandonos valores alejados de lo esperado. Para saber la cantidad máxima de dígitos consultamos la clase $float.h$\footnote{http://www.cplusplus.com/reference/clibrary/cfloat/} la cual contiene una constante que indica el número de decimales significativos. \\[1em]
 
-Dado que ambos métodos son iterativos, y bajo ciertas circunstancias nos aseguran una convergencia a la solución, debiamos proveer de un criterio para saber cuando nos encontramos con una 'buena' aproximación a la solución. Dado que no podemos preguntarle a una computadora si un valor es exactamente igual a 0, debiamos conformarnos con una aproximación al mismo.
+Dado que ambos métodos son iterativos, y bajo ciertas circunstancias nos aseguran una convergencia a la solución, debíamos proveer de un criterio para saber cuando nos encontramos con una 'buena' aproximación a la solución. Como no podemos preguntarle a una computadora si un valor es exactamente igual a 0, nos conformarnos con una aproximación al mismo.
 
 Siendo $\epsilon$ una tolerancia previamente establecida (por ejemplo $\epsilon = 10^{-3}$), uno de los criterios de parada consiste en parar cuando 
 \begin{equation}|f(c_n)| < \epsilon \end{equation}
@@ -137,10 +135,13 @@ También se puede usar como criterio de parada el error relativo entre dos aprox
 \begin{equation}\frac{c_n - c_{n-1}}{c_n} < \epsilon \end{equation}
 Otro criterio que puede utilizarse, y de hecho es el que utilizamos, es examinar sí \begin{equation}\vert{b_n - a_n}\vert < \epsilon\end{equation}
 
+Este criterio de parada lo elegimos por ser el más simple, más adelante evaluamos la importancia del $\epsilon$. Ver \texttt{Tabla 1}.
+
 \newpage
+
 \section{Discusión y Resultados}
 \begin{quote}
-Salvo para las pruebas de precision, \textit{Figura 6}, utilizamos la mayor precision que podíamos dada por \textbf{TFloat}, que es 52bits.
+Salvo para las pruebas de precision, \texttt{Figura 6}, utilizamos la mayor precision que podíamos dada por \textbf{TFloat}, que es 52bits.
 \end{quote}
 \vspace{1em}
 
@@ -170,15 +171,17 @@ Elegimos estas configuraciones porque podemos obtener resultados exactos analít
   \item{Máx. Iteraciones = $10^5$}
 \end{itemize}
 
+\newpage
+
 \subsection{Experimentación}
-Las \textit{Figuras 1, 2 y 3} representaran los resultados con la \texttt{configuración A}.
+Las \texttt{Figuras 1, 2 y 3} representaran los resultados con la \texttt{configuración A}.
 Bajo estas condiciones, es fácil probar que la solución es exactamente 8, basta con resolver la siguiente ecuación cuadrática:
 
 \begin{displaymath}
   \frac{-3G \pm \sqrt{9G^2 + 4*\frac{G}{2}*8G}}{-2\frac{G}{2}}
 \end{displaymath}
 
-Ahora, con este problema bien definido, variamos la longitud del intervalo donde comienza \textbf{bisección} y graficamos la cantidad de iteraciones que necesita cada algoritmo (\textit{Figura 1}).
+Ahora, con este problema bien definido, variamos la longitud del intervalo donde comienza \textbf{bisección} y graficamos la cantidad de iteraciones que necesita cada algoritmo (\texttt{Figura 1}).
 
 \begin{figure}[H]
   \centering
@@ -186,9 +189,10 @@ Ahora, con este problema bien definido, variamos la longitud del intervalo donde
   \caption{Cantidad de Iteraciones. Bisección vs Newton (con aproximación de Bisección) }
 \end{figure}
 
-En primer lugar, encontramos una gran diferencia entre la cantidad de iteraciones necesarias por parte de \textbf{Bisección puro} y \textbf{Bisección + Newton}. Este resultado ya lo sabíamos teóricamente con el orden de convergencia de ambos métodos y quedó demostrado. Cabe destacar que no solo probamos este caso en particular sino todas las pruebas que fuimos haciendo verificábamos esto.\\ \vspace{1em}
+En primer lugar, encontramos una gran diferencia entre la cantidad de iteraciones necesarias por parte de \textbf{Bisección puro} y \textbf{Bisección + Newton}. Este resultado ya lo sabíamos teóricamente con el orden de convergencia de ambos métodos y quedó demostrado. Cabe destacar que no solo probamos este caso en particular sino todas las pruebas que fuimos haciendo verificábamos esto.\\[1em]
  
-Por otro lado , necesitábamos un criterio de aproximación por \textbf{Bisección} para la semilla de \textbf{Newton}, y decidimos probar las 2 alternativas:
+
+Por otro lado , necesitábamos un criterio de aproximación por \textbf{Bisección} para la semilla de \textbf{Newton}, y decidímos probar las 2 alternativas:
 \begin{itemize}
   \item Iterar una cantidad fija de veces
   \item Acercarnos al valor a una distancia \textbf{d} de la raíz
@@ -206,10 +210,11 @@ Por otro lado , necesitábamos un criterio de aproximación por \textbf{Bisecci�
   \caption{Aproximación con Bisección limitada a una tolerancia de 2. }
 \end{figure}
 
-En la \textit{Figura 2 y 3} podemos observar que es ligeramente mejor utilizar iteraciones fijas sobre \textbf{Bisección} pues no varia mucho la cantidad final de iteraciones para encontrar la raíz. En estas figuras, también diferenciamos la cantidad de iteraciones de cada método, y dado que para este problema en particular \textbf{Newton} se comporta \textit{bien} para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones.
+En la \texttt{Figura 2 y 3} podemos observar que es ligeramente mejor utilizar iteraciones fijas sobre \textbf{Bisección} pues no varia mucho la cantidad final de iteraciones para encontrar la raíz. En estas figuras, también diferenciamos la cantidad de iteraciones de cada método, y dado que para este problema en particular \textbf{Newton} se comporta \textit{bien} para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones.
 En el caso de un problema en que sea necesario tener una semilla buena, se optaría por el otro criterio de parada.
-Este fue uno de los resultados que nos sorprendió, ya que esperábamos que acercarse a una distancia \textbf{d} de la raíz, nos iba a aportar muchas más iteraciones de las experimentadas.\\
+Este fue uno de los resultados que nos sorprendió, ya que esperábamos que acercarse a una distancia \textbf{d} de la raíz, nos iba a aportar muchas más iteraciones de las experimentadas.
 
+\newpage
 
 En la siguiente tabla, mostraremos como realmente afecta la elección de la tolerancia al momento de obtener resultados. Esto queda explícito cuando buscamos el instante del primer impacto, ya que sabemos que la posición debería ser cero y analíticamente el instante de impacto ocurre a los 8 segundos. Como se puede observar, los resultados mas cercanos los obtenemos con tolerancias realmente chicas.
 Es muy importante la buena elección de la tolerancia, quizás no en aplicaciones como estas que no hay riesgo, pero errores de este tipo en aplicaciones que deben ser precisas (como el disipador de un reactor nuclear) pueden ser muy costosos.
@@ -242,7 +247,7 @@ Es muy importante la buena elección de la tolerancia, quizás no en aplicacione
 
 %En este caso debíamos analizar cómo variaba la energía mecánica entre el lanzamiento y el segundo rebote.
 	
-Más adelante, \textit{Figura 4}, comparamos la energía mecánica a través del tiempo. En este primer experimento dejamos fijo el factor de restitución y variamos la variable $\alpha$  ( $\alpha = 0$ significa sin rozamiento ). Podemos observar que en el caso de no haber rozamiento la energía mecánica se conserva, en cambio a mayor $\alpha$, o sea a mayor rozamiento, la perdida de energía es mayor con el paso del tiempo. \\
+Más adelante, \texttt{Figura 4}, comparamos la energía mecánica a través del tiempo. En este primer experimento dejamos fijo el factor de restitución y variamos la variable $\alpha$  ( $\alpha = 0$ significa sin rozamiento ). Podemos observar que en el caso de no haber rozamiento la energía mecánica se conserva, en cambio a mayor $\alpha$, o sea a mayor rozamiento, la perdida de energía es mayor con el paso del tiempo. \\
 
 \begin{figure}[H]
   \centering
@@ -258,14 +263,13 @@ Los cambios bruscos que podemos ver en los gráficos, se corresponden con los mo
   \caption{Comparación diferencia de energía mecánica. Variando \textit{Fr}. \texttt{Configuración A} }
 \end{figure}
  	
-En la \textit{Figura 5} lo que hicimos fue, dejando fijo el $\alpha$, modificar el factor de restitución para ver como variaba la energía en este caso. Como era de esperar se puede observar que en el momento de los rebotes, a menor factor de restitución mayor pérdida de energía.\\[1em]
+En la \texttt{Figura 5} lo que hicimos fue, dejando fijo el $\alpha$, modificar el factor de restitución para ver como variaba la energía en este caso. Como era de esperar se puede observar que en el momento de los rebotes, a menor factor de restitución mayor pérdida de energía.\\[1em]
 
 
-Como bien aclaramos antes, los resultados que mostramos hasta el momento utilizan una precisión de 52 bits de mantisa. Para los siguientes experimentos, vamos a variar la precisión para demostrar los errores que se cometen al reducir la misma.
+Como bien aclaramos antes, los resultados que mostramos hasta el momento utilizan una precisión de 52 bits de mantisa. Para los siguientes experimentos, vamos a variar la precisión para demostrar los errores que se cometen al reducir la misma.\\[1em]
 
 
-
-En la \textit{Figura 6} graficaremos el error que se produce al tener una menor precisión de representación para los números de punto flotante en aritmetica finita. 
+En la \texttt{Figura 6} graficaremos el error que se produce al tener una menor precisión de representación para los números de punto flotante en aritmetica finita. 
 Como la clase \textit{TFloat}, alcanza su máxima representación con 52 bits de mantisa, este fue el valor que utilizamos para tomar como valor válido. Luego, fuimos decrementando la mantisa y ejecutando el problema para la \texttt{configuración B} pero con menor precisión y comparamos el error absoluto del momento del primer impacto. \\[1em]
 
 \begin{figure}[H]
@@ -274,7 +278,7 @@ Como la clase \textit{TFloat}, alcanza su máxima representación con 52 bits de
   \caption{Error absoluto cambiando los bits de la mantisa. \texttt{Configuración B} }
 \end{figure}
 
-Luego de haber obtenido los resultados, los comparamos con nuestro \textit{valor ideal} y representamos la diferencia en la \textbf{Figura 6}.
+Luego de haber obtenido los resultados, los comparamos con nuestro \textit{valor ideal} y representamos la diferencia en la \texttt{Figura 6}.
 
 Claramente una baja precisión aumenta el error en los cálculos.
 
@@ -309,13 +313,6 @@ El \textbf{coeficiente de rozamiento o de fricción} expresa la oposición al de
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
 \newpage
-
-\section{Corrección de código}
-\begin{itemize}
-	\item El print estaba mal, utilizaba un \textbf{.dbl()} cuando no correspondía y el compilador no nos notificaba sobre eso.
-	\item Problema al calcular el segundo rebote. Se llamaba la función posición en lugar de la de velocidad.
-\end{itemize}
-
 
 \section{Conclusiones}
 %Esta secci ́on debe contener las conclusiones generales del trabajo. Se deben mencionar las relaciones de la discusi ́on sobre las que se tiene certeza, junto con comentarios y observaciones generales aplicables a todo el proceso. Mencionar tambi ́en posibles extensiones a los m ́etodos, experimentos que hayan quedado pendientes, etc.
@@ -456,7 +453,12 @@ Y reciben los siguientes parámetros:
 \item[-z] tolerancia para Newton.
 \end{description}
 
-\newpage
+\subsection{Corrección de Código}
+\begin{itemize}
+	\item El print estaba mal, utilizaba un \textbf{.dbl()} cuando no correspondía y el compilador no nos notificaba sobre eso.
+	\item Problema al calcular el segundo rebote. Se llamaba la función posición en lugar de la de velocidad.
+\end{itemize}
+
 
 %\section{Referencias TODO}
 %Es importante incluir referencias a libros, art ́ıculos y p ́aginas de Internet consultados durante el desarrollo del trabajo, haciendo referencia a estos materiales a lo largo del informe. Se deben citar tambi ́en las comunicaciones personales con otros grupos.
