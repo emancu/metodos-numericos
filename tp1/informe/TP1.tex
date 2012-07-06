@@ -148,7 +148,7 @@ Para esto, nos centramos en resolver el problema con parámetros fijos de soluci
 
 \subsection{Casos de prueba}
  Creamos dos configuraciones distintas para utilizar en los resultados que describimos a continuación.
-
+Elegimos estas configuraciones porque podemos obtener resultados exactos analíticamente y nos facilita comparar los resultados de nuestro algoritmo con los reales.
 
 \subsubsection{Configuración A} 
 \begin{itemize}
@@ -204,7 +204,7 @@ Por otro lado , necesitábamos un criterio de aproximación por \textbf{Bisecci�
   \caption{Aproximación con Bisección limitada a una tolerancia de 2. }
 \end{figure}
 
-En la \textit{Figura 2} podemos observar que no variaba mucho la cantidad final de iteraciones del algoritmo total para encontrar la raíz. En las \textit{figuras 2 y 3} diferenciamos la cantidad de iteraciones de cada método, y dado que para este problema en particular \textbf{Newton} se comporta \textit{bien} para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones.
+En la \textit{Figura 2 y 3} podemos observar que es ligeramente mejor utilizar iteraciones fijas sobre \textbf{Bisección} pues no varia mucho la cantidad final de iteraciones para encontrar la raíz. En estas figuras, también diferenciamos la cantidad de iteraciones de cada método, y dado que para este problema en particular \textbf{Newton} se comporta \textit{bien} para una semilla aleatoria, decidimos utilizar una cantidad fija de iteraciones.
 En el caso de un problema en que sea necesario tener una semilla buena, se optaría por el otro criterio de parada.
 Este fue uno de los resultados que nos sorprendió, ya que esperábamos que acercarse a una distancia \textbf{d} de la raíz, nos iba a aportar muchas más iteraciones de las experimentadas.\\
 
