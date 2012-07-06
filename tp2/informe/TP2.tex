@@ -11,7 +11,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{mathtools}
+%\usepackage{mathtools}
 
 
 \setlength{\leftmargin}{2cm}
@@ -193,29 +193,25 @@ Todas las imágenes con las que trabajamos, son en escala de grises reducida y p
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
 
-Una vez desarrollados los algoritmos, comenzamos a generar ruido a las imágenes entregadas por la cátedra para luego aplicar el filtro y comparar los resultados. Como el algoritmo demora bastante con imágenes grandes, iniciamos las pruebas fundamentales con imágenes de 128x128. \vspace{1em}
+Una vez desarrollados los algoritmos, comenzamos a generar ruido a las imágenes entregadas por la cátedra para luego aplicar el filtro y comparar los resultados. Para esto implementamos un algoritmo que introduce ruido gaussiano en las imagenes. La cantidad del mismo depende de un factor pasado como parametro al generador (entre 10 y 100). Como el algoritmo de filtrado demora bastante con imágenes grandes, iniciamos las pruebas fundamentales con imágenes de 128x128. \vspace{1em}
 
-Para empezar, comprobamos que nuestro algoritmo para generar ruido en imágenes no beneficiaba ni perjudicaba el filtro que luego aplicaríamos, para esto utilizamos una herramienta, \textbf{GIMP}, para introducir el ruido, aplicar el filtro y compararlo con el nuestro.
+Primero queremos mostrar que nuestro algoritmo inserta ruido correctamente en la imagen. Para esto generamos el ruido en la imagen y le calculamos el psnr. 
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.75]{graficos/PSNR_Einstein-GIMP.png}
-  \caption{ Imagen de prueba: Einsten. Valores del PSNR cuando filtramos la imagen con ruido, variando el factor de ruido introducido con el GIMP.}
-\end{figure}
 
-En la \texttt{figura 1}  vemos la mejora que produce el filtro con respecto a la imagen con ruido para un $\lambda$ determinado. \\ 
-El $\ \lambda = 5$, nos resulto muy conveniente para nuestro algoritmo dado que la mayoría de veces nos da una amplia mejora. 
 
-Ahora que sabemos como se comporta con una imagen con ruido generado por una herramienta como el GIMP, nos enfocamos a comparar con nuestra propia implementación de inserción de ruido.
-En la \texttt{figura 2} vamos a ver que tiene un comportamiento similar, y de hecho utilizamos otros $\lambda$ para mostrar que no es un caso particular. 
+La imagen nos demuestra que cuando mayor es el factor, o sea cuanto mas ruido introducimos en la imagen el psnr disminuye, lo cual nos indica una peor calidad de la imagen. 
+
+
+
+Una vez que confirmamos que nuestro algoritmo introduce correctamente el ruido, pasamos a verificar el comportamiento del proceso para quitar el mismo. Para esto ejecutamos el proceso sobre varios factores de ruido, y para cada factor utilizamos distintos valores de $\lambda$.
+
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.65]{graficos/PSNR_Einstein.png}
   \caption{ Imagen de prueba: Einsten. Valores del PSNR cuando filtramos la imagen con ruido introducido con nuestro algoritmo. }
 \end{figure}
 
-Mientras observamos el comportamiento partiendo de diferentes ruidos, notamos cierta relación entre el ruido y el $\lambda$.
-Tomamos otra imagen y rehicimos todas las pruebas, y volcamos los resultados en el gráfico de la \texttt{figura 3}. 
+Mientras observamos el comportamiento partiendo de diferentes ruidos, notamos cierta relación entre el ruido y el $\lambda$. Sin embargo no sacamos concluciones en un principio ya que las caracteristicas de la imagen podian influir en el comportamiento del algoritmo. Para verificar esto tomamos otra imagen, rehicimos todas las pruebas, y volcamos los resultados en el gráfico de la \texttt{figura 3}. 
 
 \begin{figure}[H]
   \centering
