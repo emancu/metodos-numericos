@@ -93,19 +93,17 @@ De esta manera, podemos generar la serie $x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n
 \section{Desarrollo}
 %Deben explicarse los m ́etodos num ́ericos que utilizaron y su aplicaci ́on al problema concreto involucrado en el trabajo pr ́actico. Se deben mencionar los pasos que si- guieron para implementar los algoritmos, las dificultades que fueron encontrando y la descripci ́on de c ́omo las fueron resolviendo. Explicar tambi ́en c ́omo fueron planteadas y realizadas las mediciones experimentales. Los ensayos fallidos, hip ́otesis y conjeturas equivocadas, experimentos y m ́etodos malogrados deben figurar en esta secci ́on, con una breve explicaci ́on de los motivos de estas fallas (en caso de ser conocidas).
 
-Nuestro objetivo consistía en calcular el momento de impacto de un cuerpo, lanzado desde una altura \textbf{h} y a una velocidad inicial \textbf{$v_0$}. 
-
-Luego, dada la ecuación de la posición de un cuerpo en un instante \textbf{t}
+Nuestro objetivo consistía en calcular el momento de impacto de un cuerpo, lanzado desde una altura \textbf{h} y a una velocidad inicial \textbf{$v_0$}. Dada la ecuación de la posición de un cuerpo en un instante \textbf{t}
 
 \begin{equation}
  y(t) = h + v_0 t - \frac{g}{2} t^2,
 \end{equation}
 
-debemos encontrar los instantes en que esta función vale cero, y esto se transforma en calcular las raíces o ceros de la función. Para esto utilizamos los métodos numéricos de \textbf{Bisección} y \textbf{Newton}.
+nuestro trabajo se reducia a encontrar los instantes en que esta función vale cero, y esto se transforma en calcular las raíces o ceros de la función. Para esto utilizamos los métodos numéricos de \textbf{Bisección} y \textbf{Newton}.
 
 Como las condiciones de convergencia de \textbf{Newton} exigen que la semilla este \textit{cerca} de la raíz, decidimos implementar la combinación de los mismos, es decir conseguir una \textit{semilla} con el método de \textbf{bisección} y luego utilizar la misma para aplicar \textbf{Newton}. \\ \hspace{1em}
 
-En el punto dos para calcular la altura máxima luego del primer rebote podemos aplicar el mismo razonamiento y calcular la raíz de la función velocidad
+En el punto dos, para calcular la altura máxima luego del primer rebote podemos aplicar el mismo razonamiento y calcular la raíz de la función velocidad
 
 \begin{equation}
  \dot{y}(t) = v_0 - g t
@@ -120,20 +118,20 @@ Para calcular el segundo impacto, volvemos a calcular el cero a la función posi
 	\item $h = 0$ 
 \end{itemize}
 
+O sea, lo que hacemos es tirar el cuerpo desde una altura $V_0$ con una velocidad igual a la contraria con la que llego al piso multiplicada por el correspondiente factor de rozamiento. La raiz de la función posición con estos parámetros iniciales se corresponde con el instante en el que el cuerpo impacta con el piso por segunda vez.
+
+
 \hspace{1em}
+
 
 Básicamente, el trabajo consiste en calcular o aproximar ceros de distintas funciones y por eso decidimos implementar una función genérica para cada algoritmo, que recibe como parámetro la función a la cual se le quiere aproximar las raíces. 
 
 En un principio utilizamos el tipo \textit{double} para asegurarnos de que todo funcionaba según lo esperado. Luego fue reemplazado por la clase \textit{TFLoat} proporcionada por la cátedra, con la cual íbamos a poder manejar la cantidad de bits de la mantisa.   
 Un error que se nos presentó fue justamente el de la presentación de la información. Al imprimir los valores de las variables, imprimimos pocos decimales, estos eran redoneados dandonos valores alejados de lo esperado. Para saber la cantidad máxima de dígitos consultamos la clase $float.h$\footnote{http://www.cplusplus.com/reference/clibrary/cfloat/} la cual contiene una constante que indica el número de decimales significativos. \\[1em]
 
-Para detener el método de \textbf{bisección} como el de \textbf{Newton} y dar una aproximación al cero de una función se pueden usar varios criterios de parada.
+Dado que ambos métodos son iterativos, y bajo ciertas circunstancias nos aseguran una convergencia a la solución, debiamos proveer de un criterio para saber cuando nos encontramos con una 'buena' aproximación a la solución. Dado que no podemos preguntarle a una computadora si un valor es exactamente igual a 0, debiamos conformarnos con una aproximación al mismo.
 
-Siendo $\epsilon$ una tolerancia previamente establecida (por ejemplo $\epsilon = 10^{-3}$), uno de los criterios de parada consiste en parar cuando 
-\begin{equation}|f(c_n)| < \epsilon \end{equation}
-También se puede usar como criterio de parada el error relativo entre dos aproximaciones del cero de f, 
-\begin{equation}\frac{c_n - c_{n-1}}{c_n} < \epsilon \end{equation}
-Otro criterio que puede utilizarse, y de hecho es el que utilizamos, es examinar sí \begin{equation}\frac{b_n - a_n}{2} < \epsilon\end{equation}
+Siendo $\epsilon$ una tolerancia previamente establecida (por ejemplo $\epsilon = 10^{-3}$), el criterio que decidimos utilizar es examinar sí \begin{equation}\vert{b_n - a_n}\vert < \epsilon\end{equation}
 
 \newpage
 \section{Discusión y Resultados}
