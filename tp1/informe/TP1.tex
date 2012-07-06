@@ -146,7 +146,11 @@ Sabiendo que el método de \textbf{Newton-Raphson} converge de forma cuadrática
 
 Para esto, nos centramos en resolver el problema con parámetros fijos de solución exacta.
 
-Las \textit{Figuras 1, 2 y 3} representan los resultados con los siguientes parámetros, 
+\subsection{Casos de prueba}
+ Creamos dos configuraciones distintas para utilizar en los resultados que describimos a continuación.
+
+
+\subsubsection{Configuración A} 
 \begin{itemize}
   \item{G = 9.81}
   \item{Velocidad Inicial = 29.43 (3G)} 
@@ -155,6 +159,17 @@ Las \textit{Figuras 1, 2 y 3} representan los resultados con los siguientes par�
   \item{Máx. Iteraciones = $10^5$}
 \end{itemize}
 
+\subsubsection{Configuración B}
+\begin{itemize}
+  \item{G = 9.81}
+  \item{Velocidad Inicial = 0.0} 
+  \item{Altura Inicial = 19.62 (2G)} 
+  \item{Tolerancia = $10^{-14}$} 
+  \item{Máx. Iteraciones = $10^5$}
+\end{itemize}
+
+\subsection{Experimentación}
+Las \textit{Figuras 1, 2 y 3} representaran los resultados con la \texttt{configuración A}.
 Bajo estas condiciones, es fácil probar que la solución es exactamente 8, basta con resolver la siguiente ecuación cuadrática:
 
 \begin{displaymath}
@@ -193,28 +208,10 @@ En la \textit{Figura 2} podemos observar que no variaba mucho la cantidad final 
 En el caso de un problema en que sea necesario tener una semilla buena, se optaría por el otro criterio de parada.
 Este fue uno de los resultados que nos sorprendió, ya que esperábamos que acercarse a una distancia \textbf{d} de la raíz, nos iba a aportar muchas más iteraciones de las experimentadas.\\
 
-%En este caso debíamos analizar cómo variaba la energía mecánica entre el lanzamiento y el segundo rebote.
-	
-Más adelante, \textit{Figura 4}, comparamos la energía mecánica a través del tiempo. En este primer experimento dejamos fijo el factor de restitución y variamos la variable $\alpha$  ( $\alpha = 0$ significa sin rozamiento ). Podemos observar que en el caso de no haber rozamiento la energía mecánica se conserva, en cambio a mayor $\alpha$, o sea a mayor rozamiento, la perdida de energía es mayor con el paso del tiempo. \\
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.75]{graficos/4-energiaMecanica-alpha.png}
-  \caption{Comparación diferencia de energía mecánica. Variando $\alpha$ }
-\end{figure}
+En la siguiente tabla, mostraremos como realmente afecta la elección de la tolerancia al momento de obtener resultados. Esto queda explícito cuando buscamos el instante del primer impacto, ya que sabemos que la posición debería ser cero y analíticamente el instante de impacto ocurre a los 8 segundos. Como se puede observar, los resultados mas cercanos los obtenemos con tolerancias realmente chicas.
+Es muy importante la buena elección de la tolerancia, quizás no en aplicaciones como estas que no hay riesgo, pero errores de este tipo en aplicaciones que deben ser precisas (como el disipador de un reactor nuclear) pueden ser muy costosos.
 
-Los cambios bruscos que podemos ver en los gráficos, se corresponden con los momentos de impacto del cuerpo.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.75]{graficos/5-energiaMecanica-fr.png}
-  \caption{Comparación diferencia de energía mecánica. Variando \textit{Fr} }
-\end{figure}
- 	
-En la \textit{Figura 5} lo que hicimos fue, dejando fijo el $\alpha$, modificar el factor de restitución para ver como variaba la energía en este caso. Como era de esperar se puede observar que en el momento de los rebotes, a menor factor de restitución mayor pérdida de energía.\\[1em]
-
-Como bien aclaramos antes, los resultados que mostramos hasta el momento utilizan una precisión de 52 bits de mantisa. Para los siguientes experimentos, vamos a variar la precisión para demostrar los errores que se cometen al reducir la misma.
-  
 \vspace{2em}
 \begin{center}
 \begin{tabular}{|l|l|l|}
@@ -238,30 +235,69 @@ Como bien aclaramos antes, los resultados que mostramos hasta el momento utiliza
 \hline
 \end{tabular}
 \end{center} 
+\centerline{Los valores de esta tabla corresponden a la \texttt{Configuración B}. }
 \vspace{1em}
+
+%En este caso debíamos analizar cómo variaba la energía mecánica entre el lanzamiento y el segundo rebote.
+	
+Más adelante, \textit{Figura 4}, comparamos la energía mecánica a través del tiempo. En este primer experimento dejamos fijo el factor de restitución y variamos la variable $\alpha$  ( $\alpha = 0$ significa sin rozamiento ). Podemos observar que en el caso de no haber rozamiento la energía mecánica se conserva, en cambio a mayor $\alpha$, o sea a mayor rozamiento, la perdida de energía es mayor con el paso del tiempo. \\
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/4-energiaMecanica-alpha.png}
+  \caption{Comparación diferencia de energía mecánica. Variando $\alpha$ }
+\end{figure}
+
+Los cambios bruscos que podemos ver en los gráficos, se corresponden con los momentos de impacto del cuerpo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/5-energiaMecanica-fr.png}
+  \caption{Comparación diferencia de energía mecánica. Variando \textit{Fr}. \texttt{Configuración A} }
+\end{figure}
+ 	
+En la \textit{Figura 5} lo que hicimos fue, dejando fijo el $\alpha$, modificar el factor de restitución para ver como variaba la energía en este caso. Como era de esperar se puede observar que en el momento de los rebotes, a menor factor de restitución mayor pérdida de energía.\\[1em]
+
+
+Como bien aclaramos antes, los resultados que mostramos hasta el momento utilizan una precisión de 52 bits de mantisa. Para los siguientes experimentos, vamos a variar la precisión para demostrar los errores que se cometen al reducir la misma.
+
+
+
+En la \textit{Figura 6} graficaremos el error que se produce al tener una menor precisión de representación para los números de punto flotante en aritmetica finita. 
+Como la clase \textit{TFloat}, alcanza su máxima representación con 52 bits de mantisa, este fue el valor que utilizamos para tomar como valor válido. Luego, fuimos decrementando la mantisa y ejecutando el mismo problema pero con menor precisión. \\[1em]
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.75]{graficos/6-errorAbsoluto.png}
-  \caption{Error absoluto cambiando los bits de la mantisa }
+  \caption{Error absoluto cambiando los bits de la mantisa. \texttt{Configuración B} }
 \end{figure}
 
-En la \textit{Figura 6} graficamos el error que se produce al tener una menor precisión de representación para los números de punto flotante en aritmetica finita. 
-Como la clase \textit{TFloat}, alcanza su máxima representación con 52 bits de mantisa, este fue el valor que utilizamos para tomar como valor válido. Luego, fuimos decrementando la mantisa y ejecutando el mismo problema pero con menor precisión.
+Luego de haber obtenido los resultados, los comparamos con nuestro \textit{valor ideal} y representamos la diferencia en la \textbf{Figura 6}.
 
-Se representan los resultados obtenidos de la ejecución con los siguientes parámetros, 
-\begin{itemize}
-  \item{G = 9.81}
-  \item{Velocidad Inicial = 0.0} 
-  \item{Altura Inicial = 19.62 (2G)} 
-  \item{Tolerancia = $10^{-14}$} 
-  \item{Máx. Iteraciones = $10^5$}
-\end{itemize}
-
-Una vez obtenidos los resultados, los comparamos con nuestro \textit{valor ideal} y representamos la diferencia en la \textbf{Figura 6}.
+Claramente una baja precisión aumenta el error en los cálculos.
 
 
-Claramente una baja precision aumenta el error en los cálculos.
+En la siguiente \texttt{figura 7}, ejecutamos el mismo problema antes descrito modificando el \textit{factor de restitución} para mostrar como altera la altura máxima alcanzada luego del primer impacto.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/7-AlturaMaxima-fr.png}
+  \caption{Variando el factor de restitución, el impacto le quita velocidad y alcanza menores alturas. \texttt{Configuración B}}
+\end{figure}
+
+Como podemos observar, la altura máxima alcanzada cada vez es menor a medida que achicamos el factor de restitución, y esto debe porque luego del primer impacto, la velocidad con la que rebota se ve reducida por el mismo (siempre y cuando no consideremos la fricción para este experimento). Si en el experimento dejamos de lado el rozamiento, y el factor de restitución es 1 el objeto alcanzaría siempre la altura máxima y no dejaría de rebotar nunca.\\[1em]
+
+
+Utilizando una vez mas el mismo caso de pruebas, decidimos analizar nuevamente la altura máxima pero esta vez modificando el coeficiente de rozamiento y mostrar como influye en lo que a este experimento se refiere. \texttt{Figura 8}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/8-AlturaMaxima-cr.png}
+  \caption{Variamos el \textit{Cr} y evaluamos la altura máxima alcanzada. Manteniendo M=1. \texttt{Configuración B}}
+\end{figure}
+
+El \textbf{coeficiente de rozamiento o de fricción} expresa la oposición al deslizamiento que ofrece el objeto con, en este problema, el aire. En la \texttt{Figura 8} se puede apreciar como la altura máxima va aumentando debido a que tiene menor coeficiente de fricción, y por lo tanto la resistencia al deslizamiento cada vez es menor.
+
 
 
 %Deben incluir los resultados de los experimentos, utilizando el formato m ́as adecuado para su presentaci ́on. Deber ́an especificar claramente a qu ́e experiencia corresponde cada resultado. No se incluir ́an aqu ́ı corridas de m ́aquina. Algo fundamental en su aprendizaje en la materia es la presentaci ́on de resultados de forma clara y concisa para el lector.
@@ -275,7 +311,7 @@ Claramente una baja precision aumenta el error en los cálculos.
 \section{Corrección de código}
 \begin{itemize}
 	\item El print estaba mal, utilizaba un \textbf{.dbl()} cuando no correspondía y el compilador no nos notificaba sobre eso.
-	\item Problema al calcular el segundo rebote. se llamaba la función posición en lugar de la de velocidad.
+	\item Problema al calcular el segundo rebote. Se llamaba la función posición en lugar de la de velocidad.
 \end{itemize}
 
 
