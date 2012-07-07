@@ -133,7 +133,13 @@ Siendo $\epsilon$ una tolerancia previamente establecida (por ejemplo $\epsilon 
 \begin{equation}|f(c_n)| < \epsilon \end{equation}
 También se puede usar como criterio de parada el error relativo entre dos aproximaciones del cero de f, 
 \begin{equation}\frac{c_n - c_{n-1}}{c_n} < \epsilon \end{equation}
-Otro criterio que puede utilizarse, y de hecho es el que utilizamos, es examinar sí \begin{equation}\vert{b_n - a_n}\vert < \epsilon\end{equation}
+Otro criterio que puede utilizarse, y de hecho es el que utilizamos, es examinar sí \begin{equation}\vert{b_n - a_n}\vert < \epsilon\end{equation} siendo $b_n$ y $a_n$ los bordes del intervalo.
+
+En el caso de \textit{Newton} utilizamos el mismo criterio, aplicado a dos iteraciones consecutivas del método. \begin{equation}\vert{p_n - p_{n-1}}\vert < \epsilon\end{equation}
+
+
+
+
 
 Este criterio de parada lo elegimos por ser el más simple, más adelante evaluamos la importancia del $\epsilon$. Ver \texttt{Tabla 1}.
 
