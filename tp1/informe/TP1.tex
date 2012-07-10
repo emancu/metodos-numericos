@@ -318,6 +318,26 @@ El \textbf{coeficiente de rozamiento o de fricción} expresa la oposición al de
 %\section{Discusión}
 %Se incluira aquı un analisis de los resultados obtenidos en la seccion anterior (se analizara su validez, coherencia, etc.). Deben analizarse como mınimo los ıtems pedidos en el enunciado. No es aceptable decir que “los resultados fueron los esperados”, sin hacer clara referencia a la teor ́ıa a la cual se ajustan. Adem ́as, se deben mencionar los resul- tados interesantes y los casos “patol ́ogicos” encontrados.
 
+\subsection{Historial de Convergencia}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/9-HistorialConvergencia1.png}
+  \caption{Diferencia absoluta de la posición de cada iteración con la posición de impacto (0) \texttt{Configuración A}}
+\end{figure}
+
+En la \texttt{Figura 9} se nota la velocidad con la que convergen los algoritmos, y plasma la diferencia teórica en cuanto la convergencia cuadrática de \textbf{Newton} y la convergencia lineal de \textbf{Bisección}.
+
+Si bien \textbf{Bisección} muestra unos ciclos en el historial de convergencia, estos se mantienen dentro de la linealidad del algoritmo. La explicación que le encontramos a estos ciclos es debido a la particularidad del algoritmo, que depende de que lado de la raíz estemos evaluando la función y esto produce pequeños saltos cuando cambiamos de borde. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{graficos/10-HistorialConvergencia2.png}
+  \caption{Diferencia absoluta de la posición de cada iteración con la posición de impacto (0) \texttt{Configuración B}}
+\end{figure}
+
+En esta última, \texttt{figura 10}, encontramos el mismo comportamiento explicado anteriormente, a diferencia que \textbf{Newton} da saltos más grandes y llega al cero antes, pero esto se debe a la configuración inicial. Como estos gráficos están en escala logarítmica el cero no puede ser representado entonces dejamos de graficar \textbf{Newton} una iteración antes de llegar al cero.
+
 \newpage
 
 \section{Conclusiones}
